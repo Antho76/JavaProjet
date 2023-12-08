@@ -18,7 +18,7 @@ public class Main {
         bouton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Bouton cliqué !");
+                System.out.println("Bouton");
             }
         });
 
