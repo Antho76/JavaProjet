@@ -29,6 +29,11 @@ abstract class Personne
       return this.nom;
     }
 
+    public int getId()
+    {
+      return this.id;
+    }
+    
     public String getPrenom()
     {
       return this.prenom;

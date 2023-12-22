@@ -20,7 +20,7 @@ public class Cours{
     this.salle = new Salle();
   }
   
-  public Cours(int nbEtudiant, Etudiant[] tabEtudiant, Enseignant       
+  public Cours(int nbEtudiant, Etudiant[] tabEtudiants, Enseignant       
   enseignant, Date date, int heure,Matiere matiere, Salle salle){
     this.nbEtudiant = nbEtudiant;
     this.tabEtudiants = tabEtudiants;
