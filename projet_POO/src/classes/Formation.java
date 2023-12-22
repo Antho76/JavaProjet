@@ -3,44 +3,51 @@ package classes;
 
 public class Formation 
 {
-  private static int id_formation = 0;
-  private String nom;
-  private Promotion promotion;
+	private static int dernierIdFormation;
+	private int id_formation;
+	private String nomFormation;
+	private Promotion promotion;
   
-  public Formation(){
-    this.id_formation = id_formation++;
-    this.nom="";
-    this.promotion= new Promotion();
-  }
+	public Formation(){
+		dernierIdFormation++;
+		this.id_formation = dernierIdFormation;
+		this.nomFormation="";
+		this.promotion= new Promotion();
+	}
   
-  public Formation(String nom, Promotion promotion){
-    this.id_formation = id_formation++;
-    this.nom = nom;
-    this.promotion = promotion;
-  }
+	public Formation(String nomFormation, Promotion promotion){
+		dernierIdFormation++;
+		this.id_formation = dernierIdFormation;
+		this.nomFormation = nomFormation;
+		this.promotion = promotion;
+	}
 
-  public int getid(){
-    return this.id_formation;
-  }
-    public String getnom(){
-      return this.nom;
-  }
+	public int getId_Formation(){
+		return this.id_formation;
+	}
+	
+    public String getNomFormation(){
+    	return this.nomFormation;
+    }
   
-    public Promotion getpromotion(){
-      return this.promotion;
-  }
+    public Promotion getPromotion(){
+    	return this.promotion;
+    }
+    
+    public void setId_Formation(int id_formation) {
+    	this.id_formation = id_formation;
+    }
 
-    public void setnom(String nom){
-      this.nom = nom;
-  }
-    public void setpromotion(Promotion promotion){
-      this.promotion = promotion;
-  }
+    public void setNomFormation(String nomFormation){
+    	this.nomFormation = nomFormation;
+    }
+    public void setPromotion(Promotion promotion){
+    	this.promotion = promotion;
+    }
 
   //toString
-  public String toString() 
-  {
-    return this.nom;
-  }
+	public String toString() {
+		return this.nomFormation;
+	 }
 }
   

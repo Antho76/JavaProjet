@@ -3,24 +3,24 @@ package classes;
 
 public class Promotion
 {
-  private int id;
+  private int numeroPromotion;
   private int annee;
   private Etudiant[] etudiants;  
 
-  public Promotion(int id, int annee){
-    this.id = id;
+  public Promotion(int numeroPromotion, int annee){
+    this.numeroPromotion = numeroPromotion;
     this.annee = annee;
     this.etudiants = new Etudiant[100];
   }
   
   public Promotion(){
-    this.id = 0;
+    this.numeroPromotion = 0;
     this.annee = 0;
     this.etudiants = new Etudiant[100];
   }
 
   public int getId(){
-    return this.id;
+    return this.numeroPromotion;
   }
 
   public int getAnnee(){
@@ -31,8 +31,8 @@ public class Promotion
     return this.etudiants;
   }
 
-  public void setId(int id){
-    this.id = id;
+  public void setId(int numeroPromotion){
+    this.numeroPromotion = numeroPromotion;
   }
 
   public void setAnnee(int annee){

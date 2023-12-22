@@ -3,39 +3,50 @@ package classes;
 
 public class Matiere 
 {
-  private String nom;
-  private int coefficient;
+	private int numeroMatiere;
+	private String nomMatiere;
+	private int coefficient;
 
 
-  public Matiere(){
-    this.nom = "" ;
-    this.coefficient = 0;
-  }
+	public Matiere(){
+		this.numeroMatiere = 0;
+		this.nomMatiere = "" ;
+		this.coefficient = 0;
+	}
   
-  public Matiere(String nom, int coefficient) {
-    this.nom = nom;
-    this.coefficient = coefficient;
-  }
+	public Matiere(int numeroMatiere, String nomMatiere, int coefficient) {
+		this.numeroMatiere = numeroMatiere;
+		this.nomMatiere = nomMatiere;
+		this.coefficient = coefficient;
+	}
+	
+	public int getNumeroMatiere() {
+		return this.numeroMatiere;
+	}
 
-  public String getNom(){
-    return this.nom;
-  }
+	public String getNomMatiere(){
+		return this.nomMatiere;
+	}
 
-  public int getCoefficient(){
-    return this.coefficient;
-  }
+	public int getCoefficient(){
+		return this.coefficient;
+	}
+	
+	public void setNumeroMatiere(int numeroMatiere) {
+		this.numeroMatiere = numeroMatiere;
+	}
 
-  public void setNom(String nom){
-    this.nom = nom;
-  }
+	public void setNomMatiere(String nomMatiere){
+		this.nomMatiere = nomMatiere;
+	}
 
-  public void setCoefficient(int coefficient){
-    this.coefficient = coefficient;
-  }
+	public void setCoefficient(int coefficient){
+		this.coefficient = coefficient;
+	}
 
   
-  public String toString() {
-      return this.nom;
-  }
+	public String toString() {
+		return this.nomMatiere;
+	}
 }
 

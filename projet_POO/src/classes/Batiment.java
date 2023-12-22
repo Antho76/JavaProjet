@@ -3,38 +3,38 @@ package classes;
 
 public class Batiment 
 {
-  private int id;
+  private int numeroBatiment;
   private String ville;
-  private String nom;
+  private String nomBatiment;
   private int nbSalles;
   private Salle[] tabSalles;
 
   public Batiment() {
-    this.id = 0;
+    this.numeroBatiment = 0;
     this.ville = "";
-    this.nom = "";
+    this.nomBatiment = "";
     this.nbSalles = 0;
     this.tabSalles = new Salle[0];
   }
 
-  public Batiment(int id, String ville, String nom, int nbSalles, Salle[] tabSalles) {
-    this.id = id;
+  public Batiment(int numeroBatiment, String ville, String nomBatiment, int nbSalles, Salle[] tabSalles) {
+    this.numeroBatiment = numeroBatiment;
     this.ville = ville;
-    this.nom = nom;
+    this.nomBatiment = nomBatiment;
     this.nbSalles = nbSalles;
     this.tabSalles = tabSalles;
   }
 
-  public int getId() {
-    return this.id;
+  public int getNumeroBatiment() {
+    return this.numeroBatiment;
   }
 
   public String getVille() {
     return this.ville;
   }
 
-  public String getNom() {
-    return this.nom;
+  public String getNomBatiment() {
+    return this.nomBatiment;
   }
 
   public int getNbSalles() {
@@ -45,16 +45,16 @@ public class Batiment
     return this.tabSalles;
   }
 
-  public void setId(int id) {
-    this.id = id;
+  public void setNumeroBatiment(int numeroBatiment) {
+    this.numeroBatiment = numeroBatiment;
   }
 
   public void setVille(String ville) {
     this.ville = ville;
   }
 
-  public void setNom(String nom) {
-    this.nom = nom;
+  public void setNomBatiment(String nomBatiment) {
+    this.nomBatiment = nomBatiment;
   }
 
   public void setNbSalles(int nbSalles) {
