@@ -7,18 +7,28 @@ import java.awt.Frame;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-//import java.util.Date;
+import java.sql.Connection;
 
+import database.AfficherTablesSQLite;
+import database.DatabaseManager;
 
 
 public class Main {
+	
 
     public static void main(String[] args) {
+    	
+    	
+        // Création de la base de données si elle n'existe pas
+        DatabaseManager.createDatabaseIfNotExists();
+        AfficherTablesSQLite afficherTables = new AfficherTablesSQLite();
+        afficherTables.afficherTablesSQLite();
+
         // Création d'une fenêtre
         Frame fenetre = new Frame("Interface Graphique AWT");
 
         // Utilisation de Font pour spécifier la taille de la police
-        Font police = new Font("Arial", Font.PLAIN, 25); 
+        Font police = new Font("Arial", Font.PLAIN, 25);
 
         // Création d'un groupe de cases à cocher
         CheckboxGroup choix = new CheckboxGroup();
@@ -33,23 +43,21 @@ public class Main {
         fenetre.add(enseignantCheckbox);
         fenetre.add(personnelCheckbox);
 
-        //Placement des cb
-        etudiantCheckbox.setBounds(700,50,200,40);
-        enseignantCheckbox.setBounds(700,100,200,40);
-        personnelCheckbox.setBounds(700,150,200,40);
+        // Placement des cb
+        etudiantCheckbox.setBounds(700, 50, 200, 40);
+        enseignantCheckbox.setBounds(700, 100, 200, 40);
+        personnelCheckbox.setBounds(700, 150, 200, 40);
 
-
-        //Création d'entrée texte
+        // Création d'entrée texte
         TextField login = new TextField();
         TextField password = new TextField();
-
 
         login.setFont(police);
         password.setFont(police);
 
         // Ajout des CheckBox à la fenêtre
-        login.setBounds(600,200,400,40);
-        password.setBounds(600,250,400,40);
+        login.setBounds(600, 200, 400, 40);
+        password.setBounds(600, 250, 400, 40);
         password.setEchoChar('•');
 
         fenetre.add(login);
