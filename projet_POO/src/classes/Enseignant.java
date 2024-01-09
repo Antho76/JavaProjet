@@ -5,8 +5,8 @@ public class Enseignant extends Personne{
   private int numeroEnseignant;
   private Matiere matiere;
 
-  public Enseignant(String nom, String prenom, int age, String dateNaissance,int numeroEnseignant, Matiere matiere){
-    super(nom, prenom, age, dateNaissance);
+  public Enseignant(String nom, String prenom, int age, String dateNaissance,int numeroEnseignant, Matiere matiere, String email, String mdp){
+    super(nom, prenom, age, dateNaissance,email,mdp);
     this.numeroEnseignant = numeroEnseignant;
     this.matiere = matiere;
   }

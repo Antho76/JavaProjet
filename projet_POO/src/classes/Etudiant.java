@@ -6,9 +6,9 @@ class Etudiant extends Personne
     private int numeroEtudiant;
     private Formation formation;
 
-    public Etudiant(String nom, String prenom, int age, String dateNaissance,int numeroEtudiant, Formation formation)
+    public Etudiant(String nom, String prenom, int age, String dateNaissance,int numeroEtudiant, Formation formation, String email, String mdp)
     {
-      super(nom, prenom, age, dateNaissance);
+      super(nom, prenom, age, dateNaissance,email, mdp);
       this.numeroEtudiant = numeroEtudiant;
       this.formation = formation;
     }
