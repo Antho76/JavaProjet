@@ -1,24 +1,59 @@
 package Main;
+
 import java.awt.Button;
 import java.awt.Checkbox;
 import java.awt.CheckboxGroup;
-import java.awt.TextField;
-import java.awt.Frame;
 import java.awt.Font;
+import java.awt.Frame;
+import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-//import java.util.Date;
-
-
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.io.File;
 
 public class Main {
 
+	public static void createNewDatabase(String sqlitedb) {
+        // Charger explicitement le pilote JDBC SQLite
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Erreur lors du chargement du pilote JDBC SQLite : " + e.getMessage());
+            return;
+        }
+
+        // Vérifier si le fichier de base de données existe
+        File file = new File(sqlitedb);
+        if (file.exists()) {
+            System.out.println("La base de données existe.");
+        } else {
+            System.out.println("La base de données n'existe pas. Tentative de création...");
+
+            String url = "jdbc:sqlite:" + sqlitedb;
+
+            try (Connection conn = DriverManager.getConnection(url)) {
+                if (conn != null) {
+                    DatabaseMetaData meta = conn.getMetaData();
+                    System.out.println("Le nom du pilote est " + meta.getDriverName());
+                    System.out.println("La base de données a été créée avec succès.");
+                }
+
+            } catch (SQLException e) {
+                System.out.println("Erreur lors de la création de la base de données : " + e.getMessage());
+            }
+        }
+    }
     public static void main(String[] args) {
+        createNewDatabase("test.db");
+
         // Création d'une fenêtre
         Frame fenetre = new Frame("Interface Graphique AWT");
 
         // Utilisation de Font pour spécifier la taille de la police
-        Font police = new Font("Arial", Font.PLAIN, 25); 
+        Font police = new Font("Arial", Font.PLAIN, 25);
 
         // Création d'un groupe de cases à cocher
         CheckboxGroup choix = new CheckboxGroup();
@@ -33,23 +68,21 @@ public class Main {
         fenetre.add(enseignantCheckbox);
         fenetre.add(personnelCheckbox);
 
-        //Placement des cb
-        etudiantCheckbox.setBounds(700,50,200,40);
-        enseignantCheckbox.setBounds(700,100,200,40);
-        personnelCheckbox.setBounds(700,150,200,40);
+        // Placement des cases à cocher
+        etudiantCheckbox.setBounds(700, 50, 200, 40);
+        enseignantCheckbox.setBounds(700, 100, 200, 40);
+        personnelCheckbox.setBounds(700, 150, 200, 40);
 
-
-        //Création d'entrée texte
+        // Création d'entrées texte
         TextField login = new TextField();
         TextField password = new TextField();
-
 
         login.setFont(police);
         password.setFont(police);
 
-        // Ajout des CheckBox à la fenêtre
-        login.setBounds(600,200,400,40);
-        password.setBounds(600,250,400,40);
+        // Ajout des champs de texte à la fenêtre
+        login.setBounds(600, 200, 400, 40);
+        password.setBounds(600, 250, 400, 40);
         password.setEchoChar('•');
 
         fenetre.add(login);
