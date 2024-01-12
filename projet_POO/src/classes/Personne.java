@@ -9,17 +9,17 @@ abstract class Personne
     private int age;
     private String dateNaissance;
     private String genre;
-    private String email;
-    private String mdp;
+    private String login;
+    private String password;
 
-    public Personne(String nom, String prenom, int age, String dateNaissance,String email, String mdp)
+    public Personne(String nom, String prenom, int age, String dateNaissance,String login, String password)
     {
       this.nom = nom;
       this.prenom = prenom;
       this.age = age;
       this.dateNaissance = dateNaissance;
-      this.email = email;
-      this.mdp = mdp;
+      this.login = login;
+      this.password = password;
     }
     public Personne(){
       this.nom = "";
@@ -56,13 +56,13 @@ abstract class Personne
     {
       return this.genre;
     }
-    public String getEmail()
+    public String getLogin()
     {
-    	return this.email;
+    	return this.login;
     }
-    public String getMDP()
+    public String getPassword()
     {
-    	return this.mdp;
+    	return this.password;
     }
     
     public void setNom(String nom)
@@ -90,13 +90,13 @@ abstract class Personne
       this.genre = genre;
     }
     
-    public void setEmail(String email)
+    public void setLogin(String login)
     {
-    	this.email = email;
+    	this.login = login;
     }
-    public void setMDP(String mdp)
+    public void setPassword(String password)
     {
-    	this.mdp = mdp;
+    	this.password = password;
     }
 
     public String toString()

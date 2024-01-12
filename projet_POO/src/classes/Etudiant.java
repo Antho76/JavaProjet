@@ -1,14 +1,14 @@
 package classes; 
 //import java.util.Date;
 
-class Etudiant extends Personne
+public class Etudiant extends Personne
   {
     private int numeroEtudiant;
     private Formation formation;
 
-    public Etudiant(String nom, String prenom, int age, String dateNaissance,int numeroEtudiant, Formation formation, String email, String mdp)
+    public Etudiant(String nom, String prenom, int age, String dateNaissance,int numeroEtudiant, Formation formation, String login, String password)
     {
-      super(nom, prenom, age, dateNaissance,email, mdp);
+      super(nom, prenom, age, dateNaissance,login, password);
       this.numeroEtudiant = numeroEtudiant;
       this.formation = formation;
     }

@@ -58,7 +58,8 @@ public class ConnectionInterface {
 	     bouton.addActionListener(new ActionListener() {
 	         @Override
 	         public void actionPerformed(ActionEvent e) {
-	             System.out.println("Bouton cliqué !");
+	             System.out.println(login.getText());
+	             System.out.println(password.getText());
 	         }
 	     });
 	
