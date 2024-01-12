@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 import java.text.ParseException;
 import javax.swing.text.MaskFormatter;
 
-public class Inscription {
+public class InscriptionInterface {
 
     public void afficherInterface() {
         // Création de la fenêtre
@@ -80,36 +80,26 @@ public class Inscription {
         userText.setBounds(150, 180, 165, 25);
         panel.add(userText);
 
-        // Création du label et du champ pour l'e-mail
-        JLabel emailLabel = new JLabel("E-mail:");
-        emailLabel.setBounds(10, 220, 120, 25);
-        panel.add(emailLabel);
-
-        JTextField emailText = new JTextField(20);
-        emailText.setBounds(150, 220, 165, 25);
-        panel.add(emailText);
-
         // Création du label et du champ pour le mot de passe
         JLabel passwordLabel = new JLabel("Mot de passe:");
-        passwordLabel.setBounds(10, 260, 120, 25);
+        passwordLabel.setBounds(10, 220, 120, 25);
         panel.add(passwordLabel);
 
         JPasswordField passwordText = new JPasswordField(20);
-        passwordText.setBounds(150, 260,165, 25);
+        passwordText.setBounds(150, 220,165, 25);
         panel.add(passwordText);
         // Création du bouton d'inscription
         JButton registerButton = new JButton("S'inscrire");
-        registerButton.setBounds(10, 300, 120, 25);
+        registerButton.setBounds(10, 260, 120, 25);
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Ici, vous pouvez ajouter la logique pour traiter les données d'inscription
                 String userName = userText.getText();
-                String email = emailText.getText();
                 String password = new String(passwordText.getPassword());
 
                 // Afficher les données pour la démonstration
-                JOptionPane.showMessageDialog(null, "Inscription réussie!\nNom d'utilisateur: " + userName + "\nE-mail: " + email);
+                JOptionPane.showMessageDialog(null, "Inscription réussie!\nNom d'utilisateur: " + userName + "\nmot de passe : "+ password );
             }
         });
         panel.add(registerButton);

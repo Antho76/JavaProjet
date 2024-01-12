@@ -18,13 +18,13 @@ public class Main {
 
     public static void main(String[] args) {
     	
-    	ConnectionInterface connectionInterface = new ConnectionInterface();
-        connectionInterface.afficherInterface();
+    	/*ConnectionInterface connectionInterface = new ConnectionInterface();
+        connectionInterface.afficherInterface();*/
     	
-    	/*AccueilEtudiant accueilEtu = new AccueilEtudiant();
-    	accueilEtu.afficherInterface();*/
+    	AccueilEtudiantInterface accueilEtu = new AccueilEtudiantInterface();
+    	accueilEtu.afficherInterface();
     	
-    	/*Inscription inscription = new Inscription();
+    	/*InscriptionInterface inscription = new InscriptionInterface();
     	inscription.afficherInterface();*/
     }
     
