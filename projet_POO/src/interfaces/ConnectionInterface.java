@@ -1,6 +1,7 @@
 package interfaces;
 import javax.swing.*;
 import java.awt.*;
+import controller.ConnexionController;
 
 public class ConnectionInterface {
     public void afficherInterface() {
@@ -85,7 +86,30 @@ public class ConnectionInterface {
         centerPanel.add(loginPanel, BorderLayout.NORTH);
         centerPanel.add(imagePanel, BorderLayout.CENTER);
          */
-            
+        
+        loginButton.addActionListener(e -> {
+            String username = userField.getText();
+            char[] passwordChars = passField.getPassword();
+
+            // Convertir le tableau de caractères en une chaîne de caractères
+            String password = new String(passwordChars);
+
+            // Ajoutez ici la logique pour déterminer quel type d'utilisateur est sélectionné (étudiant, enseignant, personnel)
+            // Utilisez les méthodes de ConnexionController en conséquence
+
+            ConnexionController connexionController = new ConnexionController();
+
+            if (radioButtonEtudiant.isSelected()) {
+                connexionController.checkConnexionEtudiant(username, password);
+            } else if (radioButtonEnseignant.isSelected()) {
+                connexionController.checkConnexionEnseignant(username, password);
+            } else if (radioButtonPersonnel.isSelected()) {
+                connexionController.checkConnexionPersonnel(username, password);
+            }
+        });
+        
+        
+        
         // Adding Components to the frame.
         //frame.getContentPane().add(BorderLayout.SOUTH, panel);
         frame.getContentPane().add(BorderLayout.NORTH, mb);
