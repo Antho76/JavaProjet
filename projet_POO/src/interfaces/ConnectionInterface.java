@@ -3,9 +3,11 @@ import javax.swing.*;
 import java.awt.*;
 import controller.ConnexionController;
 import interfaces.InscriptionInterface;
+import interfaces.AccueilEtudiant;
 
 public class ConnectionInterface {
 	InscriptionInterface inscriptionInterface = new InscriptionInterface();
+	AccueilEtudiant accueilEtudiant = new AccueilEtudiant();
     public void afficherInterface() {
 
         // Creating the Frame
@@ -108,6 +110,7 @@ public class ConnectionInterface {
             if (radioButtonEtudiant.isSelected()) {
             	if (connexionController.checkConnexionEtudiant(username, password)) {
             		System.out.println("Etudiant connecté");
+            		accueilEtudiant.afficherInterface();
             	}
             	else {
             		System.out.println("Identifiants Etudiant incorrects");

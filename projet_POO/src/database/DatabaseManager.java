@@ -87,14 +87,35 @@ public class DatabaseManager {
     
     public static void insertEtudiant(Etudiant etudiant) {
         try (Connection connection = connect()) {
-            String query = "INSERT INTO etudiant (id, nom, prenom, login, password) VALUES (?, ?, ?, ?, ?)";
+            String query = "INSERT INTO etudiant (nom, prenom, idPromotion dateNaissance, idFormation, login, password) VALUES (?, ?, ?, ?, ?, ?)";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setInt(1, etudiant.getId());
-                preparedStatement.setString(2, etudiant.getNom());
-                preparedStatement.setString(3, etudiant.getPrenom());
-                preparedStatement.setString(4, etudiant.getLogin());
-                preparedStatement.setString(5, etudiant.getPassword());
+                preparedStatement.setString(1, etudiant.getNom());
+                preparedStatement.setString(2, etudiant.getPrenom());
+                preparedStatement.setInt(3, etudiant.getPromotion().getId());
+                preparedStatement.setString(4, etudiant.getDateNaissance());
+                preparedStatement.setInt(5, etudiant.getFormation().getId_Formation());
+                preparedStatement.setString(6, etudiant.getLogin());
+                preparedStatement.setString(7, etudiant.getPassword());
+
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static void insertEnseignant(Enseignant enseignant) {
+        try (Connection connection = connect()) {
+            String query = "INSERT INTO enseignant (nom, prenom, dateNaissance, idMatiere, login, password) VALUES (?, ?, ?, ?, ?, ?)";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, enseignant.getNom());
+                preparedStatement.setString(2, enseignant.getPrenom());
+                preparedStatement.setString(3, enseignant.getDateNaissance());
+                preparedStatement.setInt(4, enseignant.getMatiere().getNumeroMatiere());
+                preparedStatement.setString(5, enseignant.getLogin());
+                preparedStatement.setString(6, enseignant.getPassword());
 
                 preparedStatement.executeUpdate();
             }

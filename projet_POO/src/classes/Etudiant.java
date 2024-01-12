@@ -4,9 +4,9 @@ package classes;
 public class Etudiant extends Personne
   {
     private Formation formation;
-    private int promotion;
+    private Promotion promotion;
 
-    public Etudiant(String nom, String prenom, int promotion, String dateNaissance, Formation formation, String login, String password) {
+    public Etudiant(String nom, String prenom, Promotion promotion, String dateNaissance, Formation formation, String login, String password) {
       super(nom, prenom, dateNaissance,login, password);
       this.formation = formation;
       this.promotion = promotion;
@@ -21,14 +21,14 @@ public class Etudiant extends Personne
     {
       this.formation = formation;
     }
-    public void setPromotion(int promotion)
+    public void setPromotion(Promotion promotion)
     {
       this.promotion = promotion;
     }
 
-    public void getPromotion(int promotion)
+    public Promotion getPromotion()
     {
-      this.promotion = promotion;
+      return this.promotion;
     }
 
     public String toString()
