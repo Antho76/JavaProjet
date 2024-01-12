@@ -11,6 +11,7 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
+<<<<<<< HEAD
 	<classpathentry kind="lib" path="src/libraries/slf4j-api-2.0.10.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
@@ -26,5 +27,7 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
+=======
+>>>>>>> refs/remotes/origin/front
 	<classpathentry kind="output" path="bin"/>
 </classpath>

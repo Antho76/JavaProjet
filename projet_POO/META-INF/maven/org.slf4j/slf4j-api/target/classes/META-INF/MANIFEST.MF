@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Built-By: anthoninpain
+Build-Jdk: 17.0.9
+Bundle-Description: The slf4j API
+Bundle-Version: 
+Created-By: Maven Integration for Eclipse
+Implementation-Version: 1.7.2
+
