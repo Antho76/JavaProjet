@@ -66,8 +66,7 @@ class Connexion {
         panel.add(send);
         panel.add(reset);
 
-        MyCanvas m=new MyCanvas();   
-        frame.add(m);  
+         
             
         // Adding Components to the frame.
         frame.getContentPane().add(BorderLayout.SOUTH, panel);
