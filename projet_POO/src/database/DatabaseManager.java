@@ -2,10 +2,13 @@ package database;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
+
 import classes.*;
 
 public class DatabaseManager {
@@ -62,14 +65,26 @@ public class DatabaseManager {
 
     private static String getSqlType(Class<?> type) {
         if (type == String.class) {
-            return "TEXT";
+            return "STRING";
         } else if (type == int.class || type == Integer.class) {
             return "INTEGER";
+        } else if (type == long.class || type == Long.class) {
+            return "INTEGER"; // Utilisez INTEGER pour les types long
+        } else if (type == double.class || type == Double.class || type == float.class || type == Float.class) {
+            return "REAL"; // Utilisez REAL pour les types à virgule flottante
+        } else if (type == boolean.class || type == Boolean.class) {
+            return "BOOLEAN"; // Utilisez BOOLEAN pour les types booléens
+        } else if (List.class.isAssignableFrom(type)) {
+            // Si le champ est de type List, déterminez le type d'élément de la liste
+            ParameterizedType parameterizedType = (ParameterizedType) type.getGenericSuperclass();
+            Class<?> elementType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
+            return getSqlType(elementType) + "[]";
         } else {
             // Ajoutez d'autres types de données selon vos besoins
             return "TEXT";
         }
     }
+
 
     public static void disconnect(Connection connection) {
         if (connection != null) {
