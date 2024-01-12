@@ -84,7 +84,43 @@ public class DatabaseManager {
             return "TEXT";
         }
     }
+    
+    public static void insertEtudiant(Etudiant etudiant) {
+        try (Connection connection = connect()) {
+            String query = "INSERT INTO etudiant (id, nom, prenom, login, password) VALUES (?, ?, ?, ?, ?)";
 
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, etudiant.getId());
+                preparedStatement.setString(2, etudiant.getNom());
+                preparedStatement.setString(3, etudiant.getPrenom());
+                preparedStatement.setString(4, etudiant.getLogin());
+                preparedStatement.setString(5, etudiant.getPassword());
+
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static void insertPersonnel(Personnel personnel) {
+        try (Connection connection = connect()) {
+            String query = "INSERT INTO personnel (nom, prenom, dateNaissance, metier, login, password) VALUES (?, ?, ?, ?, ?, ?)";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, personnel.getNom());
+                preparedStatement.setString(2, personnel.getPrenom());
+                preparedStatement.setString(3, personnel.getDateNaissance());
+                preparedStatement.setString(4, personnel.getMetier());;
+                preparedStatement.setString(5, personnel.getLogin());
+                preparedStatement.setString(6, personnel.getPassword());
+
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void disconnect(Connection connection) {
         if (connection != null) {

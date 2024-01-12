@@ -6,17 +6,15 @@ public abstract class Personne
     private int id;
     private String nom;
     private String prenom;
-    private int age;
     private String dateNaissance;
     private String genre;
     private String login;
     private String password;
 
-    public Personne(String nom, String prenom, int age, String dateNaissance,String login, String password)
+    public Personne(String nom, String prenom, String dateNaissance,String login, String password)
     {
       this.nom = nom;
       this.prenom = prenom;
-      this.age = age;
       this.dateNaissance = dateNaissance;
       this.login = login;
       this.password = password;
@@ -24,7 +22,6 @@ public abstract class Personne
     public Personne(){
       this.nom = "";
       this.prenom = "";
-      this.age = 0;
       this.dateNaissance = "";
     }
     
@@ -41,11 +38,6 @@ public abstract class Personne
     public String getPrenom()
     {
       return this.prenom;
-    }
-
-    public int getAge()
-    {
-      return this.age;
     }
 
     public String getDateNaissance()
@@ -75,11 +67,6 @@ public abstract class Personne
       this.prenom = prenom;
     }
     
-    public void setAge(int age)
-    {
-      this.age = age;
-    }
-
     public void setDateNaissance(String dateNaissance)
     {
       this.dateNaissance = dateNaissance;

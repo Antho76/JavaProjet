@@ -6,10 +6,9 @@ public class Personnel extends Personne
   private int numeroPersonnel;
   private String metier;
 
-  public Personnel(String nom, String prenom, int age, String dateNaissance, int numeroPersonnel,String metier, String login, String password)
+  public Personnel(String nom, String prenom, String dateNaissance, String metier, String login, String password)
   {
-    super(nom, prenom, age, dateNaissance,login,password);
-    this.numeroPersonnel = numeroPersonnel;
+    super(nom, prenom,dateNaissance,login,password);
     this.metier = metier;
   }
   public int getNumeroPersonnel()
