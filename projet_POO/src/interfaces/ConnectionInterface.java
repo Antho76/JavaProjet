@@ -100,11 +100,26 @@ public class ConnectionInterface {
             ConnexionController connexionController = new ConnexionController();
 
             if (radioButtonEtudiant.isSelected()) {
-                connexionController.checkConnexionEtudiant(username, password);
+            	if (connexionController.checkConnexionEtudiant(username, password)) {
+            		System.out.println("Etudiant connecté");
+            	}
+            	else {
+            		System.out.println("Identifiants Etudiant incorrects");
+            	}
             } else if (radioButtonEnseignant.isSelected()) {
-                connexionController.checkConnexionEnseignant(username, password);
+                if (connexionController.checkConnexionEnseignant(username, password)) {
+                	System.out.println("Enseignant connecté");
+                }
+                else {
+            		System.out.println("Identifiants Enseignant incorrects");
+            	}
             } else if (radioButtonPersonnel.isSelected()) {
-                connexionController.checkConnexionPersonnel(username, password);
+                if (connexionController.checkConnexionPersonnel(username, password)) {
+                	System.out.println("Personnel connecté");
+                }
+                else {
+            		System.out.println("Identifiants Personnel incorrects");
+            	}
             }
         });
         
