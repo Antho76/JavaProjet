@@ -33,6 +33,9 @@ public class ConnectionInterface {
         group.add(radioButtonEtudiant);
         group.add(radioButtonEnseignant);
         group.add(radioButtonPersonnel);
+        
+        JLabel welcomeLabel = new JLabel("Bienvenue sur l'environnement numérique de travail");
+        loginPanel.add(welcomeLabel, gbcLogin);
 
         loginPanel.add(radioButtonEtudiant, gbcLogin);
         loginPanel.add(radioButtonEnseignant, gbcLogin);
@@ -43,12 +46,13 @@ public class ConnectionInterface {
         JLabel passLabel = new JLabel("Password:");
         JPasswordField passField = new JPasswordField(20);
         JButton loginButton = new JButton("Connexion");
-
+        JButton inscriptionButton = new JButton("Inscription");
         loginPanel.add(userLabel, gbcLogin);
         loginPanel.add(userField, gbcLogin);
         loginPanel.add(passLabel, gbcLogin);
         loginPanel.add(passField, gbcLogin);
         loginPanel.add(loginButton, gbcLogin);
+        loginPanel.add(inscriptionButton,gbcLogin);
 
         // Text Area at the Center
         JTextArea ta = new JTextArea();
