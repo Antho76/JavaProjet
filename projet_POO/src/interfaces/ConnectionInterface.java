@@ -2,8 +2,10 @@ package interfaces;
 import javax.swing.*;
 import java.awt.*;
 import controller.ConnexionController;
+import interfaces.InscriptionInterface;
 
 public class ConnectionInterface {
+	InscriptionInterface inscriptionInterface = new InscriptionInterface();
     public void afficherInterface() {
 
         // Creating the Frame
@@ -127,6 +129,9 @@ public class ConnectionInterface {
             }
         });
         
+        inscriptionButton.addActionListener(e -> {
+        	inscriptionInterface.afficherInterface();
+        });
         
         
         // Adding Components to the frame.

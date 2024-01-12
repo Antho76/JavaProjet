@@ -5,9 +5,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import javax.swing.text.MaskFormatter;
+import controller.InscriptionController;
 
-public class Inscription {
-
+public class InscriptionInterface {
+	
+	
     public void afficherInterface() {
         // Création de la fenêtre
         JFrame frame = new JFrame("Page d'Inscription");
@@ -27,7 +29,9 @@ public class Inscription {
         // Affichage de la fenêtre
         frame.setVisible(true);
     }
-
+    
+    static InscriptionController inscriptionController = new InscriptionController();
+    
     private static void placeComponents(JPanel panel) {
         panel.setLayout(null);
 
@@ -100,16 +104,24 @@ public class Inscription {
         // Création du bouton d'inscription
         JButton registerButton = new JButton("S'inscrire");
         registerButton.setBounds(10, 300, 120, 25);
+        
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Ici, vous pouvez ajouter la logique pour traiter les données d'inscription
-                String userName = userText.getText();
-                String email = emailText.getText();
+            	String nom = nomText.getText();
+            	String prenom = prenomText.getText();
+            	String dateNaissance = birthText.getText();
+                String metier = metierText.getText();
+                //String email = emailText.getText();
+            	String username = userText.getText();
                 String password = new String(passwordText.getPassword());
-
-                // Afficher les données pour la démonstration
-                JOptionPane.showMessageDialog(null, "Inscription réussie!\nNom d'utilisateur: " + userName + "\nE-mail: " + email);
+                
+                try {
+					inscriptionController.inscriptionPersonnel(nom,prenom,dateNaissance,metier,username,password);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
             }
         });
         panel.add(registerButton);
