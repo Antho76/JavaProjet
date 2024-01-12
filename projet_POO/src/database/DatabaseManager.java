@@ -34,7 +34,7 @@ public class DatabaseManager {
                 Class<?>[] classesToCreateTablesFor = {
                         Avertissement.class, Batiment.class, Cours.class, Enseignant.class,
                         Etudiant.class, Evaluation.class, Formation.class, Matiere.class,
-                        Personne.class, Personnel.class, Promotion.class, Salle.class
+                        Personnel.class, Promotion.class, Salle.class
                 };
 
                 for (Class<?> clazz : classesToCreateTablesFor) {
