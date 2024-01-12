@@ -5,8 +5,9 @@ public class Etudiant extends Personne
   {
     private int numeroEtudiant;
     private Formation formation;
+    private int promotion;
 
-    public Etudiant(String nom, String prenom, int age, String dateNaissance,int numeroEtudiant, Formation formation, String login, String password)
+    public Etudiant(String nom, String prenom, int age,int promotion, String dateNaissance,int numeroEtudiant, Formation formation, String login, String password)
     {
       super(nom, prenom, age, dateNaissance,login, password);
       this.numeroEtudiant = numeroEtudiant;
@@ -25,10 +26,18 @@ public class Etudiant extends Personne
     {
       this.numeroEtudiant = numeroEtudiant;
     }
-
     public void setFormation(Formation formation)
     {
       this.formation = formation;
+    }
+    public void setPromotion(int promotion)
+    {
+      this.promotion = promotion;
+    }
+
+    public void getPromotion(int promotion)
+    {
+      this.promotion = promotion;
     }
 
     public String toString()
