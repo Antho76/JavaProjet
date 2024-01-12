@@ -55,22 +55,9 @@ class Connexion {
         gbcCenter.gridy++;
         centerPanel.add(new JScrollPane(ta), gbcCenter);
 
-        // Creating the panel at bottom and adding components
-        JPanel panel = new JPanel();
-        JLabel label = new JLabel("Enter Text");
-        JTextField tf = new JTextField(10); // accepts 10 characters
-        JButton send = new JButton("Send");
-        JButton reset = new JButton("Reset");
-        panel.add(label);
-        panel.add(tf);
-        panel.add(send);
-        panel.add(reset);
 
-        MyCanvas m=new MyCanvas();   
-        frame.add(m);  
             
         // Adding Components to the frame.
-        frame.getContentPane().add(BorderLayout.SOUTH, panel);
         frame.getContentPane().add(BorderLayout.NORTH, mb);
         frame.getContentPane().add(BorderLayout.CENTER, centerPanel);
         frame.setVisible(true);

@@ -11,8 +11,5 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/thoma/Downloads/slf4j-jdk14-1.7.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thoma/Downloads/slf4j-api-1.7.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/thoma/Downloads/slf4j-api-1.7.36.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
