@@ -1,7 +1,7 @@
 package classes;
 //import java.util.Date;
 
-abstract class Personne
+public abstract class Personne
   {
     private int id;
     private String nom;

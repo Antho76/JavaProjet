@@ -18,6 +18,8 @@ public class Main {
 
     public static void main(String[] args) {
     	
+        DatabaseManager.createDatabaseIfNotExists();
+
     	ConnectionInterface connectionInterface = new ConnectionInterface();
         connectionInterface.afficherInterface();
     }
