@@ -1,83 +1,94 @@
 package interfaces;
-import java.awt.Button;
-import java.awt.Checkbox;
-import java.awt.CheckboxGroup;
-import java.awt.TextField;
-import java.awt.Frame;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.*;
+import javax.swing.*;
+import java.awt.*;
 
 public class ConnectionInterface {
     public void afficherInterface() {
-        // Logique pour afficher l'interface 2
-        System.out.println("Interface 2");
-        // Création d'une fenêtre
-	    Frame fenetre = new Frame("Interface Graphique AWT");
-	
-	    // Utilisation de Font pour spécifier la taille de la police
-	    Font police = new Font("Arial", Font.PLAIN, 25);
-        // Création d'un groupe de cases à cocher
-	    CheckboxGroup choix = new CheckboxGroup();
-	
-	    // Création des cases à cocher et ajout au groupe
-	    Checkbox etudiantCheckbox = new Checkbox("Etudiant", choix, true);
-	    Checkbox enseignantCheckbox = new Checkbox("Enseignant", choix, false);
-	    Checkbox personnelCheckbox = new Checkbox("Personnel", choix, false);
-	
-	    // Ajout des cases à cocher à la fenêtre
-	    fenetre.add(etudiantCheckbox);
-	    fenetre.add(enseignantCheckbox);
-	    fenetre.add(personnelCheckbox);
-	
-	     // Placement des cb
-	     etudiantCheckbox.setBounds(700, 50, 200, 40);
-	     enseignantCheckbox.setBounds(700, 100, 200, 40);
-	     personnelCheckbox.setBounds(700, 150, 200, 40);
-	
-	     // Création d'entrée texte
-	     TextField login = new TextField();
-	     TextField password = new TextField();
-	
-	     login.setFont(police);
-	     password.setFont(police);
-	
-	     // Ajout des CheckBox à la fenêtre
-	     login.setBounds(600, 200, 400, 40);
-	     password.setBounds(600, 250, 400, 40);
-	     password.setEchoChar('•');
-	
-	     fenetre.add(login);
-	     fenetre.add(password);
-	
-	     // Création du bouton
-	     Button bouton = new Button("Se connecter");
-	
-	     // Ajout d'un gestionnaire d'événements pour le bouton
-	     bouton.addActionListener(new ActionListener() {
-	         @Override
-	         public void actionPerformed(ActionEvent e) {
-	             System.out.println("Bouton cliqué !");
-	         }
-	     });
-	
-	     // Ajout du bouton à la fenêtre et spécification de sa position et taille
-	     bouton.setBounds(700, 300, 200, 30); // x, y, largeur, hauteur
-	     fenetre.add(bouton);
-	
-	     // Configuration de la fenêtre
-	     fenetre.setSize(1600, 900); // Taille de la fenêtre en pixels
-	     fenetre.setLayout(null); // Pas de gestionnaire de disposition (layout) pour cet exemple
-	     fenetre.setVisible(true); // Rendre la fenêtre visible
-	
-	     // Gestionnaire d'événements pour fermer la fenêtre lorsque l'utilisateur clique sur la croix de fermeture
+        // Creating the Frame
+        JFrame frame = new JFrame("Chat Frame");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 400);
 
-	
-	fenetre.addWindowListener(new java.awt.event.WindowAdapter() {
-	            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-	                System.exit(0);
-	            }
-	        });
-	    }
-	}
+        // Creating the MenuBar and adding components
+        JMenuBar mb = new JMenuBar();
+        JMenu m1 = new JMenu("FILE");
+        JMenu m2 = new JMenu("Help");
+        mb.add(m1);
+        mb.add(m2);
+        JMenuItem m11 = new JMenuItem("Open");
+        JMenuItem m22 = new JMenuItem("Save as");
+        m1.add(m11);
+        m1.add(m22);
+
+        // Panel for login fields
+        JPanel loginPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbcLogin = new GridBagConstraints();
+        gbcLogin.gridwidth = GridBagConstraints.REMAINDER;
+        gbcLogin.fill = GridBagConstraints.HORIZONTAL;
+
+        ButtonGroup group = new ButtonGroup();
+        JRadioButton radioButtonEtudiant = new JRadioButton("Etudiant");
+        JRadioButton radioButtonEnseignant = new JRadioButton("Enseignant");
+        JRadioButton radioButtonPersonnel = new JRadioButton("Personnel");
+        group.add(radioButtonEtudiant);
+        group.add(radioButtonEnseignant);
+        group.add(radioButtonPersonnel);
+
+        loginPanel.add(radioButtonEtudiant, gbcLogin);
+        loginPanel.add(radioButtonEnseignant, gbcLogin);
+        loginPanel.add(radioButtonPersonnel, gbcLogin);
+        
+        JLabel userLabel = new JLabel("Username:");
+        JTextField userField = new JTextField(20);
+        JLabel passLabel = new JLabel("Password:");
+        JPasswordField passField = new JPasswordField(20);
+        JButton loginButton = new JButton("Connexion");
+
+        loginPanel.add(userLabel, gbcLogin);
+        loginPanel.add(userField, gbcLogin);
+        loginPanel.add(passLabel, gbcLogin);
+        loginPanel.add(passField, gbcLogin);
+        loginPanel.add(loginButton, gbcLogin);
+
+        // Text Area at the Center
+        JTextArea ta = new JTextArea();
+
+        // Center Panel for loginPanel and textArea
+        JPanel centerPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbcCenter = new GridBagConstraints();
+        gbcCenter.gridx = 0;
+        gbcCenter.gridy = 0;
+        gbcCenter.weightx = 1;
+        gbcCenter.weighty = 1;
+        gbcCenter.fill = GridBagConstraints.BOTH;
+
+        centerPanel.add(loginPanel, gbcCenter);
+
+        gbcCenter.gridy++;
+        centerPanel.add(new JScrollPane(ta), gbcCenter);
+
+        // Creating the panel at bottom and adding components
+        /*JPanel panel = new JPanel();
+        JLabel label = new JLabel("Enter Text");
+        JTextField tf = new JTextField(10); // accepts 10 characters
+        JButton send = new JButton("Send");
+        JButton reset = new JButton("Reset");
+        panel.add(label);
+        panel.add(tf);
+        panel.add(send);
+        panel.add(reset);*/
+
+        /*ImagePanel imagePanel = new ImagePanel();
+
+        // Panel pour les champs de login et l'image
+        centerPanel.add(loginPanel, BorderLayout.NORTH);
+        centerPanel.add(imagePanel, BorderLayout.CENTER);
+         */
+            
+        // Adding Components to the frame.
+        //frame.getContentPane().add(BorderLayout.SOUTH, panel);
+        frame.getContentPane().add(BorderLayout.NORTH, mb);
+        frame.getContentPane().add(BorderLayout.CENTER, centerPanel);
+        frame.setVisible(true);
+    }
+}
