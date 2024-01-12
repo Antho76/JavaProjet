@@ -1,7 +1,7 @@
 package classes; 
 //import java.util.Date;
 
-class Etudiant extends Personne
+public class Etudiant extends Personne
   {
     private int numeroEtudiant;
     private Formation formation;
