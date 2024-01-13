@@ -1,7 +1,8 @@
 package classes;
 //import java.util.Date;
 
-public class Enseignant {
+public class Enseignant {    
+	private static int dernierId = 0; // Variable statique pour suivre le dernier ID attribué
 	private int id;
     private String nom;
     private String prenom;
@@ -12,6 +13,7 @@ public class Enseignant {
 	private Matiere matiere;
 
   public Enseignant(String nom, String prenom, String dateNaissance, Matiere matiere, String login, String password){
+      this.id = ++dernierId; // Incrémente l'ID à chaque nouvelle instance
 	  this.nom = nom;
       this.prenom = prenom;
       this.dateNaissance = dateNaissance;

@@ -1,4 +1,5 @@
 package interfaces;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -8,10 +9,10 @@ import javax.swing.text.MaskFormatter;
 import controller.InscriptionController;
 
 public class InscriptionInterface {
-	
-	
+    static InscriptionController inscriptionController = new InscriptionController();
+
     public void afficherInterface() {
-        // Création de la fenêtre
+        // Création de la fenêtre principale
         JFrame frame = new JFrame("Page d'Inscription");
         frame.setSize(400, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -22,35 +23,33 @@ public class InscriptionInterface {
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(5, 5, 5, 5);
-        
-        frame.add(panel);
-        placeComponents(panel);
 
-        // Affichage de la fenêtre
+        frame.add(panel);
+        placeComponents(panel, frame); // Passer la référence de la fenêtre principale
+
+        // Affichage de la fenêtre principale
         frame.setVisible(true);
     }
-    
-    static InscriptionController inscriptionController = new InscriptionController();
-    
-    private static void placeComponents(JPanel panel) {
+
+    private static void placeComponents(JPanel panel, JFrame mainFrame) { // Ajouter le paramètre JFrame
         panel.setLayout(null);
 
         JLabel nomLabel = new JLabel("Nom : ");
         nomLabel.setBounds(10, 20, 120, 25);
         panel.add(nomLabel);
-        
+
         JTextField nomText = new JTextField(20);
         nomText.setBounds(150, 20, 165, 25);
         panel.add(nomText);
-        
+
         JLabel prenomLabel = new JLabel("Prénom : ");
         prenomLabel.setBounds(10, 60, 120, 25);
         panel.add(prenomLabel);
-        
+
         JTextField prenomText = new JTextField(20);
         prenomText.setBounds(150, 60, 165, 25);
         panel.add(prenomText);
-        
+
         JLabel birthLabel = new JLabel("Date de naissance:");
         MaskFormatter dateFormatter = null;
         try {
@@ -67,19 +66,18 @@ public class InscriptionInterface {
 
         panel.add(birthText);
 
-        
         JLabel metierLabel = new JLabel("Métier:");
         metierLabel.setBounds(10, 140, 120, 25);
         panel.add(metierLabel);
-        
+
         JTextField metierText = new JTextField(20);
         metierText.setBounds(150, 140, 165, 25);
         panel.add(metierText);
-        
+
         JLabel userLabel = new JLabel("Nom d'utilisateur:");
         userLabel.setBounds(10, 180, 120, 25);
         panel.add(userLabel);
-        
+
         JTextField userText = new JTextField(20);
         userText.setBounds(150, 180, 165, 25);
         panel.add(userText);
@@ -99,31 +97,50 @@ public class InscriptionInterface {
         panel.add(passwordLabel);
 
         JPasswordField passwordText = new JPasswordField(20);
-        passwordText.setBounds(150, 260,165, 25);
+        passwordText.setBounds(150, 260, 165, 25);
         panel.add(passwordText);
-        // Création du bouton d'inscription
+
         JButton registerButton = new JButton("S'inscrire");
         registerButton.setBounds(10, 300, 120, 25);
-        
+
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	String nom = nomText.getText();
-            	String prenom = prenomText.getText();
-            	String dateNaissance = birthText.getText();
+                String nom = nomText.getText();
+                String prenom = prenomText.getText();
+                String dateNaissance = birthText.getText();
                 String metier = metierText.getText();
-                //String email = emailText.getText();
-            	String username = userText.getText();
+                String username = userText.getText();
                 String password = new String(passwordText.getPassword());
-                
+
                 try {
-					inscriptionController.inscriptionPersonnel(nom,prenom,dateNaissance,metier,username,password);
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+                    inscriptionController.inscriptionPersonnel(nom, prenom, dateNaissance, metier, username, password);
+                    afficherMessageUtilisateurInscrit(mainFrame); // Passer la référence de la fenêtre principale
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
             }
         });
         panel.add(registerButton);
+    }
+
+    private static void afficherMessageUtilisateurInscrit(JFrame mainFrame) { // Ajouter le paramètre JFrame
+        JFrame messageFrame = new JFrame("Utilisateur inscrit");
+        messageFrame.setSize(200, 100);
+        messageFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        JPanel messagePanel = new JPanel();
+        JLabel messageLabel = new JLabel("Utilisateur inscrit");
+        messagePanel.add(messageLabel);
+        messageFrame.add(messagePanel);
+
+        messageFrame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent windowEvent) {
+                mainFrame.dispose(); // Fermer la fenêtre principale lors de la fermeture de la popup
+            }
+        });
+
+        messageFrame.setVisible(true);
     }
 }

@@ -87,16 +87,17 @@ public class DatabaseManager {
     
     public static void insertEtudiant(Etudiant etudiant) {
         try (Connection connection = connect()) {
-            String query = "INSERT INTO etudiant (nom, prenom, idPromotion dateNaissance, idFormation, login, password) VALUES (?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO etudiant (id, nom, prenom, idPromotion dateNaissance, idFormation, login, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setString(1, etudiant.getNom());
-                preparedStatement.setString(2, etudiant.getPrenom());
-                preparedStatement.setInt(3, etudiant.getPromotion().getId());
-                preparedStatement.setString(4, etudiant.getDateNaissance());
-                preparedStatement.setInt(5, etudiant.getFormation().getId_Formation());
-                preparedStatement.setString(6, etudiant.getLogin());
-                preparedStatement.setString(7, etudiant.getPassword());
+                preparedStatement.setInt(1, etudiant.getId());
+                preparedStatement.setString(2, etudiant.getNom());
+                preparedStatement.setString(3, etudiant.getPrenom());
+                preparedStatement.setInt(4, etudiant.getPromotion().getId());
+                preparedStatement.setString(5, etudiant.getDateNaissance());
+                preparedStatement.setInt(6, etudiant.getFormation().getId_Formation());
+                preparedStatement.setString(7, etudiant.getLogin());
+                preparedStatement.setString(8, etudiant.getPassword());
 
                 preparedStatement.executeUpdate();
             }
@@ -107,15 +108,16 @@ public class DatabaseManager {
     
     public static void insertEnseignant(Enseignant enseignant) {
         try (Connection connection = connect()) {
-            String query = "INSERT INTO enseignant (nom, prenom, dateNaissance, idMatiere, login, password) VALUES (?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO enseignant (id, nom, prenom, dateNaissance, idMatiere, login, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setString(1, enseignant.getNom());
-                preparedStatement.setString(2, enseignant.getPrenom());
-                preparedStatement.setString(3, enseignant.getDateNaissance());
-                preparedStatement.setInt(4, enseignant.getMatiere().getNumeroMatiere());
-                preparedStatement.setString(5, enseignant.getLogin());
-                preparedStatement.setString(6, enseignant.getPassword());
+                preparedStatement.setInt(1, enseignant.getId());
+                preparedStatement.setString(2, enseignant.getNom());
+                preparedStatement.setString(3, enseignant.getPrenom());
+                preparedStatement.setString(4, enseignant.getDateNaissance());
+                preparedStatement.setInt(5, enseignant.getMatiere().getNumeroMatiere());
+                preparedStatement.setString(6, enseignant.getLogin());
+                preparedStatement.setString(7, enseignant.getPassword());
 
                 preparedStatement.executeUpdate();
             }
@@ -126,15 +128,16 @@ public class DatabaseManager {
     
     public static void insertPersonnel(Personnel personnel) {
         try (Connection connection = connect()) {
-            String query = "INSERT INTO personnel (nom, prenom, dateNaissance, metier, login, password) VALUES (?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO personnel (id, nom, prenom, dateNaissance, metier, login, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setString(1, personnel.getNom());
-                preparedStatement.setString(2, personnel.getPrenom());
-                preparedStatement.setString(3, personnel.getDateNaissance());
-                preparedStatement.setString(4, personnel.getMetier());;
-                preparedStatement.setString(5, personnel.getLogin());
-                preparedStatement.setString(6, personnel.getPassword());
+                preparedStatement.setInt(1, personnel.getId());
+                preparedStatement.setString(2, personnel.getNom());
+                preparedStatement.setString(3, personnel.getPrenom());
+                preparedStatement.setString(4, personnel.getDateNaissance());
+                preparedStatement.setString(5, personnel.getMetier());;
+                preparedStatement.setString(6, personnel.getLogin());
+                preparedStatement.setString(7, personnel.getPassword());
 
                 preparedStatement.executeUpdate();
             }
