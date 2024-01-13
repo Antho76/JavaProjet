@@ -113,11 +113,16 @@ public class InscriptionInterface {
                 String username = userText.getText();
                 String password = new String(passwordText.getPassword());
 
-                try {
-                    inscriptionController.inscriptionPersonnel(nom, prenom, dateNaissance, metier, username, password);
-                    afficherMessageUtilisateurInscrit(mainFrame); // Passer la référence de la fenêtre principale
-                } catch (Exception e1) {
-                    e1.printStackTrace();
+                // Vérifier si tous les champs sont remplis
+                if (nom.isEmpty() || prenom.isEmpty() || dateNaissance.isEmpty() || metier.isEmpty() || username.isEmpty() || password.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Veuillez remplir tous les champs.", "Champs vides", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    try {
+                        inscriptionController.inscriptionPersonnel(nom, prenom, dateNaissance, metier, username, password);
+                        afficherMessageUtilisateurInscrit(mainFrame); // Passer la référence de la fenêtre principale
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
+                    }
                 }
             }
         });
