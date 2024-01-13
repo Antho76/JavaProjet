@@ -56,12 +56,38 @@ public class DatabaseManager {
                     }
                 }
 
+                // Ajouter l'administrateur principal à la table Personnel
+                insertAdminPrincipal(connection);
+
                 System.out.println("Tables créées avec succès!");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
     }
+
+    private static void insertAdminPrincipal(Connection connection) {
+		Personnel newPersonnel = new Personnel("admin","admin","00/00/0000","admin","admin","adminpass");
+		
+    	String query = "INSERT INTO personnel (id, nom, prenom, dateNaissance, metier, login, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, newPersonnel.getId());
+            preparedStatement.setString(2, newPersonnel.getNom());
+            preparedStatement.setString(3, newPersonnel.getPrenom());
+            preparedStatement.setString(4, newPersonnel.getDateNaissance());
+            preparedStatement.setString(5, newPersonnel.getMetier());;
+            preparedStatement.setString(6, newPersonnel.getLogin());
+            preparedStatement.setString(7, newPersonnel.getPassword());
+
+            preparedStatement.executeUpdate();
+        }
+         catch (SQLException e) {
+            e.printStackTrace();
+         }
+   }
+		
+    
 
     private static String getSqlType(Class<?> type) {
         if (type == String.class) {
