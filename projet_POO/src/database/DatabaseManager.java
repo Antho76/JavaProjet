@@ -203,11 +203,11 @@ public class DatabaseManager {
         return etudiants;
     }
     
-    public static List<Personnel> Personnel() {
+    public static List<Personnel> getPersonnel() {
         List<Personnel> personnels = new ArrayList<>();
 
         try (Connection connection = connect()) {
-            String query = "SELECT nom, prenom, dateNaissance, metier, login, password, metier FROM personnel WHERE metier = 'professeur'";
+            String query = "SELECT nom, prenom, dateNaissance, metier, login, password, metier FROM personnel";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -235,17 +235,16 @@ public class DatabaseManager {
         List<Enseignant> enseignants = new ArrayList<>();
 
         try (Connection connection = connect()) {
-            String query = "SELECT nom, prenom, dateNaissance, genre, login, password, idMatiere FROM personnel WHERE metier = 'enseignant'";
+            String query = "SELECT nom, prenom, dateNaissance, genre, login, password, idMatiere FROM enseignant";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     while (resultSet.next()) {
-                        int idMatiere = resultSet.getInt("idMatiere");
-                        Enseignant enseignant = new Enseignant(
+                    	Enseignant enseignant = new Enseignant(
                                 resultSet.getString("nom"),
                                 resultSet.getString("prenom"),
                                 resultSet.getString("dateNaissance"),
-                                idMatiere,
+                                resultSet.getInt("idMatiere"),
                                 resultSet.getString("login"),
                                 resultSet.getString("password")
                         );

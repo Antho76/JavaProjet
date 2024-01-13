@@ -92,6 +92,6 @@ public class Personnel {
     }
 
     public String toString() {
-        return super.toString() + " personnel de metier " + this.metier;
+        return super.toString() + " personnel de metier " + this.login+ this.password;
     }
 }
