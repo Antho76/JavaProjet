@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.text.ParseException;
 import javax.swing.text.MaskFormatter;
 import controller.InscriptionController;
@@ -12,12 +14,10 @@ public class InscriptionInterface {
     static InscriptionController inscriptionController = new InscriptionController();
 
     public void afficherInterface() {
-        // Création de la fenêtre principale
         JFrame frame = new JFrame("Page d'Inscription");
         frame.setSize(400, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Création du panel pour ajouter les composants
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
@@ -25,9 +25,30 @@ public class InscriptionInterface {
         gbc.insets = new Insets(5, 5, 5, 5);
 
         frame.add(panel);
-        placeComponents(panel, frame); // Passer la référence de la fenêtre principale
+        placeComponents(panel, frame);
 
-        // Affichage de la fenêtre principale
+        // Ajout d'un bouton "Retour"
+        JButton retourButton = new JButton("Retour");
+        retourButton.setBounds(10, 340, 120, 25);
+        retourButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Fermer la fenêtre d'inscription et réafficher la fenêtre de connexion
+                frame.dispose();
+                new ConnectionInterface().afficherInterface();
+            }
+        });
+        panel.add(retourButton);
+
+        // Ajout d'un WindowListener pour détecter la fermeture de la fenêtre d'inscription
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                // Réafficher la fenêtre de connexion lorsque la fenêtre d'inscription est fermée
+                new ConnectionInterface().afficherInterface();
+            }
+        });
+
         frame.setVisible(true);
     }
 

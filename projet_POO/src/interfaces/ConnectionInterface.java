@@ -4,7 +4,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import controller.ConnexionController;
-import interfaces.*;
 
 public class ConnectionInterface {
     private JFrame frame;
@@ -90,6 +89,7 @@ public class ConnectionInterface {
                 onInscriptionButtonClick();
             }
         });
+        
 
         frame.getContentPane().add(BorderLayout.NORTH, mb);
         frame.getContentPane().add(BorderLayout.CENTER, centerPanel);
@@ -133,9 +133,9 @@ public class ConnectionInterface {
     }
 
     private void onInscriptionButtonClick() {
+        frame.dispose(); // Ferme la fenêtre de connexion
         InscriptionInterface inscriptionInterface = new InscriptionInterface();
-		// Ajoutez le code nécessaire pour gérer le bouton d'inscription
-        inscriptionInterface.afficherInterface();
+        inscriptionInterface.afficherInterface(); // Passe la référence de la fenêtre de connexion
     }
 
     public static void main(String[] args) {
@@ -146,4 +146,7 @@ public class ConnectionInterface {
             }
         });
     }
+
 }
+    
+
