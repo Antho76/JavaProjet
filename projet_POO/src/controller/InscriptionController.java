@@ -1,10 +1,6 @@
 package controller;
 import classes.Etudiant;
-import classes.Formation;
-import classes.Matiere;
-import classes.Promotion;
-import classes.Enseignant;
-import classes.Personnel;
+import classes.*;
 import database.DatabaseManager;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +13,7 @@ public class InscriptionController {
 	List<Etudiant> listeEtudiant = new ArrayList<Etudiant>();
 	private boolean already_exist = false;
 	
-	public void inscriptionEtudiant(String nom, String prenom, Promotion promotion, String dateNaissance,int numeroEtudiant, Formation formation, String login, String password) {
+	public void inscriptionEtudiant(String nom, String prenom, int promotion, String dateNaissance,int numeroEtudiant, int formation, String login, String password) {
 		for (Etudiant etudiant : listeEtudiant) {
 			if (etudiant.getLogin().equals(login) && etudiant.getPassword().equals(password)) {
 				already_exist = true;
@@ -29,7 +25,7 @@ public class InscriptionController {
 			DatabaseManager.insertEtudiant(newEtudiant);
 		}	
 	}
-	public void inscriptionEnseignant(String nom, String prenom, String dateNaissance, Matiere matiere, String login, String password) {
+	public void inscriptionEnseignant(String nom, String prenom, String dateNaissance, int matiere, String login, String password) {
 		for (Enseignant enseignant : listeEnseignant) {
 			if (enseignant.getLogin().equals(login) && enseignant.getPassword().equals(password)) {
 				already_exist = true;

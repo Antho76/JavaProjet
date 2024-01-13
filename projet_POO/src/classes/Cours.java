@@ -4,7 +4,7 @@ import java.util.Date;
 public class Cours{ 
   private int nbEtudiant;
   private Etudiant[] tabEtudiants;
-  private Enseignant enseignant;
+  private int idEnseignant;
   private Date date;
   private int heure;
   private Matiere matiere;
@@ -13,18 +13,18 @@ public class Cours{
   public Cours(){
     this.nbEtudiant = 0;
     this.tabEtudiants = new Etudiant[nbEtudiant];
-    this.enseignant = new Enseignant();
+    this.idEnseignant = 0;
     this.date = new Date();
     this.heure = 0;
     this.matiere = new Matiere();
     this.salle = new Salle();
   }
   
-  public Cours(int nbEtudiant, Etudiant[] tabEtudiants, Enseignant       
+  public Cours(int nbEtudiant, Etudiant[] tabEtudiants, int       
   enseignant, Date date, int heure,Matiere matiere, Salle salle){
     this.nbEtudiant = nbEtudiant;
     this.tabEtudiants = tabEtudiants;
-    this.enseignant = enseignant;
+    this.idEnseignant = enseignant;
     this.date = date;
     this.heure = heure;
     this.matiere = matiere;
@@ -39,8 +39,8 @@ public class Cours{
     return this.tabEtudiants;
   }
 
-  public Enseignant getEnseignant(){
-    return this.enseignant;
+  public int getEnseignant(){
+    return this.idEnseignant;
   }
 
   public Date getDate(){

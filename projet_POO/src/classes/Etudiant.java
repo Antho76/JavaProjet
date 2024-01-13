@@ -12,19 +12,19 @@ public class Etudiant
     private String genre;
     private String login;
     private String password;
-    private Formation formation;
+    private int idFormation;
 
-    private Promotion promotion;
+    private int  idPromotion;
   
-    public Etudiant(String nom, String prenom, Promotion promotion, String dateNaissance, Formation formation, String login, String password) {
+    public Etudiant(String nom, String prenom, int idPromotion, String dateNaissance, int idFormation, String login, String password) {
         this.id = ++dernierId; // Incrémente l'ID à chaque nouvelle instance
     	this.nom = nom;
     	this.prenom = prenom;
     	this.dateNaissance = dateNaissance;
     	this.login = login;
     	this.password = password;
-    	this.formation = formation;
-    	this.promotion = promotion;
+    	this.idFormation = idFormation;
+    	this.idPromotion = idPromotion;
     }
     
     public String getNom()
@@ -88,29 +88,29 @@ public class Etudiant
     	this.password = password;
     }
 
-    public Formation getFormation()
+    public int getFormation()
     {
-      return this.formation;
+      return this.idFormation;
     }
 
-    public void setFormation(Formation formation)
+    public void setFormation(int formation)
     {
-      this.formation = formation;
+      this.idFormation = formation;
     }
-    public void setPromotion(Promotion promotion)
+    public void setPromotion(int promotion)
     {
-      this.promotion = promotion;
+      this.idPromotion = promotion;
     }
 
-    public Promotion getPromotion()
+    public int getPromotion()
 
     {
-      return this.promotion;
+      return this.idPromotion;
     }
 
     public String toString()
     {
-      return super.toString() + " etudiant de la formation " + this.formation.toString();
+      return super.toString() + " etudiant ";
     }
     
   }

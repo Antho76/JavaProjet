@@ -6,7 +6,9 @@ import java.lang.reflect.ParameterizedType;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import classes.*;
@@ -119,9 +121,9 @@ public class DatabaseManager {
                 preparedStatement.setInt(1, etudiant.getId());
                 preparedStatement.setString(2, etudiant.getNom());
                 preparedStatement.setString(3, etudiant.getPrenom());
-                preparedStatement.setInt(4, etudiant.getPromotion().getId());
+                preparedStatement.setInt(4, etudiant.getPromotion());
                 preparedStatement.setString(5, etudiant.getDateNaissance());
-                preparedStatement.setInt(6, etudiant.getFormation().getId_Formation());
+                preparedStatement.setInt(6, etudiant.getFormation());
                 preparedStatement.setString(7, etudiant.getLogin());
                 preparedStatement.setString(8, etudiant.getPassword());
 
@@ -141,7 +143,7 @@ public class DatabaseManager {
                 preparedStatement.setString(2, enseignant.getNom());
                 preparedStatement.setString(3, enseignant.getPrenom());
                 preparedStatement.setString(4, enseignant.getDateNaissance());
-                preparedStatement.setInt(5, enseignant.getMatiere().getNumeroMatiere());
+                preparedStatement.setInt(5, enseignant.getMatiere());
                 preparedStatement.setString(6, enseignant.getLogin());
                 preparedStatement.setString(7, enseignant.getPassword());
 
@@ -170,6 +172,92 @@ public class DatabaseManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    
+    public static List<Etudiant> getStudents() {
+    	List<Etudiant> etudiants = new ArrayList<>();
+
+        try (Connection connection = connect()) {
+            String query = "SELECT id, nom, prenom, dateNaissance, genre, login, password, idFormation, idPromotion FROM etudiant";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                    	Etudiant etudiant = new Etudiant(
+                    		    resultSet.getString("nom"),
+                    		    resultSet.getString("prenom"),
+                    		    resultSet.getInt("idPromotion"),
+                    		    resultSet.getString("dateNaissance"),
+                    		    resultSet.getInt("idFormation"),
+                    		    resultSet.getString("login"),
+                    		    resultSet.getString("password")
+                    		);                       
+                    	etudiants.add(etudiant);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return etudiants;
+    }
+    
+    public static List<Personnel> Personnel() {
+        List<Personnel> personnels = new ArrayList<>();
+
+        try (Connection connection = connect()) {
+            String query = "SELECT nom, prenom, dateNaissance, metier, login, password, metier FROM personnel WHERE metier = 'professeur'";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                    	Personnel personnel = new Personnel(
+                                resultSet.getString("nom"),
+                                resultSet.getString("prenom"),
+                                resultSet.getString("dateNaissance"),
+                                resultSet.getString("metier"),
+                                resultSet.getString("login"),
+                                resultSet.getString("password")
+                        );
+                    	personnels.add(personnel);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return personnels;
+    }
+    
+    public static List<Enseignant> getEnseignants() {
+        List<Enseignant> enseignants = new ArrayList<>();
+
+        try (Connection connection = connect()) {
+            String query = "SELECT nom, prenom, dateNaissance, genre, login, password, idMatiere FROM personnel WHERE metier = 'enseignant'";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                        int idMatiere = resultSet.getInt("idMatiere");
+                        Enseignant enseignant = new Enseignant(
+                                resultSet.getString("nom"),
+                                resultSet.getString("prenom"),
+                                resultSet.getString("dateNaissance"),
+                                idMatiere,
+                                resultSet.getString("login"),
+                                resultSet.getString("password")
+                        );
+                        enseignants.add(enseignant);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return enseignants;
     }
 
     public static void disconnect(Connection connection) {

@@ -10,22 +10,19 @@ public class Enseignant {
     private String genre;
     private String login;
     private String password;
-	private Matiere matiere;
+	private int idMatiere;
 
-  public Enseignant(String nom, String prenom, String dateNaissance, Matiere matiere, String login, String password){
+  public Enseignant(String nom, String prenom, String dateNaissance, int idMatiere, String login, String password){
       this.id = ++dernierId; // Incrémente l'ID à chaque nouvelle instance
 	  this.nom = nom;
       this.prenom = prenom;
       this.dateNaissance = dateNaissance;
       this.login = login;
       this.password = password;    
-      this.matiere = matiere;
+      this.idMatiere = idMatiere;
   }
 
-  public Enseignant(){
-    super();
-    this.matiere = new Matiere();
-  }
+
   public String getNom()
   {
     return this.nom;
@@ -87,18 +84,18 @@ public class Enseignant {
   	this.password = password;
   }
     
-  public Matiere getMatiere(){
-    return this.matiere;
+  public int getMatiere(){
+    return this.idMatiere;
   }
 
 
-  public void setMatiere(Matiere matiere){
-    this.matiere = matiere;
+  public void setMatiere(int idMatiere){
+    this.idMatiere = idMatiere;
   }
 
   public String toString() 
   {
-      return super.toString() + "enseignant de la matière "        + this.matiere.toString();
+      return super.toString() + "enseignant";
   }
   
 }
