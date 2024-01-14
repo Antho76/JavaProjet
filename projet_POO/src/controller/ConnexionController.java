@@ -37,7 +37,7 @@ public class ConnexionController {
         return isLogged;
     }
 
-    public boolean checkConnexionPersonnel(String login, String password) {
+    public Object[] checkConnexionPersonnel(String login, String password) {
     	
         List<Personnel> listePersonnel = DatabaseManager.getPersonnel();
         boolean isLogged = false;
@@ -45,11 +45,11 @@ public class ConnexionController {
         for (Personnel personne : listePersonnel) {
             if (personne.getLogin().equals(login) && personne.getPassword().equals(password)) {
                 isLogged = true;
-                return isLogged;
+                return new Object[] {isLogged, personne};
             }
         }
 
-        return isLogged;
+        return new Object[] {isLogged, 0};
     }
 
 }

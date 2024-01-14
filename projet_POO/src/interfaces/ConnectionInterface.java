@@ -1,5 +1,8 @@
 package interfaces;
 import javax.swing.*;
+
+import classes.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -120,11 +123,14 @@ public class ConnectionInterface {
                 JOptionPane.showMessageDialog(frame, "Login ou mot de passe incorrect");
             }
         } else if (radioButtonPersonnel.isSelected()) {
-
-            if (connexionController.checkConnexionPersonnel(username, password)) {
+        	Object[] result = connexionController.checkConnexionPersonnel(username, password);
+        	boolean exist = (boolean) result[0];
+            if (exist) {
+            	Personnel person = (Personnel) result[1];
                 JOptionPane.showMessageDialog(frame, "Connexion réussie");
-                // Ajoutez ici le code pour l'interface du personnel si nécessaire
-                frame.dispose();
+                frame.dispose(); // Fermer la fenêtre de connexion
+                AdminPage adminpage = new AdminPage();
+                adminpage.afficherInterface(person); // Passe la référence de la fenêtre de connexion                frame.dispose();
             } else {
 
                 JOptionPane.showMessageDialog(frame, "Login ou mot de passe incorrect");
