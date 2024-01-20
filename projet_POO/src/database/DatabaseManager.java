@@ -61,6 +61,7 @@ public class DatabaseManager {
                 // Ajouter l'administrateur principal à la table Personnel
                 insertAdminPrincipal(connection);
                 insertPromoPrincipal(connection);
+                insertElevePrincipal(connection);
 
                 System.out.println("Tables créées avec succès!");
             } catch (SQLException e) {
@@ -82,6 +83,28 @@ public class DatabaseManager {
             preparedStatement.setString(5, newPersonnel.getMetier());;
             preparedStatement.setString(6, newPersonnel.getLogin());
             preparedStatement.setString(7, newPersonnel.getPassword());
+
+            preparedStatement.executeUpdate();
+        }
+         catch (SQLException e) {
+            e.printStackTrace();
+         }
+   }
+    
+    private static void insertElevePrincipal(Connection connection) {
+		Etudiant newEtudiant = new Etudiant("etudiant","etudiant",0,"00/00/0000", 0,"etudiant","etudiantpass");
+		
+    	String query = "INSERT INTO etudiant (id, nom, prenom, dateNaissance, login, password, idFormation, idPromotion) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, newEtudiant.getId());
+            preparedStatement.setString(2, newEtudiant.getNom());
+            preparedStatement.setInt(7, newEtudiant.getFormation());
+            preparedStatement.setString(3, newEtudiant.getPrenom());
+            preparedStatement.setString(4, newEtudiant.getDateNaissance());
+            preparedStatement.setString(5, newEtudiant.getLogin());;
+            preparedStatement.setString(6, newEtudiant.getPassword());
+            preparedStatement.setInt(8, newEtudiant.getPromotion());
 
             preparedStatement.executeUpdate();
         }
