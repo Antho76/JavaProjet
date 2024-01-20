@@ -13,7 +13,6 @@ public class Etudiant
     private String login;
     private String password;
     private int idFormation;
-
     private int  idPromotion;
   
     public Etudiant(String nom, String prenom, int idPromotion, String dateNaissance, int idFormation, String login, String password) {

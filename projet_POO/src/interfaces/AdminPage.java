@@ -1,7 +1,10 @@
 package interfaces;
-
+import classes.*;
+import interfaces.ShowEtudiantPage;
 import javax.swing.*;
 import classes.Personnel;
+import database.DatabaseManager;
+import java.util.List;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -46,6 +49,22 @@ public class AdminPage {
             }
         });
         panel.add(ajouterElevesButton, gbc);
+        
+        JButton afficherEleves = new JButton("Afficher les élèves");
+        afficherEleves.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Ajoutez ici la logique pour ouvrir la page d'affichage des élèves
+                List<Etudiant> etudiants = DatabaseManager.getStudents();
+
+                // Créer une instance de la page d'affichage des étudiants
+                SwingUtilities.invokeLater(() -> {
+                    ShowEtudiantPage showEtudiantPage = new ShowEtudiantPage(etudiants);
+                    showEtudiantPage.setVisible(true);
+                });
+            }
+        });
+        panel.add(afficherEleves, gbc);
 
         JButton creerClasseButton = new JButton("Créer une Classe");
         creerClasseButton.addActionListener(new ActionListener() {

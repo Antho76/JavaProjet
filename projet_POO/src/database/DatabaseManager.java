@@ -60,6 +60,7 @@ public class DatabaseManager {
 
                 // Ajouter l'administrateur principal à la table Personnel
                 insertAdminPrincipal(connection);
+                insertPromoPrincipal(connection);
 
                 System.out.println("Tables créées avec succès!");
             } catch (SQLException e) {
@@ -88,6 +89,22 @@ public class DatabaseManager {
             e.printStackTrace();
          }
    }
+    private static void insertPromoPrincipal(Connection connection) {
+
+    Promotion promotion = new Promotion(0,2023);
+	
+	String query = "INSERT INTO promotion (numeroPromotion, annee) VALUES (?, ?)";
+
+    try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        preparedStatement.setInt(1, promotion.getId());
+        preparedStatement.setInt(2, promotion.getAnnee());
+
+        preparedStatement.executeUpdate();
+    }
+     catch (SQLException e) {
+        e.printStackTrace();
+     }
+}
 		
     
 
