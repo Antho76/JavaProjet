@@ -8,7 +8,7 @@ import java.util.List;
 import classes.Cours;
 import database.DatabaseManager;
 
-public class EmploiDuTempsController {
+/*public class EmploiDuTempsController {
 
     public List<Cours> getCoursPourSemaine(int numeroSemaine) {
         List<Cours> listeCours = new ArrayList<>();
@@ -31,4 +31,4 @@ public class EmploiDuTempsController {
         }
         return listeCours;
     }
-}
+}*/
