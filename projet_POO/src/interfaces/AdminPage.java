@@ -40,6 +40,23 @@ public class AdminPage {
             }
         });
         panel.add(ajouterProfesseurButton, gbc);
+        
+        JButton afficherProfesseurButton = new JButton("Afficher les Enseignants");
+        afficherProfesseurButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Ajoutez ici la logique pour ouvrir la page d'affichage des élèves
+                List<Enseignant> enseignants = DatabaseManager.getEnseignants();
+
+                // Créer une instance de la page d'affichage des étudiants
+                SwingUtilities.invokeLater(() -> {
+                	ShowProfesseurPage showProfesseurPage = new ShowProfesseurPage(enseignants);
+                	showProfesseurPage.setVisible(true);
+                });
+            }
+        });
+        panel.add(afficherProfesseurButton, gbc);
+
 
         JButton ajouterElevesButton = new JButton("Ajouter des Élèves");
         ajouterElevesButton.addActionListener(new ActionListener() {
