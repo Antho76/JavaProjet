@@ -20,11 +20,11 @@ public class Main {
     	
         DatabaseManager.createDatabaseIfNotExists();
 
-    	/*ConnectionInterface connectionInterface = new ConnectionInterface();
-        connectionInterface.afficherInterface();*/
+    	ConnectionInterface connectionInterface = new ConnectionInterface();
+        connectionInterface.afficherInterface();
     	
-    	AccueilEtudiant accueilEtu = new AccueilEtudiant();
-    	accueilEtu.afficherInterface();
+    	/*AccueilEtudiant accueilEtu = new AccueilEtudiant();
+    	accueilEtu.afficherInterface(); */
     	
     	/*Inscription inscription = new Inscription();
     	inscription.afficherInterface();*/
