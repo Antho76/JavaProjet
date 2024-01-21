@@ -59,7 +59,19 @@ public class Cours{
   public Salle getSalle() {
       return this.salle;
   }
-
+  
+  public void setNbEtudiant(int nbEtudiant){
+	  this.nbEtudiant = nbEtudiant;
+  }
+  
+  public void setIdEnseignant(int idEnseignant) {
+	  this.idEnseignant = idEnseignant;
+  }
+  
+  public void setDate(Date date) {
+	  this.date = date;
+  }
+  
   public void setHeure(int heure) {
       this.heure = heure;
   }
