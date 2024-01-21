@@ -298,6 +298,41 @@ public class DatabaseManager {
 
         return enseignants;
     }
+    
+    public static List<Cours> getCoursPourSemaine(int numeroSemaine) {
+        List<Cours> coursList = new ArrayList<>();
+
+        try (Connection connection = connect()) {
+            String query = "SELECT * FROM cours WHERE semaine = ?";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, numeroSemaine);
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                        // Remplissez l'objet Cours en supposant que les champs correspondent
+                        Cours cours = new Cours();
+                        cours.setNbEtudiant(resultSet.getInt("nbEtudiant"));
+                        // cours.setTabEtudiants(...); // La gestion des étudiants n'est pas claire dans ce contexte
+                        cours.setIdEnseignant(resultSet.getInt("idEnseignant"));
+                        cours.setDate(resultSet.getDate("date"));
+                        cours.setHeure(resultSet.getInt("heure"));
+
+                        Matiere matiere = new Matiere(); // Vous devrez adapter selon la structure de votre classe Matiere
+                        cours.setMatiere(matiere);
+
+                        Salle salle = new Salle(); // Vous devrez adapter selon la structure de votre classe Salle
+                        cours.setSalle(salle);
+
+                        coursList.add(cours);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return coursList;
+    }
 
     public static void disconnect(Connection connection) {
         if (connection != null) {
