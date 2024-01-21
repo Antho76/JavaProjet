@@ -10,6 +10,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import classes.*;
 
@@ -65,6 +68,8 @@ public class DatabaseManager {
                 insertElevePrincipal(connection);
                 insertMatierePrincipale(connection);
                 insertEnseignantPrincipal(connection);
+                insertCoursPrincipal(connection);
+                
 
                 System.out.println("Tables créées avec succès!");
             } catch (SQLException e) {
@@ -179,6 +184,28 @@ public class DatabaseManager {
             preparedStatement.setString(2, matiere.getNomMatiere());
             preparedStatement.setInt(3, matiere.getCoefficient());
 
+            preparedStatement.executeUpdate();
+        }
+         catch (SQLException e) {
+            e.printStackTrace();
+         }
+    }
+    private static void insertCoursPrincipal(Connection connection) {
+    	Date date = new Date();
+        Cours cours = new Cours(0,0,"",0,date,0,0,0);
+    	
+    	String query = "INSERT INTO cours (idCours,nbEtudiant, tabEtudiants, enseignant, date, heure, idMatiere, idSalle) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, cours.getId());
+            preparedStatement.setInt(2, cours.getNbEtudiant());
+            preparedStatement.setString(3, cours.getTabEtudiants());
+            preparedStatement.setInt(4, cours.getEnseignant());
+            preparedStatement.setDate(5, (java.sql.Date) cours.getDate());
+            preparedStatement.setInt(6, cours.getHeure());
+            preparedStatement.setInt(7, cours.getMatiere());
+            preparedStatement.setInt(8, cours.getSalle());
+            
             preparedStatement.executeUpdate();
         }
          catch (SQLException e) {
@@ -457,7 +484,7 @@ public class DatabaseManager {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     while (resultSet.next()) {
-                    	String tabEtudiant = resultSet.getString("tabEtudiant");
+                    	/*String tabEtudiant = resultSet.getString("tabEtudiant");
                     	String[] entiersEnTableau = tabEtudiant.split(",");
                     	Etudiant[] tabEtudiantCours = new Etudiant[entiersEnTableau.length];
                     	for (int i = 0; i < entiersEnTableau.length; i++) {
@@ -488,16 +515,16 @@ public class DatabaseManager {
             		        if (salle.getNumeroSalle() == idSalle) {
             		        	salleCours = salle;
             		        }
-            		    }
+            		    }*/
                     	Cours cours = new Cours(
                                 resultSet.getInt("idCours"),
                                 resultSet.getInt("nbEtudiant"),
-                                tabEtudiantCours,
+                                resultSet.getString("tabEtudiant"),
                                 resultSet.getInt("enseignant"),
                                 resultSet.getDate("date"),
                                 resultSet.getInt("heure"),
-                                matiereCours,
-                                salleCours 
+                                resultSet.getInt("idMatiere"),
+                                resultSet.getInt("idSalle") 
                         );
                     	listCours.add(cours);
                     }

@@ -4,32 +4,32 @@ import java.util.Date;
 public class Cours{
 	private int idCours;
 	private int nbEtudiant;
-	private Etudiant[] tabEtudiants;
+	private String tabEtudiants;
 	private int idEnseignant;
 	private Date date;
 	private int heure;
-	private Matiere matiere;
-	private Salle salle;
+	private int idMatiere;
+	private int idSalle;
 
 	public Cours(){
 	    this.nbEtudiant = 0;
-	    this.tabEtudiants = new Etudiant[nbEtudiant];
+	    this.tabEtudiants = "";
 	    this.idEnseignant = 0;
 	    this.date = new Date();
 	    this.heure = 0;
-	    this.matiere = new Matiere();
-	    this.salle = new Salle();
+	    this.idMatiere = 0;
+	    this.idSalle = 0;
 	}
   
-	public Cours(int idCours,int nbEtudiant, Etudiant[] tabEtudiants, int enseignant, Date date, int heure,Matiere matiere, Salle salle){  
+	public Cours(int idCours,int nbEtudiant, String tabEtudiants, int enseignant, Date date, int heure,int idMatiere, int idSalle){  
 		this.idCours = idCours;
 	    this.nbEtudiant = nbEtudiant;
 	    this.tabEtudiants = tabEtudiants;
 	    this.idEnseignant = enseignant;
 	    this.date = date;
 	    this.heure = heure;
-	    this.matiere = matiere;
-	    this.salle = salle;
+	    this.idMatiere = idMatiere;
+	    this.idSalle = idSalle;
 	}
 	public int getId() {
 		return this.idCours;
@@ -38,7 +38,7 @@ public class Cours{
 		return this.nbEtudiant;
 	}
 
-	public Etudiant[] getTabEtudiants(){
+	public String getTabEtudiants(){
 		return this.tabEtudiants;
 	}
 
@@ -55,13 +55,13 @@ public class Cours{
 		return this.heure;
 	}
   
-	public Matiere getMatiere() {
-		return this.matiere;
+	public int getMatiere() {
+		return this.idMatiere;
 	}
 	
   
-	public Salle getSalle() {
-		return this.salle;
+	public int getSalle() {
+		return this.idSalle;
 	}
 	
 	public void setId(int idCours) {
@@ -84,12 +84,12 @@ public class Cours{
  		this.heure = heure;
  	}
   
- 	public void setMatiere(Matiere matiere) {
- 		this.matiere = matiere;
+ 	public void setMatiere(int idMatiere) {
+ 		this.idMatiere = idMatiere;
  	}
   
- 	public void setSalle(Salle salle) {
- 		this.salle = salle;
+ 	public void setSalle(int idSalle) {
+ 		this.idSalle = idSalle;
  	}
 }
   
