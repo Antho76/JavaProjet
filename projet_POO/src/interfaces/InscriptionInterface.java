@@ -48,6 +48,7 @@ public class InscriptionInterface {
                 new ConnectionInterface().afficherInterface();
             }
         });
+        frame.setLocationRelativeTo(null);
 
         frame.setVisible(true);
     }
@@ -166,7 +167,6 @@ public class InscriptionInterface {
                 mainFrame.dispose(); // Fermer la fenêtre principale lors de la fermeture de la popup
             }
         });
-        frame.setLocationRelativeTo(null);
         messageFrame.setVisible(true);
     }
 }
