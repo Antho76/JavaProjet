@@ -61,7 +61,10 @@ public class DatabaseManager {
                 // Ajouter l'administrateur principal à la table Personnel
                 insertAdminPrincipal(connection);
                 insertPromoPrincipal(connection);
+                insertFormationPrincipal(connection);
                 insertElevePrincipal(connection);
+                insertMatierePrincipale(connection);
+                insertEnseignantPrincipal(connection);
 
                 System.out.println("Tables créées avec succès!");
             } catch (SQLException e) {
@@ -112,6 +115,26 @@ public class DatabaseManager {
             e.printStackTrace();
          }
    }
+    private static void insertEnseignantPrincipal(Connection connection) {
+		Enseignant newEnseignant = new Enseignant("enseignant","enseignant","00/00/0000",0,"enseignant","enseignantpass");
+		
+    	String query = "INSERT INTO enseignant (id, nom, prenom, dateNaissance, idMatiere, login, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, newEnseignant.getId());
+            preparedStatement.setString(2, newEnseignant.getNom());
+            preparedStatement.setString(3, newEnseignant.getPrenom());
+            preparedStatement.setString(4, newEnseignant.getDateNaissance());
+            preparedStatement.setInt(5, newEnseignant.getMatiere());;
+            preparedStatement.setString(6, newEnseignant.getLogin());;
+            preparedStatement.setString(7, newEnseignant.getPassword());
+
+            preparedStatement.executeUpdate();
+        }
+         catch (SQLException e) {
+            e.printStackTrace();
+         }
+   } 
     private static void insertPromoPrincipal(Connection connection) {
 
     Promotion promotion = new Promotion(0,2023);
@@ -128,6 +151,40 @@ public class DatabaseManager {
         e.printStackTrace();
      }
 }
+    private static void insertFormationPrincipal(Connection connection) {
+
+    Formation formation = new Formation(0,"formation",0);
+	
+	String query = "INSERT INTO formation (id_formation,nomFormation, promotion) VALUES (?, ?)";
+
+    try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        preparedStatement.setInt(1, formation.getId_Formation());
+        preparedStatement.setString(2, formation.getNomFormation());
+        preparedStatement.setInt(3, formation.getIdPromotion());
+
+        preparedStatement.executeUpdate();
+    }
+     catch (SQLException e) {
+        e.printStackTrace();
+     }
+}
+    private static void insertMatierePrincipale(Connection connection) {
+
+        Matiere matiere = new Matiere(0,"matiere",1);
+    	
+    	String query = "INSERT INTO matiere (numeroMatiere,nomMatiere, coefficient) VALUES (?, ?, ?)";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, matiere.getNumeroMatiere());
+            preparedStatement.setString(2, matiere.getNomMatiere());
+            preparedStatement.setInt(3, matiere.getCoefficient());
+
+            preparedStatement.executeUpdate();
+        }
+         catch (SQLException e) {
+            e.printStackTrace();
+         }
+    }
 		
     
 
