@@ -96,6 +96,9 @@ public class ConnectionInterface {
 
         frame.getContentPane().add(BorderLayout.NORTH, mb);
         frame.getContentPane().add(BorderLayout.CENTER, centerPanel);
+        // Center the frame on the screen
+        frame.setLocationRelativeTo(null);
+
         frame.setVisible(true);
     }
 

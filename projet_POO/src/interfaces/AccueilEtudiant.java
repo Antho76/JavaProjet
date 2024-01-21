@@ -51,6 +51,7 @@ public class AccueilEtudiant {
         frame.add(scrollPane,BorderLayout.CENTER);
 
         // Afficher la fenêtre
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 }

@@ -89,6 +89,7 @@ public class AdminPage {
         panel.add(retourButton);
         
         // Affichage de la fenêtre principale
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
