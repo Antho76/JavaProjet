@@ -429,6 +429,7 @@ public class DatabaseManager {
                         resultSet.getInt("idMatiere"),
                         resultSet.getInt("idSalle") 
                         );
+                    	if cours.getHeure
                         coursList.add(cours);
                     }
                 }
