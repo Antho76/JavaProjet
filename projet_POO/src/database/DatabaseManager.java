@@ -298,7 +298,7 @@ public class DatabaseManager {
 
         return enseignants;
     }
-    
+    /*
     public static List<Cours> getCoursPourSemaine(int numeroSemaine) {
         List<Cours> coursList = new ArrayList<>();
 
@@ -333,7 +333,7 @@ public class DatabaseManager {
 
         return coursList;
     }
-
+    */
     public static void disconnect(Connection connection) {
         if (connection != null) {
             try {
