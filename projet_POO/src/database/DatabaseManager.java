@@ -155,7 +155,7 @@ public class DatabaseManager {
 
     Formation formation = new Formation(0,"formation",0);
 	
-	String query = "INSERT INTO formation (id_formation,nomFormation, promotion) VALUES (?, ?)";
+	String query = "INSERT INTO formation (id_formation,nomFormation, idpromotion) VALUES (?, ?,?)";
 
     try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
         preparedStatement.setInt(1, formation.getId_Formation());
@@ -212,7 +212,7 @@ public class DatabaseManager {
     
     public static void insertEtudiant(Etudiant etudiant) {
         try (Connection connection = connect()) {
-            String query = "INSERT INTO etudiant (id, nom, prenom, idPromotion dateNaissance, idFormation, login, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO etudiant (id, nom, prenom, idPromotion, dateNaissance, idFormation, login, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, etudiant.getId());

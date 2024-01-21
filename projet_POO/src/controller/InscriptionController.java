@@ -13,7 +13,7 @@ public class InscriptionController {
 	List<Etudiant> listeEtudiant = new ArrayList<Etudiant>();
 	private boolean already_exist = false;
 	
-	public void inscriptionEtudiant(String nom, String prenom, int promotion, String dateNaissance,int numeroEtudiant, int formation, String login, String password) {
+	public void inscriptionEtudiant(String nom, String prenom, int promotion, String dateNaissance, int formation, String login, String password) {
 		for (Etudiant etudiant : listeEtudiant) {
 			if (etudiant.getLogin().equals(login) && etudiant.getPassword().equals(password)) {
 				already_exist = true;

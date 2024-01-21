@@ -16,7 +16,6 @@ public class InscriptionInterface {
     public void afficherInterface() {
         JFrame frame = new JFrame("Page d'Inscription");
         frame.setSize(400, 400);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();

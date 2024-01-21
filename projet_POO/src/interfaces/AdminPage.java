@@ -1,6 +1,6 @@
 package interfaces;
 import classes.*;
-import interfaces.ShowEtudiantPage;
+import interfaces.*;
 import javax.swing.*;
 import classes.Personnel;
 import database.DatabaseManager;
@@ -44,8 +44,9 @@ public class AdminPage {
         ajouterElevesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Ajoutez ici la logique pour ouvrir la page d'ajout d'élèves
-                JOptionPane.showMessageDialog(frame, "Ouvrir la page d'ajout d'élèves");
+            	interfaceAddEtudiant interfaceAddEtudiant = new interfaceAddEtudiant();
+                 interfaceAddEtudiant.afficherInterface( person);
+                 frame.dispose();
             }
         });
         panel.add(ajouterElevesButton, gbc);
