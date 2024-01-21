@@ -13,6 +13,7 @@ import java.util.List;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.time.*;
 
 import classes.*;
 
@@ -68,6 +69,7 @@ public class DatabaseManager {
                 insertElevePrincipal(connection);
                 insertMatierePrincipale(connection);
                 insertEnseignantPrincipal(connection);
+                insertSallePrincipale(connection);
                 insertCoursPrincipal(connection);
                 
 
@@ -160,7 +162,7 @@ public class DatabaseManager {
 
     Formation formation = new Formation(0,"formation",0);
 	
-	String query = "INSERT INTO formation (id_formation,nomFormation, idPromotion) VALUES (?, ?)";
+	String query = "INSERT INTO formation (id_formation,nomFormation, idPromotion) VALUES (?, ?, ?)";
 
     try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
         preparedStatement.setInt(1, formation.getId_Formation());
@@ -190,18 +192,38 @@ public class DatabaseManager {
             e.printStackTrace();
          }
     }
-    private static void insertCoursPrincipal(Connection connection) {
-    	Date date = new Date();
-        Cours cours = new Cours(0,0,"",0,date,0,0,0);
+    
+    private static void insertSallePrincipale(Connection connection) {
     	
-    	String query = "INSERT INTO cours (idCours,nbEtudiant, tabEtudiants, enseignant, date, heure, idMatiere, idSalle) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        Salle salle = new Salle(0,10,10,false);
+    	
+    	String query = "INSERT INTO salle (numeroSalle,nbPlaces, nbEtudiants, equipInfo) VALUES (?, ?, ?, ?)";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, salle.getNumeroSalle());
+            preparedStatement.setInt(2, salle.getNbPlaces());
+            preparedStatement.setInt(3, salle.getNbEtudiants());
+            preparedStatement.setBoolean(4, salle.getEquipInfo());
+            
+            preparedStatement.executeUpdate();
+        }
+         catch (SQLException e) {
+            e.printStackTrace();
+         }
+    }
+    
+    private static void insertCoursPrincipal(Connection connection) {
+    	LocalDate ld = LocalDate.of(2024, 1, 23);
+        Cours cours = new Cours(0,0,"",0,ld,0,0,0);
+    	
+    	String query = "INSERT INTO cours (idCours,nbEtudiant, tabEtudiants, idEnseignant, date, heure, idMatiere, idSalle) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, cours.getId());
             preparedStatement.setInt(2, cours.getNbEtudiant());
             preparedStatement.setString(3, cours.getTabEtudiants());
             preparedStatement.setInt(4, cours.getEnseignant());
-            preparedStatement.setDate(5, (java.sql.Date) cours.getDate());
+            preparedStatement.setObject(5, cours.getDate());
             preparedStatement.setInt(6, cours.getHeure());
             preparedStatement.setInt(7, cours.getMatiere());
             preparedStatement.setInt(8, cours.getSalle());
@@ -396,20 +418,17 @@ public class DatabaseManager {
                 preparedStatement.setInt(1, numeroSemaine);
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     while (resultSet.next()) {
-                        // Remplissez l'objet Cours en supposant que les champs correspondent
-                        Cours cours = new Cours();
-                        cours.setNbEtudiant(resultSet.getInt("nbEtudiant"));
-                        // cours.setTabEtudiants(...); // La gestion des étudiants n'est pas claire dans ce contexte
-                        cours.setIdEnseignant(resultSet.getInt("idEnseignant"));
-                        cours.setDate(resultSet.getDate("date"));
-                        cours.setHeure(resultSet.getInt("heure"));
-
-                        Matiere matiere = new Matiere(); // Vous devrez adapter selon la structure de votre classe Matiere
-                        cours.setMatiere(matiere);
-
-                        Salle salle = new Salle(); // Vous devrez adapter selon la structure de votre classe Salle
-                        cours.setSalle(salle);
-
+                    	LocalDate ld = resultSet.getObject( "date" , LocalDate.class );
+                    	Cours cours = new Cours(
+                        resultSet.getInt("idCours"),
+                        resultSet.getInt("nbEtudiant"),
+                        resultSet.getString("tabEtudiant"),
+                        resultSet.getInt("enseignant"),
+                        ld,
+                        resultSet.getInt("heure"),
+                        resultSet.getInt("idMatiere"),
+                        resultSet.getInt("idSalle") 
+                        );
                         coursList.add(cours);
                     }
                 }
@@ -479,7 +498,7 @@ public class DatabaseManager {
         List<Cours> listCours = new ArrayList<>();
 
         try (Connection connection = connect()) {
-            String query = "SELECT idCours, nbEtudiant, tabEtudiants, idEnseignant, date, heure, matiere, salle FROM cours";
+            String query = "SELECT idCours, nbEtudiant, tabEtudiants, idEnseignant, date, heure, idMatiere, idSalle FROM cours";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -516,12 +535,13 @@ public class DatabaseManager {
             		        	salleCours = salle;
             		        }
             		    }*/
+                    	LocalDate ld = resultSet.getObject( "date" , LocalDate.class );
                     	Cours cours = new Cours(
                                 resultSet.getInt("idCours"),
                                 resultSet.getInt("nbEtudiant"),
-                                resultSet.getString("tabEtudiant"),
-                                resultSet.getInt("enseignant"),
-                                resultSet.getDate("date"),
+                                resultSet.getString("tabEtudiants"),
+                                resultSet.getInt("idEnseignant"),
+                                ld,
                                 resultSet.getInt("heure"),
                                 resultSet.getInt("idMatiere"),
                                 resultSet.getInt("idSalle") 

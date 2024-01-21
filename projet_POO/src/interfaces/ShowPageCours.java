@@ -5,6 +5,7 @@ import classes.Etudiant;
 import classes.Cours;
 import classes.Salle;
 import classes.Enseignant;
+import classes.Matiere;
 import database.DatabaseManager;
 
 import java.awt.*;
@@ -26,18 +27,36 @@ public class ShowPageCours extends JFrame {
 		        	enseignantCours = enseignant;
 		        }
 		    }
+		    int idMatiere = cours.getMatiere();
+        	Matiere matiereCours = null;
+        	List<Matiere> listeMatiere = DatabaseManager.getMatiere();
+		    for (Matiere matiere : listeMatiere) {
+		        if (matiere.getNumeroMatiere() == idMatiere) {
+		        	matiereCours = matiere;
+		        }
+		    }
+		    
+		    int idSalle = cours.getSalle();
+        	Salle salleCours = null;
+        	List<Salle> listeSalle = DatabaseManager.getSalle();
+		    for (Salle salle : listeSalle) {
+		        if (salle.getNumeroSalle() == idSalle) {
+		        	salleCours = salle;
+		        }
+		    }
+		    
 		    if (enseignantCours != null) {
-                coursArray[i] = "Cours de " + cours.getMatiere().getNomMatiere() +
+                coursArray[i] = "Cours de " + matiereCours.getNomMatiere() +
                         " avec " + enseignantCours.getNom() + " " + enseignantCours.getPrenom() +
                         " le " + cours.getDate() +
                         " à " + cours.getHeure() +
-                        " en salle " + cours.getSalle().getNumeroSalle();
+                        " en salle " + salleCours.getNumeroSalle();
             } else {
-                coursArray[i] = "Cours de " + cours.getMatiere().getNomMatiere() +
+                coursArray[i] = "Cours de " + matiereCours.getNomMatiere() +
                         " (Enseignant non trouvé)" +
                         " le " + cours.getDate() +
                         " à " + cours.getHeure() +
-                        " en salle " + cours.getSalle().getNumeroSalle();
+                        " en salle " + salleCours.getNumeroSalle();
             }
             
         }
