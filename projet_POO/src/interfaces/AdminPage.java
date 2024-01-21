@@ -34,8 +34,9 @@ public class AdminPage {
         ajouterProfesseurButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Ajoutez ici la logique pour ouvrir la page d'ajout de professeur
-                JOptionPane.showMessageDialog(frame, "Ouvrir la page d'ajout de professeur");
+            	interfaceAddProfesseurs interfaceAddProfesseurs = new interfaceAddProfesseurs();
+            	interfaceAddProfesseurs.afficherInterface( person);
+                frame.dispose();
             }
         });
         panel.add(ajouterProfesseurButton, gbc);
