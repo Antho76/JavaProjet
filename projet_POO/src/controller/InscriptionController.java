@@ -20,7 +20,8 @@ public class InscriptionController {
 			}
 		}
 		if (!already_exist) {
-			Etudiant newEtudiant = new Etudiant(nom,prenom,promotion,dateNaissance,formation,login,password);
+			int maxEtudiantId = DatabaseManager.getMaxEtudiantId();
+			Etudiant newEtudiant = new Etudiant(maxEtudiantId +1,nom,prenom,promotion,dateNaissance,formation,login,password);
 			listeEtudiant.add(newEtudiant);
 			DatabaseManager.insertEtudiant(newEtudiant);
 		}	
@@ -32,7 +33,9 @@ public class InscriptionController {
 			}
 		}
 		if (!already_exist) {
-			Enseignant newEnseignant = new Enseignant(nom,prenom,dateNaissance,matiere,login,password);
+			int maxEnseignantId = DatabaseManager.getMaxEnseignantId();
+
+			Enseignant newEnseignant = new Enseignant(maxEnseignantId+1, nom,prenom,dateNaissance,matiere,login,password);
 			listeEnseignant.add(newEnseignant);
 			DatabaseManager.insertEnseignant(newEnseignant);
 		}	
@@ -44,7 +47,9 @@ public class InscriptionController {
 			}
 		}
 		if (!already_exist) {
-			Personnel newPersonnel = new Personnel(nom,prenom,dateNaissance,metier,login,password);
+			int maxPersonnelId = DatabaseManager.getMaxPersonnelId();
+
+			Personnel newPersonnel = new Personnel(maxPersonnelId+1, nom,prenom,dateNaissance,metier,login,password);
 			listePersonnel.add(newPersonnel);
 			DatabaseManager.insertPersonnel(newPersonnel);
 		}	 

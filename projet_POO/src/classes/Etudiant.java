@@ -3,7 +3,6 @@ package classes;
 
 public class Etudiant
   {
-    private static int dernierId = 0; // Variable statique pour suivre le dernier ID attribué
 
 	private int id;
     private String nom;
@@ -15,8 +14,8 @@ public class Etudiant
     private int idFormation;
     private int  idPromotion;
   
-    public Etudiant(String nom, String prenom, int idPromotion, String dateNaissance, int idFormation, String login, String password) {
-        this.id = ++dernierId; // Incrémente l'ID à chaque nouvelle instance
+    public Etudiant(int id, String nom, String prenom, int idPromotion, String dateNaissance, int idFormation, String login, String password) {
+        this.id = id; // Incrémente l'ID à chaque nouvelle instance
     	this.nom = nom;
     	this.prenom = prenom;
     	this.dateNaissance = dateNaissance;

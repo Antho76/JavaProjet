@@ -71,7 +71,7 @@ public class DatabaseManager {
     }
 
     private static void insertAdminPrincipal(Connection connection) {
-		Personnel newPersonnel = new Personnel("admin","admin","00/00/0000","admin","admin","adminpass");
+		Personnel newPersonnel = new Personnel(0, "admin","admin","00/00/0000","admin","admin","adminpass");
 		
     	String query = "INSERT INTO personnel (id, nom, prenom, dateNaissance, metier, login, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
@@ -92,7 +92,7 @@ public class DatabaseManager {
    }
     
     private static void insertElevePrincipal(Connection connection) {
-		Etudiant newEtudiant = new Etudiant("etudiant","etudiant",0,"00/00/0000", 0,"etudiant","etudiantpass");
+		Etudiant newEtudiant = new Etudiant(0,"etudiant","etudiant",0,"00/00/0000", 0,"etudiant","etudiantpass");
 		
     	String query = "INSERT INTO etudiant (id, nom, prenom, dateNaissance, login, password, idFormation, idPromotion) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -224,6 +224,7 @@ public class DatabaseManager {
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     while (resultSet.next()) {
                     	Etudiant etudiant = new Etudiant(
+                    			resultSet.getInt("id"),
                     		    resultSet.getString("nom"),
                     		    resultSet.getString("prenom"),
                     		    resultSet.getInt("idPromotion"),
@@ -247,12 +248,13 @@ public class DatabaseManager {
         List<Personnel> personnels = new ArrayList<>();
 
         try (Connection connection = connect()) {
-            String query = "SELECT nom, prenom, dateNaissance, metier, login, password, metier FROM personnel";
+            String query = "SELECT id, nom, prenom, dateNaissance, metier, login, password, metier FROM personnel";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     while (resultSet.next()) {
                     	Personnel personnel = new Personnel(
+                    			resultSet.getInt("id"),
                                 resultSet.getString("nom"),
                                 resultSet.getString("prenom"),
                                 resultSet.getString("dateNaissance"),
@@ -275,12 +277,13 @@ public class DatabaseManager {
         List<Enseignant> enseignants = new ArrayList<>();
 
         try (Connection connection = connect()) {
-            String query = "SELECT nom, prenom, dateNaissance, genre, login, password, idMatiere FROM enseignant";
+            String query = "SELECT id, nom, prenom, dateNaissance, genre, login, password, idMatiere FROM enseignant";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     while (resultSet.next()) {
                     	Enseignant enseignant = new Enseignant(
+                                resultSet.getInt("id"),
                                 resultSet.getString("nom"),
                                 resultSet.getString("prenom"),
                                 resultSet.getString("dateNaissance"),
@@ -334,6 +337,67 @@ public class DatabaseManager {
         return coursList;
     }
     */
+    
+    public static int getMaxEtudiantId() {
+        int maxId = -1;
+
+        try (Connection connection = connect()) {
+            // Requête SQL pour obtenir le maximum de l'ID dans la table des étudiants
+            String query = "SELECT MAX(id) FROM etudiant";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        maxId = resultSet.getInt(1);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return maxId;
+    }
+    public static int getMaxPersonnelId() {
+        int maxId = -1;
+
+        try (Connection connection = connect()) {
+            // Requête SQL pour obtenir le maximum de l'ID dans la table des étudiants
+            String query = "SELECT MAX(id) FROM personnel";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        maxId = resultSet.getInt(1);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return maxId;
+    }
+    public static int getMaxEnseignantId() {
+        int maxId = -1;
+
+        try (Connection connection = connect()) {
+            // Requête SQL pour obtenir le maximum de l'ID dans la table des étudiants
+            String query = "SELECT MAX(id) FROM enseignant";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        maxId = resultSet.getInt(1);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return maxId;
+    }
     public static void disconnect(Connection connection) {
         if (connection != null) {
             try {
