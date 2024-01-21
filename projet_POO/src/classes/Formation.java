@@ -6,20 +6,19 @@ public class Formation
 	private static int dernierIdFormation;
 	private int id_formation;
 	private String nomFormation;
-	private Promotion promotion;
+	private int idPromotion;
   
 	public Formation(){
 		dernierIdFormation++;
 		this.id_formation = dernierIdFormation;
 		this.nomFormation="";
-		this.promotion= new Promotion();
+		this.idPromotion= 0;
 	}
   
-	public Formation(String nomFormation, Promotion promotion){
-		dernierIdFormation++;
-		this.id_formation = dernierIdFormation;
+	public Formation(int id_formation, String nomFormation, int idPromotion){
+		this.id_formation = id_formation;
 		this.nomFormation = nomFormation;
-		this.promotion = promotion;
+		this.idPromotion = idPromotion;
 	}
 
 	public int getId_Formation(){
@@ -30,8 +29,8 @@ public class Formation
     	return this.nomFormation;
     }
   
-    public Promotion getPromotion(){
-    	return this.promotion;
+    public int getIdPromotion(){
+    	return this.idPromotion;
     }
     
     public void setId_Formation(int id_formation) {
@@ -41,8 +40,8 @@ public class Formation
     public void setNomFormation(String nomFormation){
     	this.nomFormation = nomFormation;
     }
-    public void setPromotion(Promotion promotion){
-    	this.promotion = promotion;
+    public void setPromotion(int idPromotion){
+    	this.idPromotion = idPromotion;
     }
 
   //toString
