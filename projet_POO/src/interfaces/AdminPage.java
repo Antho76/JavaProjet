@@ -66,15 +66,32 @@ public class AdminPage {
         });
         panel.add(afficherEleves, gbc);
 
-        JButton creerClasseButton = new JButton("Créer une Classe");
-        creerClasseButton.addActionListener(new ActionListener() {
+        JButton creerPromotionButton = new JButton("Créer une Promotion");
+        creerPromotionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Ajoutez ici la logique pour ouvrir la page de création de classe
                 JOptionPane.showMessageDialog(frame, "Ouvrir la page de création de classe");
             }
         });
-        panel.add(creerClasseButton, gbc);
+        panel.add(creerPromotionButton, gbc);
+        
+        JButton gererCoursButton = new JButton("Gérer les cours");
+        gererCoursButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Ajoutez ici la logique pour ouvrir la page de création de classe
+                JOptionPane.showMessageDialog(frame, "Ouvrir la page de gestion de cours");
+                
+                List<Cours> cours = DatabaseManager.getCours();
+                
+                SwingUtilities.invokeLater(() -> {
+                    ShowPageCours showPageCours = new ShowPageCours(cours);
+                    showPageCours.setVisible(true);
+                });
+            }
+           });
+        panel.add(gererCoursButton, gbc);
         
         JButton retourButton = new JButton("Deconnection");
         retourButton.setBounds(10, 340, 120, 25);
