@@ -91,6 +91,8 @@ public class Enseignant {
   public void setMatiere(int idMatiere){
     this.idMatiere = idMatiere;
   }
+  
+ 
 
   public String toString() 
   {

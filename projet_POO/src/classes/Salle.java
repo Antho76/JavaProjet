@@ -17,7 +17,8 @@ public class Salle
 		this.equipInfo = false;
 	}
 
-	public Salle(int nbPlaces, int nbEtudiants,boolean equipInfo){
+	public Salle(int numeroSalle, int nbPlaces, int nbEtudiants,boolean equipInfo){
+		this.numeroSalle = numeroSalle;
 		this.nbPlaces = nbPlaces;
 		this.nbEtudiants = nbEtudiants;
 		this.equipInfo = equipInfo;

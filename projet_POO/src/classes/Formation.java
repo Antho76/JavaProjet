@@ -3,14 +3,12 @@ package classes;
 
 public class Formation 
 {
-	private static int dernierIdFormation;
 	private int id_formation;
 	private String nomFormation;
 	private int idPromotion;
   
-	public Formation(){
-		dernierIdFormation++;
-		this.id_formation = dernierIdFormation;
+	public Formation(){;
+		this.id_formation = 0;
 		this.nomFormation="";
 		this.idPromotion= 0;
 	}

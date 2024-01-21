@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+import classes.Cours;
 import classes.Enseignant;
 import classes.Etudiant;
 import classes.Personnel;
@@ -86,6 +87,7 @@ public class AdminPage {
         });
         panel.add(afficherEleves, gbc);
 
+
         JButton creerFormationButton = new JButton("ajouter une formation");
         creerFormationButton.addActionListener(new ActionListener() {
             @Override
@@ -94,10 +96,11 @@ public class AdminPage {
                 JOptionPane.showMessageDialog(frame, "Ouvrir la page de création de formation");
             }
         });
+
         panel.add(creerFormationButton, gbc);
 
-        JButton creerPromotionButton = new JButton("ajouter une promotion");
-        creerPromotionButton.addActionListener(new ActionListener() {
+			JButton creerPromotionButton = new JButton("Créer une Promotion");
+			creerPromotionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Ajoutez ici la logique pour ouvrir la page de création de promotion
@@ -126,7 +129,28 @@ public class AdminPage {
         });
         panel.add(creerSalleeButton, gbc);
 
-        JButton retourButton = new JButton("Deconnexion");
+        panel.add(creerPromotionButton, gbc);
+        
+        JButton gererCoursButton = new JButton("Gérer les cours");
+        gererCoursButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Ajoutez ici la logique pour ouvrir la page de création de classe
+                JOptionPane.showMessageDialog(frame, "Ouvrir la page de gestion de cours");
+                
+                List<Cours> cours = DatabaseManager.getCours();
+                
+                SwingUtilities.invokeLater(() -> {
+                    ShowPageCours showPageCours = new ShowPageCours(cours);
+                    showPageCours.setVisible(true);
+                });
+            }
+           });
+        panel.add(gererCoursButton, gbc);
+        
+        JButton retourButton = new JButton("Deconnection");
+        retourButton.setBounds(10, 340, 120, 25);
+
         retourButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

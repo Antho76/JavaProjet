@@ -10,6 +10,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.time.*;
 
 import classes.*;
 
@@ -65,6 +69,9 @@ public class DatabaseManager {
                 insertElevePrincipal(connection);
                 insertMatierePrincipale(connection);
                 insertEnseignantPrincipal(connection);
+                insertSallePrincipale(connection);
+                insertCoursPrincipal(connection);
+                
 
                 System.out.println("Tables créées avec succès!");
             } catch (SQLException e) {
@@ -155,7 +162,9 @@ public class DatabaseManager {
 
     Formation formation = new Formation(0,"formation",0);
 	
+
 	String query = "INSERT INTO formation (id_formation,nomFormation, idpromotion) VALUES (?, ?,?)";
+
 
     try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
         preparedStatement.setInt(1, formation.getId_Formation());
@@ -179,6 +188,48 @@ public class DatabaseManager {
             preparedStatement.setString(2, matiere.getNomMatiere());
             preparedStatement.setInt(3, matiere.getCoefficient());
 
+            preparedStatement.executeUpdate();
+        }
+         catch (SQLException e) {
+            e.printStackTrace();
+         }
+    }
+    
+    private static void insertSallePrincipale(Connection connection) {
+    	
+        Salle salle = new Salle(0,10,10,false);
+    	
+    	String query = "INSERT INTO salle (numeroSalle,nbPlaces, nbEtudiants, equipInfo) VALUES (?, ?, ?, ?)";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, salle.getNumeroSalle());
+            preparedStatement.setInt(2, salle.getNbPlaces());
+            preparedStatement.setInt(3, salle.getNbEtudiants());
+            preparedStatement.setBoolean(4, salle.getEquipInfo());
+            
+            preparedStatement.executeUpdate();
+        }
+         catch (SQLException e) {
+            e.printStackTrace();
+         }
+    }
+    
+    private static void insertCoursPrincipal(Connection connection) {
+    	LocalDate ld = LocalDate.of(2024, 1, 23);
+        Cours cours = new Cours(0,0,"",0,ld,0,0,0);
+    	
+    	String query = "INSERT INTO cours (idCours,nbEtudiant, tabEtudiants, idEnseignant, date, heure, idMatiere, idSalle) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, cours.getId());
+            preparedStatement.setInt(2, cours.getNbEtudiant());
+            preparedStatement.setString(3, cours.getTabEtudiants());
+            preparedStatement.setInt(4, cours.getEnseignant());
+            preparedStatement.setObject(5, cours.getDate());
+            preparedStatement.setInt(6, cours.getHeure());
+            preparedStatement.setInt(7, cours.getMatiere());
+            preparedStatement.setInt(8, cours.getSalle());
+            
             preparedStatement.executeUpdate();
         }
          catch (SQLException e) {
@@ -358,7 +409,7 @@ public class DatabaseManager {
 
         return enseignants;
     }
-    /*
+    
     public static List<Cours> getCoursPourSemaine(int numeroSemaine) {
         List<Cours> coursList = new ArrayList<>();
 
@@ -369,20 +420,17 @@ public class DatabaseManager {
                 preparedStatement.setInt(1, numeroSemaine);
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     while (resultSet.next()) {
-                        // Remplissez l'objet Cours en supposant que les champs correspondent
-                        Cours cours = new Cours();
-                        cours.setNbEtudiant(resultSet.getInt("nbEtudiant"));
-                        // cours.setTabEtudiants(...); // La gestion des étudiants n'est pas claire dans ce contexte
-                        cours.setIdEnseignant(resultSet.getInt("idEnseignant"));
-                        cours.setDate(resultSet.getDate("date"));
-                        cours.setHeure(resultSet.getInt("heure"));
-
-                        Matiere matiere = new Matiere(); // Vous devrez adapter selon la structure de votre classe Matiere
-                        cours.setMatiere(matiere);
-
-                        Salle salle = new Salle(); // Vous devrez adapter selon la structure de votre classe Salle
-                        cours.setSalle(salle);
-
+                    	LocalDate ld = resultSet.getObject( "date" , LocalDate.class );
+                    	Cours cours = new Cours(
+                        resultSet.getInt("idCours"),
+                        resultSet.getInt("nbEtudiant"),
+                        resultSet.getString("tabEtudiant"),
+                        resultSet.getInt("enseignant"),
+                        ld,
+                        resultSet.getInt("heure"),
+                        resultSet.getInt("idMatiere"),
+                        resultSet.getInt("idSalle") 
+                        );
                         coursList.add(cours);
                     }
                 }
@@ -393,7 +441,124 @@ public class DatabaseManager {
 
         return coursList;
     }
-    */
+    public static List<Matiere> getMatiere() {
+        List<Matiere> listMatiere = new ArrayList<>();
+
+        try (Connection connection = connect()) {
+            String query = "SELECT numeroMatiere, nomMatiere, coefficient FROM matiere";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                    	
+                    	Matiere matiere = new Matiere(
+                                resultSet.getInt("numeroMatiere"),
+                                resultSet.getString("nomMatiere"),
+                                resultSet.getInt("coefficient")
+
+                               
+                        );
+                    	listMatiere.add(matiere);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listMatiere;
+    }
+    
+    public static List<Salle> getSalle() {
+        List<Salle> listSalle = new ArrayList<>();
+
+        try (Connection connection = connect()) {
+            String query = "SELECT numeroSalle, nbPlaces, nbEtudiants, equipInfo FROM salle";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                    	
+                    	Salle salle = new Salle(
+                                resultSet.getInt("numeroSalle"),
+                                resultSet.getInt("nbPlaces"),
+                                resultSet.getInt("nbEtudiants"),
+                                resultSet.getBoolean("equipInfo")    
+                        );
+                    	listSalle.add(salle);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listSalle;
+    }
+    
+    public static List<Cours> getCours() {
+        List<Cours> listCours = new ArrayList<>();
+
+        try (Connection connection = connect()) {
+            String query = "SELECT idCours, nbEtudiant, tabEtudiants, idEnseignant, date, heure, idMatiere, idSalle FROM cours";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                    	/*String tabEtudiant = resultSet.getString("tabEtudiant");
+                    	String[] entiersEnTableau = tabEtudiant.split(",");
+                    	Etudiant[] tabEtudiantCours = new Etudiant[entiersEnTableau.length];
+                    	for (int i = 0; i < entiersEnTableau.length; i++) {
+                            int idEtudiant = Integer.parseInt(entiersEnTableau[i].trim());
+                            Etudiant etudiantCours = null;
+                            List<Etudiant> listeEtudiant = DatabaseManager.getStudents();  
+                		    for (Etudiant etudiant : listeEtudiant) {
+                		        if (etudiant.getId() == idEtudiant) {
+                		        	etudiantCours = etudiant;
+                		        }
+                		    }
+                            tabEtudiantCours[i] = etudiantCours;
+                        }
+                    	
+                    	int idMatiere = resultSet.getInt("idMatiere");
+                    	Matiere matiereCours = null;
+                    	List<Matiere> listeMatiere = DatabaseManager.getMatiere();
+            		    for (Matiere matiere : listeMatiere) {
+            		        if (matiere.getNumeroMatiere() == idMatiere) {
+            		        	matiereCours = matiere;
+            		        }
+            		    }
+            		    
+                    	int idSalle = resultSet.getInt("idSalle");
+                    	Salle salleCours = null;
+                    	List<Salle> listeSalle = DatabaseManager.getSalle();
+            		    for (Salle salle : listeSalle) {
+            		        if (salle.getNumeroSalle() == idSalle) {
+            		        	salleCours = salle;
+            		        }
+            		    }*/
+                    	LocalDate ld = resultSet.getObject( "date" , LocalDate.class );
+                    	Cours cours = new Cours(
+                                resultSet.getInt("idCours"),
+                                resultSet.getInt("nbEtudiant"),
+                                resultSet.getString("tabEtudiants"),
+                                resultSet.getInt("idEnseignant"),
+                                ld,
+                                resultSet.getInt("heure"),
+                                resultSet.getInt("idMatiere"),
+                                resultSet.getInt("idSalle") 
+                        );
+                    	listCours.add(cours);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listCours;
+    }
+    
     
     public static int getMaxEtudiantId() {
         int maxId = -1;
