@@ -116,7 +116,7 @@ public class DatabaseManager {
          }
    }
     private static void insertEnseignantPrincipal(Connection connection) {
-		Enseignant newEnseignant = new Enseignant("enseignant","enseignant","00/00/0000",0,"enseignant","enseignantpass");
+		Enseignant newEnseignant = new Enseignant(0,"enseignant","enseignant","00/00/0000",0,"enseignant","enseignantpass");
 		
     	String query = "INSERT INTO enseignant (id, nom, prenom, dateNaissance, idMatiere, login, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
