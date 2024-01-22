@@ -31,7 +31,7 @@ public class AdminPage {
         frame.add(panel);
 
         // Ajout des boutons
-        JButton ajouterProfesseurButton = new JButton("Ajouter un Professeur");
+        JButton ajouterProfesseurButton = new JButton("Ajouter un Enseignant");
         ajouterProfesseurButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -71,7 +71,7 @@ public class AdminPage {
         });
         panel.add(ajouterElevesButton, gbc);
 
-        JButton afficherEleves = new JButton("Afficher les élèves");
+        JButton afficherEleves = new JButton("Afficher les Élèves");
         afficherEleves.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
