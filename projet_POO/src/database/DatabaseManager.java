@@ -947,7 +947,7 @@ public class DatabaseManager {
         return maxId;
     }
     
-<<<<<<< HEAD
+
     public static int getMaxFormationId() {
         int maxId = -1;
 
@@ -990,7 +990,6 @@ public class DatabaseManager {
         return maxId;
     }
     
-=======
     public static int getMaxCoursId() {
         int maxId = -1;
 
@@ -1011,7 +1010,7 @@ public class DatabaseManager {
 
         return maxId;
     }
->>>>>>> refs/remotes/origin/main_qui_marche_pas
+
     public static void disconnect(Connection connection) {
         if (connection != null) {
             try {
