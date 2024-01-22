@@ -6,9 +6,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import javax.swing.text.MaskFormatter;
-
-import classes.Personnel;
+import java.util.ArrayList;
+import java.util.List;
+import classes.*;
 import controller.InscriptionController;
+import database.DatabaseManager;
 
 public class interfaceAddEtudiant {
     private JFrame mainFrame;
@@ -88,21 +90,31 @@ public class interfaceAddEtudiant {
         userText.setBounds(150, 140, 165, 25);
         panel.add(userText);
 
-        JLabel formationLabel = new JLabel("id Formation:");
+        // Ajout de la liste des formations
+        JLabel formationLabel = new JLabel("Formation :");
         formationLabel.setBounds(10, 180, 120, 25);
         panel.add(formationLabel);
 
-        JTextField formationText = new JTextField(20);
-        formationText.setBounds(150, 180, 165, 25);
-        panel.add(formationText);
+        JComboBox<Formation> formationComboBox = new JComboBox<>();
+        List<Formation> formations = DatabaseManager.getFormations();
+        for (Formation formation : formations) {
+            formationComboBox.addItem(formation);
+        }
+        formationComboBox.setBounds(150, 180, 165, 25);
+        panel.add(formationComboBox);
 
-        JLabel promotionLabel = new JLabel("id Promotion:");
+        // Ajout de la liste des promotions
+        JLabel promotionLabel = new JLabel("Promotion :");
         promotionLabel.setBounds(10, 220, 120, 25);
         panel.add(promotionLabel);
 
-        JTextField promotionText = new JTextField(20);
-        promotionText.setBounds(150, 220, 165, 25);
-        panel.add(promotionText);
+        JComboBox<Promotion> promotionComboBox = new JComboBox<>();
+        List<Promotion> promotions = DatabaseManager.getPromotions();
+        for (Promotion promotion : promotions) {
+            promotionComboBox.addItem(promotion);
+        }
+        promotionComboBox.setBounds(150, 220, 165, 25);
+        panel.add(promotionComboBox);
 
         JLabel passwordLabel = new JLabel("Mot de passe:");
         passwordLabel.setBounds(10, 260, 120, 25);
@@ -121,8 +133,6 @@ public class interfaceAddEtudiant {
                 String nom = nomText.getText();
                 String prenom = prenomText.getText();
                 String dateNaissance = birthText.getText();
-                String formation = formationText.getText();
-                String promotion = promotionText.getText();
                 String login = userText.getText();
                 String password = new String(passwordText.getPassword());
 
@@ -130,15 +140,12 @@ public class interfaceAddEtudiant {
                     JOptionPane.showMessageDialog(null, "Veuillez remplir tous les champs.", "Champs vides", JOptionPane.ERROR_MESSAGE);
                 } else {
                     try {
-                        int promotionInt = 0;
-                        int formationInt = 0;
-                        try {
-                            promotionInt = Integer.parseInt(promotionText.getText());
-                            formationInt = Integer.parseInt(formationText.getText());
-                        } catch (NumberFormatException ex) {
-                            JOptionPane.showMessageDialog(null, "Veuillez saisir un nombre entier pour l'id de promotion.", "Erreur de saisie", JOptionPane.ERROR_MESSAGE);
-                            return;
-                        }
+                        Formation selectedFormation = (Formation) formationComboBox.getSelectedItem();
+                        Promotion selectedPromotion = (Promotion) promotionComboBox.getSelectedItem();
+
+                        int promotionInt = selectedPromotion.getId();
+                        int formationInt = selectedFormation.getId_Formation();
+
                         inscriptionController.inscriptionEtudiant(nom, prenom, promotionInt, dateNaissance, formationInt, login, password);
                         afficherMessageUtilisateurInscrit();
                     } catch (Exception e1) {
