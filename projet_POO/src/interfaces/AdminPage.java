@@ -16,7 +16,7 @@ public class AdminPage {
     public void afficherInterface(Personnel person) {
         // Création de la fenêtre principale
         JFrame frame = new JFrame("Page d'Administration");
-        frame.setSize(600, 500); // Ajustez la taille selon vos besoins
+        frame.setSize(700, 600); // Ajustez la taille selon vos besoins
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Création du panel pour ajouter les composants
