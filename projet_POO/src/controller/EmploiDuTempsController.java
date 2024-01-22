@@ -3,6 +3,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import classes.Cours;
@@ -10,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import database.DatabaseManager;
+import java.time.*;
 
 public class EmploiDuTempsController {
 	
@@ -60,35 +62,31 @@ public class EmploiDuTempsController {
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
-    public String[][] getCoursPourSemaineInterface(String dateDebutSemaine, String dateFinSemaine) {
-        try {
-            Date dateDebut = dateFormat.parse(dateDebutSemaine);
-            Date dateFin = dateFormat.parse(dateFinSemaine);
+    public String[][] getCoursPourSemaineInterface(LocalDate dateDebutSemaine, LocalDate dateFinSemaine) {
+        LocalDate dateDebut = dateDebutSemaine;
+        LocalDate dateFin = dateFinSemaine;
 
-            // Appel à DatabaseManager pour récupérer les cours
-            List<Cours> coursList = DatabaseManager.getCoursPourSemaine(dateDebut, dateFin);
+        // Appel à DatabaseManager pour récupérer les cours
+        List<Cours> coursList = DatabaseManager.getCoursPourSemaine(dateDebut, dateFin);
 
-            // Traitement des données pour les mettre dans le format requis par le frontend
-            String[][] semaine = new String[10][6]; // Exemple de tableau avec 10 créneaux horaires et 5 jours de la semaine
-            // Initialisation du tableau
-            for (int i = 0; i < 10; i++) {
-                for (int j = 0; j < 6; j++) {
-                    semaine[i][j] = ""; // Initialise avec des chaînes vides
-                }
+        // Traitement des données pour les mettre dans le format requis par le frontend
+        String[][] semaine = new String[10][6]; // Exemple de tableau avec 10 créneaux horaires et 5 jours de la semaine
+        // Initialisation du tableau
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 6; j++) {
+                semaine[i][j] = ""; // Initialise avec des chaînes vides
             }
-            // Remplissage du tableau avec les cours
-            for (Cours cours : coursList) {
-                int jour = cours.getDate().getDayOfWeek().getValue() - 1; // Lundi = 1, Dimanche = 7
-                int creneau = cours.getHeure(); // Supposer que l'heure correspond à un créneau
-                int id=cours.getMatiere();
-                String nomMatiere=getNomMatiere(id);
-;               semaine[creneau][jour] = nomMatiere; // Supposer que vous avez une méthode getNomMatiere() dans Cours
-            }
-
-            return semaine;
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return new String[0][0]; // Retourne un tableau vide en cas d'erreur
         }
+        // Remplissage du tableau avec les cours
+        for (Cours cours : coursList) {
+            int jour = cours.getDate().getDayOfWeek().getValue() - 1; // Lundi = 1, Dimanche = 7
+            int creneau = cours.getHeure(); // Supposer que l'heure correspond à un créneau
+            int id = cours.getMatiere();
+            String nomMatiere = getNomMatiere(id);
+            semaine[creneau][jour] = nomMatiere; // Supposer que vous avez une méthode getNomMatiere() dans Cours
+        }
+
+        return semaine;
     }
 }
+
