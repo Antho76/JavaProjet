@@ -71,6 +71,10 @@ public class Cours{
 	public void setNbEtudiant(int nbEtudiant){
 		this.nbEtudiant = nbEtudiant;
 	}
+	
+	public void setTabEtudiants(String tabEtudiants){
+		this.tabEtudiants = tabEtudiants;
+	}
   
 	public void setIdEnseignant(int idEnseignant) {
 		this.idEnseignant = idEnseignant;

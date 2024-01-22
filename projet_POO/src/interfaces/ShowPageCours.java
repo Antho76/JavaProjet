@@ -8,10 +8,12 @@ import classes.Enseignant;
 import classes.Matiere;
 import classes.Personnel;
 import database.DatabaseManager;
+import java.time.*;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ShowPageCours extends JFrame {
@@ -22,6 +24,87 @@ public class ShowPageCours extends JFrame {
     public ShowPageCours(List<Cours> listCours) {
         this.listCours = listCours;
         initUICours();
+    }
+    
+    private void editCours(Cours selectedCours, JList<String> jListCours) {
+        // Create a JPanel to hold the input fields for editing
+    	JPanel editPanel = new JPanel(new GridBagLayout());
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(5, 5, 5, 5); // Add spacing between components
+
+        JTextField nbEtudiantField = new JTextField(String.valueOf(selectedCours.getNbEtudiant()));
+        nbEtudiantField.setPreferredSize(new Dimension(150, 25)); // Adjust the preferred size
+        editPanel.add(new JLabel("Nombre d'étudiants:"), gbc);
+        gbc.gridx++;
+        editPanel.add(nbEtudiantField, gbc);
+        
+        JTextField tabEtudiantsField = new JTextField(selectedCours.getTabEtudiants());
+        JTextField dateField = new JTextField(selectedCours.getDate().toString());
+        JTextField heureField = new JTextField(String.valueOf(selectedCours.getHeure()));
+        
+        // Add more fields as needed based on your Cours class
+        
+        DefaultListModel<String> etudiantsListModel = new DefaultListModel<>();
+        List<Etudiant> listeEtudiants = DatabaseManager.getStudents();
+        for (Etudiant etudiant : listeEtudiants) {
+            etudiantsListModel.addElement(etudiant.getNom() + " " + etudiant.getPrenom());
+        }
+        
+        JList<String> etudiantsSelectedList = new JList<>(etudiantsListModel);
+        etudiantsSelectedList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+
+        JScrollPane etudiantsScrollPane = new JScrollPane(etudiantsSelectedList);
+        
+        
+
+        editPanel.add(new JLabel("Étudiants:"));
+        editPanel.add(etudiantsScrollPane);
+        editPanel.add(new JLabel("Date (YYYY-MM-DD):"));
+        editPanel.add(dateField);
+        editPanel.add(new JLabel("Heure:"));
+        editPanel.add(heureField);
+
+        // Add more labels and fields based on your Cours class
+
+        JScrollPane editScrollPane = new JScrollPane(editPanel);
+        
+        int result = JOptionPane.showConfirmDialog(null, editScrollPane,
+                "Modifier le cours", JOptionPane.OK_CANCEL_OPTION);
+
+        if (result == JOptionPane.OK_OPTION) {
+            int editedNbEtudiant = Integer.parseInt(nbEtudiantField.getText());
+            LocalDate editedDate = LocalDate.parse(dateField.getText());
+
+            List<String> selectedEtudiants = etudiantsSelectedList.getSelectedValuesList();
+            List<String> selectedEtudiantsID = new ArrayList<>();;
+            for (String selectedEtu : selectedEtudiants) {
+            	String[] etudiantNomPrenom = selectedEtu.split(" ");
+            	for (Etudiant etudiant : listeEtudiants) {
+                    if ( etudiant.getNom().equals(etudiantNomPrenom[0]) && etudiant.getPrenom().equals(etudiantNomPrenom[1]) ) {
+                    	selectedEtudiantsID.add(Integer.toString(etudiant.getId()));
+                    }
+                }
+            }
+            
+            String editedtabEtudiants = String.join(",", selectedEtudiantsID);
+            
+            int editedHeure = Integer.parseInt(heureField.getText());
+
+            // Update the selectedCours object with the edited values
+            selectedCours.setNbEtudiant(editedNbEtudiant);
+            selectedCours.setTabEtudiants(editedtabEtudiants);
+            selectedCours.setDate(editedDate);
+            selectedCours.setHeure(editedHeure);
+
+            // Update the course in the database
+            DatabaseManager.updateCours(selectedCours);
+
+            // Refresh the course list
+            refreshCoursList(jListCours);
+        }
     }
     
     private void initUICours() {
@@ -167,19 +250,15 @@ public class ShowPageCours extends JFrame {
                             new Object[]{"Modifier", "Supprimer"}, null);
 
                     if (option == 0) {
-                        // Logique pour la modification
-                        // ...
+                    	editCours(selectedCours,jListCours);
                     } else if (option == 1) {
-                        // Logique pour la suppression
                         int confirmOption = JOptionPane.showConfirmDialog(ShowPageCours.this,
                                 "Voulez-vous vraiment supprimer le cours :\n" + details,
                                 "Confirmation de suppression", JOptionPane.YES_NO_OPTION);
 
                         if (confirmOption == JOptionPane.YES_OPTION) {
-                            // Appeler la fonction de suppression ici
                             DatabaseManager.deleteCours(selectedCours.getId());
 
-                            // Rafraîchir la liste des cours ou effectuer d'autres actions nécessaires
                             refreshCoursList(jListCours);
                         }
                     }
