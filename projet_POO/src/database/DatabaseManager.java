@@ -143,22 +143,23 @@ public class DatabaseManager {
             e.printStackTrace();
          }
    } 
+    
     private static void insertPromoPrincipal(Connection connection) {
 
-    Promotion promotion = new Promotion(0,2023);
+	    Promotion promotion = new Promotion(0,2023);
+		
+		String query = "INSERT INTO promotion (numeroPromotion, annee) VALUES (?, ?)";
 	
-	String query = "INSERT INTO promotion (numeroPromotion, annee) VALUES (?, ?)";
-
-    try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-        preparedStatement.setInt(1, promotion.getId());
-        preparedStatement.setInt(2, promotion.getAnnee());
-
-        preparedStatement.executeUpdate();
+	    try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+	        preparedStatement.setInt(1, promotion.getId());
+	        preparedStatement.setInt(2, promotion.getAnnee());
+	
+	        preparedStatement.executeUpdate();
+	    }
+	     catch (SQLException e) {
+	        e.printStackTrace();
+	     }
     }
-     catch (SQLException e) {
-        e.printStackTrace();
-     }
-}
     private static void insertFormationPrincipal(Connection connection) {
 
     Formation formation = new Formation(0,"formation",0);
@@ -178,6 +179,7 @@ public class DatabaseManager {
         e.printStackTrace();
      }
 }
+    
     private static void insertMatierePrincipale(Connection connection) {
 
         Matiere matiere = new Matiere(0,"matiere",1);
@@ -670,38 +672,6 @@ public class DatabaseManager {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     while (resultSet.next()) {
-                    	/*String tabEtudiant = resultSet.getString("tabEtudiant");
-                    	String[] entiersEnTableau = tabEtudiant.split(",");
-                    	Etudiant[] tabEtudiantCours = new Etudiant[entiersEnTableau.length];
-                    	for (int i = 0; i < entiersEnTableau.length; i++) {
-                            int idEtudiant = Integer.parseInt(entiersEnTableau[i].trim());
-                            Etudiant etudiantCours = null;
-                            List<Etudiant> listeEtudiant = DatabaseManager.getStudents();  
-                		    for (Etudiant etudiant : listeEtudiant) {
-                		        if (etudiant.getId() == idEtudiant) {
-                		        	etudiantCours = etudiant;
-                		        }
-                		    }
-                            tabEtudiantCours[i] = etudiantCours;
-                        }
-                    	
-                    	int idMatiere = resultSet.getInt("idMatiere");
-                    	Matiere matiereCours = null;
-                    	List<Matiere> listeMatiere = DatabaseManager.getMatiere();
-            		    for (Matiere matiere : listeMatiere) {
-            		        if (matiere.getNumeroMatiere() == idMatiere) {
-            		        	matiereCours = matiere;
-            		        }
-            		    }
-            		    
-                    	int idSalle = resultSet.getInt("idSalle");
-                    	Salle salleCours = null;
-                    	List<Salle> listeSalle = DatabaseManager.getSalle();
-            		    for (Salle salle : listeSalle) {
-            		        if (salle.getNumeroSalle() == idSalle) {
-            		        	salleCours = salle;
-            		        }
-            		    }*/
                     	LocalDate ld = resultSet.getObject( "date" , LocalDate.class );
                     	Cours cours = new Cours(
                                 resultSet.getInt("idCours"),
