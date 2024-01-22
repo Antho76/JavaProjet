@@ -4,43 +4,43 @@ package classes;
 public class Avertissement 
 {
   private String nom;
-  private Etudiant etudiant;
-  private Enseignant enseignant;
+  private int idEtudiant;
+  private int idEnseignant;
 
   public Avertissement(){
     this.nom = "";
-    this.etudiant = null;
-    this.enseignant = null;
+    this.idEtudiant = 0;
+    this.idEnseignant = 0;
   }
 
-  public Avertissement(String nom, Etudiant etudiant, Enseignant enseignant){
+  public Avertissement(String nom, int etudiant, int enseignant){
     this.nom = nom;
-    this.etudiant = etudiant;
-    this.enseignant = enseignant;
+    this.idEtudiant = etudiant;
+    this.idEnseignant = enseignant;
   }
 
   public String getNom() {
     return this.nom;
   }
 
-  public Etudiant getEtudiant() {
-    return this.etudiant;
+  public int getEtudiant() {
+    return this.idEtudiant;
   }
 
-  public Enseignant getEnseignant() {
-    return this.enseignant;
+  public int getEnseignant() {
+    return this.idEnseignant;
   }
 
   public void setNom(String nom) {
     this.nom = nom;
   }
 
-  public void setEtudiant(Etudiant etudiant) {
-    this.etudiant = etudiant;
+  public void setEtudiant(int etudiant) {
+    this.idEtudiant = etudiant;
   }
 
-  public void setEnseignant(Enseignant enseignant) {
-    this.enseignant = enseignant;
+  public void setEnseignant(int enseignant) {
+    this.idEnseignant = enseignant;
   }
 }
 

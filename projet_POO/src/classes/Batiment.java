@@ -7,17 +7,17 @@ public class Batiment
   private String ville;
   private String nomBatiment;
   private int nbSalles;
-  private Salle[] tabSalles;
+  private String tabSalles;
 
   public Batiment() {
     this.numeroBatiment = 0;
     this.ville = "";
     this.nomBatiment = "";
     this.nbSalles = 0;
-    this.tabSalles = new Salle[0];
+    this.tabSalles = "";
   }
 
-  public Batiment(int numeroBatiment, String ville, String nomBatiment, int nbSalles, Salle[] tabSalles) {
+  public Batiment(int numeroBatiment, String ville, String nomBatiment, int nbSalles, String tabSalles) {
     this.numeroBatiment = numeroBatiment;
     this.ville = ville;
     this.nomBatiment = nomBatiment;
@@ -41,7 +41,7 @@ public class Batiment
     return this.nbSalles;
   }
 
-  public Salle[] getTabSalles() {
+  public String getTabSalles() {
     return this.tabSalles;
   }
 
@@ -61,7 +61,7 @@ public class Batiment
     this.nbSalles = nbSalles;
   }
 
-  public void setTabSalles(Salle[] tabSalles) {
+  public void setTabSalles(String tabSalles) {
     this.tabSalles = tabSalles;
   }
 }

@@ -261,6 +261,80 @@ public class DatabaseManager {
         }
     }
     
+    public static void insertAvertissement(Avertissement avertissement) {
+        try (Connection connection = connect()) {
+            String query = "INSERT INTO avertissement (nom, idEtudiant, idEnseignant) VALUES (?, ?, ?)";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, avertissement.getNom());
+                preparedStatement.setInt(2, avertissement.getEtudiant());
+                preparedStatement.setInt(3, avertissement.getEnseignant());
+
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static void insertBatiment(Batiment batiment) {
+        try (Connection connection = connect()) {
+            String query = "INSERT INTO batiment (numeroBatiment, ville, nomBatiment, nbSalles, tabSalles) VALUES (?, ?, ?, ?, ?)";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, batiment.getNumeroBatiment());
+                preparedStatement.setString(2, batiment.getVille());
+                preparedStatement.setString(3, batiment.getNomBatiment());
+                preparedStatement.setInt(4, batiment.getNbSalles());
+                preparedStatement.setString(5, batiment.getTabSalles());
+
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static void insertCours(Cours cours) {
+        try (Connection connection = connect()) {
+            String query = "INSERT INTO cours (idCours, nbEtudiant, tabEtudiants, idEnseignant, date, heure, idMatiere, idSalle) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, cours.getId());
+                preparedStatement.setInt(2, cours.getNbEtudiant());
+                preparedStatement.setString(3, cours.getTabEtudiants());
+                preparedStatement.setInt(4, cours.getEnseignant());
+                preparedStatement.setDate(5, java.sql.Date.valueOf(cours.getDate()));
+                preparedStatement.setInt(6, cours.getHeure());
+                preparedStatement.setInt(7, cours.getMatiere());
+                preparedStatement.setInt(8, cours.getSalle());
+
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static void insertEvaluation(Evaluation evaluation) {
+        try (Connection connection = connect()) {
+            String query = "INSERT INTO evaluation (nom, idMatiere, idEnseignant, note, idEtudiant) VALUES (?, ?, ?, ?, ?)";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, evaluation.getNom());
+                preparedStatement.setInt(2, evaluation.getMatiere());
+                preparedStatement.setInt(3, evaluation.getEnseignant());
+                preparedStatement.setInt(4, evaluation.getNote());
+                preparedStatement.setInt(5, evaluation.getEtudiant());
+
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    
     public static void insertEtudiant(Etudiant etudiant) {
         try (Connection connection = connect()) {
             String query = "INSERT INTO etudiant (id, nom, prenom, idPromotion, dateNaissance, idFormation, login, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -302,6 +376,39 @@ public class DatabaseManager {
         }
     }
     
+    public static void insertFormation(Formation formation) {
+        try (Connection connection = connect()) {
+            String query = "INSERT INTO formation (id_formation, nomFormation, idPromotion) VALUES (?, ?, ?)";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, formation.getId_Formation());
+                preparedStatement.setString(2, formation.getNomFormation());
+                preparedStatement.setInt(3, formation.getIdPromotion());
+
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static void insertMatiere(Matiere matiere) {
+        try (Connection connection = connect()) {
+            String query = "INSERT INTO matiere (numeroMatiere, nomMatiere, coefficient) VALUES (?, ?, ?)";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, matiere.getNumeroMatiere());
+                preparedStatement.setString(2, matiere.getNomMatiere());
+                preparedStatement.setInt(3, matiere.getCoefficient());
+
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    
     public static void insertPersonnel(Personnel personnel) {
         try (Connection connection = connect()) {
             String query = "INSERT INTO personnel (id, nom, prenom, dateNaissance, metier, login, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -321,6 +428,47 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
+    
+    public static void insertPromotion(Promotion promotion) {
+        try (Connection connection = connect()) {
+            String query = "INSERT INTO promotion (numeroPromotion, annee) VALUES (?, ?)";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, promotion.getId());
+                preparedStatement.setInt(2, promotion.getAnnee());
+
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void insertSalle(Salle salle) {
+        try (Connection connection = connect()) {
+            String query = "INSERT INTO salle (numeroSalle, nbPlaces, nbEtudiants, equipInfo) VALUES (?, ?, ?, ?)";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, salle.getNumeroSalle());
+                preparedStatement.setInt(2, salle.getNbPlaces());
+                preparedStatement.setInt(3, salle.getNbEtudiants());
+                preparedStatement.setBoolean(4, salle.getEquipInfo());
+
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    
+
+    
+
+    
+    
+
+
     
     public static List<Etudiant> getStudents() {
     	List<Etudiant> etudiants = new ArrayList<>();
@@ -559,6 +707,192 @@ public class DatabaseManager {
         return listCours;
     }
     
+    
+    public static List<Avertissement> getAvertissement() {
+        List<Avertissement> avertissements = new ArrayList<>();
+
+        try (Connection connection = connect()) {
+            String query = "SELECT nom, idEtudiant, idEnseignant  FROM avertissement";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                    	Avertissement avertissement = new Avertissement(
+                    			resultSet.getString("nom"),
+                                resultSet.getInt("idEtudiant"),
+                                resultSet.getInt("idEnseignant")
+                        );
+                    	avertissements.add(avertissement);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return avertissements;
+    }
+    
+    public static List<Evaluation> getEvaluations() {
+        List<Evaluation> evaluations = new ArrayList<>();
+
+        try (Connection connection = connect()) {
+            String query = "SELECT nom, idMatiere, idEnseignant, note, idEtudiant FROM evaluation";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                        Evaluation evaluation = new Evaluation(
+                                resultSet.getString("nom"),
+                                resultSet.getInt("idMatiere"),
+                                resultSet.getInt("idEnseignant"),
+                                resultSet.getInt("note"),
+                                resultSet.getInt("idEtudiant")
+                        );
+                        evaluations.add(evaluation);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return evaluations;
+    }
+    
+    public static List<Promotion> getPromotions() {
+        List<Promotion> promotions = new ArrayList<>();
+
+        try (Connection connection = connect()) {
+            String query = "SELECT numeroPromotion, annee FROM promotion";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                        Promotion promotion = new Promotion(
+                                resultSet.getInt("numeroPromotion"),
+                                resultSet.getInt("annee")
+                        );
+                        promotions.add(promotion);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return promotions;
+    }
+    
+    public static List<Formation> getFormations() {
+        List<Formation> formations = new ArrayList<>();
+
+        try (Connection connection = connect()) {
+            String query = "SELECT id_formation, nomFormation, idPromotion FROM formation";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                        Formation formation = new Formation(
+                                resultSet.getInt("id_formation"),
+                                resultSet.getString("nomFormation"),
+                                resultSet.getInt("idPromotion")
+                        );
+                        formations.add(formation);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return formations;
+    }
+
+    public static List<Batiment> getBatiments() {
+        List<Batiment> batiments = new ArrayList<>();
+
+        try (Connection connection = connect()) {
+            String query = "SELECT numeroBatiment, ville, nomBatiment, nbSalles, tabSalles FROM batiment";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                        Batiment batiment = new Batiment(
+                                resultSet.getInt("numeroBatiment"),
+                                resultSet.getString("ville"),
+                                resultSet.getString("nomBatiment"),
+                                resultSet.getInt("nbSalles"),
+                                resultSet.getString("tabSalles")
+                        );
+                        batiments.add(batiment);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return batiments;
+    }
+    
+    public static List<Avertissement> getAvertissementsByIdEtudiant(int idEtudiant) {
+        List<Avertissement> avertissements = new ArrayList<>();
+
+        try (Connection connection = connect()) {
+            String query = "SELECT nom, idEtudiant, idEnseignant FROM avertissement WHERE idEtudiant = ?";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, idEtudiant);
+
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                        Avertissement avertissement = new Avertissement(
+                                resultSet.getString("nom"),
+                                resultSet.getInt("idEtudiant"),
+                                resultSet.getInt("idEnseignant")
+                        );
+                        avertissements.add(avertissement);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return avertissements;
+    }
+
+    public static List<Evaluation> getEvaluationsByIdEtudiant(int idEtudiant) {
+        List<Evaluation> evaluations = new ArrayList<>();
+
+        try (Connection connection = connect()) {
+            String query = "SELECT nom, idMatiere, idEnseignant, note, idEtudiant FROM evaluation WHERE idEtudiant = ?";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, idEtudiant);
+
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                        Evaluation evaluation = new Evaluation(
+                                resultSet.getString("nom"),
+                                resultSet.getInt("idMatiere"),
+                                resultSet.getInt("idEnseignant"),
+                                resultSet.getInt("note"),
+                                resultSet.getInt("idEtudiant")
+                        );
+                        evaluations.add(evaluation);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return evaluations;
+    }
+
+
     
     public static int getMaxEtudiantId() {
         int maxId = -1;

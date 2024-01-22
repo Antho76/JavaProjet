@@ -4,57 +4,57 @@ package classes;
 public class Evaluation 
 {
 	private String nom;
-	private Matiere matiere;
-	private Enseignant enseignant;
+	private int idMatiere;
+	private int idEnseignant;
 	private int note;
-	private Etudiant etudiant;
+	private int idEtudiant;
 
-	public void Evaulation(String nom,Matiere matiere,Enseignant enseignant,int note,Etudiant etudiant){
+	public Evaluation(String nom,int matiere,int enseignant,int note,int etudiant){
 		this.nom = nom;
-		this.matiere = matiere;
-		this.enseignant = enseignant;
+		this.idMatiere = matiere;
+		this.idEnseignant = enseignant;
 		this.note = note;
-		this.etudiant = etudiant;
+		this.idEtudiant = etudiant;
 	}
 
 	public String getNom() {
 		return this.nom;
 	}
 
-	public Matiere getMatiere() {
-		return this.matiere;
+	public int getMatiere() {
+		return this.idMatiere;
 	}
 
-	public Enseignant getEnseignant() {
-		return this.enseignant;
+	public int getEnseignant() {
+		return this.idEnseignant;
 	}
 
 	public int getNote() {
 		return this.note;
 	}
 
-	public Etudiant getEtudiant() {
-		return this.etudiant;
+	public int getEtudiant() {
+		return this.idEtudiant;
 	}
 
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
 
-	public void setMatiere(Matiere matiere) {
-		this.matiere = matiere;
+	public void setMatiere(int matiere) {
+		this.idMatiere = matiere;
 	}
 
-	public void setEnseignant(Enseignant enseignant) {
-		this.enseignant = enseignant;
+	public void setEnseignant(int enseignant) {
+		this.idEnseignant = enseignant;
 	}
 
 	public void setNote(int note) {
 		this.note = note;
 	}
 
-	public void setEtudiant(Etudiant etudiant) {
-		this.etudiant = etudiant;
+	public void setEtudiant(int etudiant) {
+		this.idEtudiant = etudiant;
 	}
 }
 
