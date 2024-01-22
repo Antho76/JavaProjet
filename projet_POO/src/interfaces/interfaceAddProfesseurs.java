@@ -6,9 +6,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import javax.swing.text.MaskFormatter;
-
-import classes.Personnel;
+import java.util.ArrayList;
+import java.util.List;
+import classes.*;
 import controller.InscriptionController;
+import database.DatabaseManager;
 
 public class interfaceAddProfesseurs {
     private JFrame mainFrame;
@@ -88,25 +90,25 @@ public class interfaceAddProfesseurs {
         userText.setBounds(150, 140, 165, 25);
         panel.add(userText);
 
-
-        JLabel matiereLabel = new JLabel("id matiere:");
-        matiereLabel.setBounds(10, 220, 120, 25);
+        JLabel matiereLabel = new JLabel("Sélectionnez la matière:");
+        matiereLabel.setBounds(10, 180, 150, 25);
         panel.add(matiereLabel);
 
-        JTextField matiereText = new JTextField(20);
-        matiereText.setBounds(150, 220, 165, 25);
-        panel.add(matiereText);
+        JComboBox<String> matiereComboBox = new JComboBox<>();
+        matiereComboBox.setBounds(180, 180, 135, 25);
+        loadMatieresIntoComboBox(matiereComboBox);
+        panel.add(matiereComboBox);
 
         JLabel passwordLabel = new JLabel("Mot de passe:");
-        passwordLabel.setBounds(10, 260, 120, 25);
+        passwordLabel.setBounds(10, 220, 120, 25);
         panel.add(passwordLabel);
 
         JPasswordField passwordText = new JPasswordField(20);
-        passwordText.setBounds(150, 260, 165, 25);
+        passwordText.setBounds(150, 220, 165, 25);
         panel.add(passwordText);
 
         JButton registerButton = new JButton("S'inscrire");
-        registerButton.setBounds(10, 300, 120, 25);
+        registerButton.setBounds(10, 260, 120, 25);
 
         registerButton.addActionListener(new ActionListener() {
             @Override
@@ -114,7 +116,7 @@ public class interfaceAddProfesseurs {
                 String nom = nomText.getText();
                 String prenom = prenomText.getText();
                 String dateNaissance = birthText.getText();
-                String matiere = matiereText.getText();
+                String matiere = matiereComboBox.getSelectedItem().toString();
                 String login = userText.getText();
                 String password = new String(passwordText.getPassword());
 
@@ -122,9 +124,9 @@ public class interfaceAddProfesseurs {
                     JOptionPane.showMessageDialog(null, "Veuillez remplir tous les champs.", "Champs vides", JOptionPane.ERROR_MESSAGE);
                 } else {
                     try {
-                        int matiereint = 0;
+                        int matiereId = getMatiereIdFromComboBox(matiereComboBox);
 
-                        inscriptionController.inscriptionEnseignant(nom, prenom, dateNaissance, matiereint, login, password);
+                        inscriptionController.inscriptionEnseignant(nom, prenom, dateNaissance, matiereId, login, password);
                         afficherMessageUtilisateurInscrit();
                     } catch (Exception e1) {
                         e1.printStackTrace();
@@ -155,5 +157,23 @@ public class interfaceAddProfesseurs {
         });
 
         messageFrame.setVisible(true);
+    }
+
+    private void loadMatieresIntoComboBox(JComboBox<String> matiereComboBox) {
+        List<Matiere> matieres = DatabaseManager.getMatiere();
+        for (Matiere matiere : matieres) {
+            matiereComboBox.addItem(matiere.getNomMatiere());
+        }
+    }
+
+    private int getMatiereIdFromComboBox(JComboBox<String> matiereComboBox) {
+        String selectedMatiere = matiereComboBox.getSelectedItem().toString();
+        List<Matiere> matieres = DatabaseManager.getMatiere();
+        for (Matiere matiere : matieres) {
+            if (matiere.getNomMatiere().equals(selectedMatiere)) {
+                return matiere.getNumeroMatiere();
+            }
+        }
+        return 0; // Ou une valeur par défaut, selon votre logique
     }
 }
