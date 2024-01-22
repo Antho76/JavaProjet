@@ -106,8 +106,10 @@ public class AdminPage {
                  @Override
                  public void actionPerformed(ActionEvent e) {
                      List<Promotion> promotions = DatabaseManager.getPromotions();
+                     List<Formation> formations = DatabaseManager.getFormations();
+
                      SwingUtilities.invokeLater(() -> {
-                         ShowPromotionPage showPromotionPage = new ShowPromotionPage(promotions);
+                         ShowPromotionPage showPromotionPage = new ShowPromotionPage(promotions, formations);
                          showPromotionPage.setVisible(true);
                      });
                  }

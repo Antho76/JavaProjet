@@ -779,6 +779,26 @@ public class DatabaseManager {
         return promotions;
     }
     
+    public static String getNomFormationById(int id) {
+        try (Connection connection = connect()) {
+            String query = "SELECT nomFormation FROM formation WHERE id_formation = ?";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, id);
+
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        return resultSet.getString("nomFormation");
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return "Formation inconnue";
+    }
+    
     public static List<Formation> getFormations() {
         List<Formation> formations = new ArrayList<>();
 
@@ -1092,6 +1112,22 @@ public class DatabaseManager {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, formation.getNomFormation());
                 preparedStatement.setInt(2, formation.getId_Formation());
+
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static void updatePromotion(int numeroPromotion, int annee, int idFormation) {
+        try (Connection connection = connect()) {
+            String query = "UPDATE promotion SET annee=?, idFormation=? WHERE numeroPromotion=?";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, annee);
+                preparedStatement.setInt(2, idFormation);
+                preparedStatement.setInt(3, numeroPromotion);
 
                 preparedStatement.executeUpdate();
             }

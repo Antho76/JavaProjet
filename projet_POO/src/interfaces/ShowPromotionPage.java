@@ -1,20 +1,21 @@
 package interfaces;
+
 import javax.swing.*;
+import java.awt.*;
+import java.util.List;
 
 import classes.Promotion;
+import classes.Formation;
 import database.DatabaseManager;
-
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.List;
 
 public class ShowPromotionPage extends JFrame {
 
     private List<Promotion> promotions;
+    private List<Formation> formations;
 
-    public ShowPromotionPage(List<Promotion> promotions) {
+    public ShowPromotionPage(List<Promotion> promotions, List<Formation> formations) {
         this.promotions = promotions;
+        this.formations = formations;
         initUI();
     }
 
@@ -28,65 +29,45 @@ public class ShowPromotionPage extends JFrame {
 
         DefaultListModel<String> listModel = new DefaultListModel<>();
         for (Promotion promotion : promotions) {
-            listModel.addElement(promotion.toString());
+            listModel.addElement(DatabaseManager.getNomFormationById(promotion.getidFormation()) + " - Promotion " + promotion.getAnnee());
         }
 
         JList<String> promotionList = new JList<>(listModel);
         promotionList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         JScrollPane scrollPane = new JScrollPane(promotionList);
+        scrollPane.setPreferredSize(new Dimension(300, getHeight()));
+
         mainPanel.add(scrollPane, BorderLayout.WEST);
 
-        // Panel pour afficher les détails des promotions
         JPanel detailsPanel = new JPanel();
         detailsPanel.setLayout(new BorderLayout());
 
         JButton retourButton = new JButton("Retour");
-        retourButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose(); // Ferme la fenêtre actuelle
-            }
-        });
+        retourButton.addActionListener(e -> dispose());
 
         JButton modifierButton = new JButton("Modifier");
-        modifierButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int selectedIndex = promotionList.getSelectedIndex();
-                if (selectedIndex != -1) {
-                    Promotion selectedPromotion = promotions.get(selectedIndex);
-                    JOptionPane.showMessageDialog(ShowPromotionPage.this,
-                            "Modifier la promotion : " + selectedPromotion.toString(),
-                            "Modifier la promotion", JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(ShowPromotionPage.this,
-                            "Veuillez sélectionner une promotion avant de modifier.",
-                            "Avertissement", JOptionPane.WARNING_MESSAGE);
-                }
-            }
-        });
+        modifierButton.addActionListener(e -> modifierPromotion(promotions, promotionList, listModel));
 
+        
         detailsPanel.add(retourButton, BorderLayout.NORTH);
         detailsPanel.add(modifierButton, BorderLayout.SOUTH);
 
-        // Zone de texte pour afficher les détails des promotions
         JTextArea detailsTextArea = new JTextArea();
         detailsTextArea.setEditable(false);
         detailsPanel.add(new JScrollPane(detailsTextArea), BorderLayout.CENTER);
 
-        // Écouteur pour mettre à jour les détails lorsque la sélection change
         promotionList.addListSelectionListener(e -> {
             int selectedIndex = promotionList.getSelectedIndex();
             if (selectedIndex != -1) {
                 Promotion selectedPromotion = promotions.get(selectedIndex);
-                String details = "Numéro de Promotion : " + selectedPromotion.getId() + "\n" +
-                                 "Année : " + selectedPromotion.getAnnee() + "\n" +
-                                 "ID Formation : " + selectedPromotion.getidFormation();
+                String details = "ID de la Promotion : " + selectedPromotion.getId() + "\n" +
+                                 "Nom de la Formation : " + DatabaseManager.getNomFormationById(selectedPromotion.getidFormation()) + "\n" +
+                                 "Année : " + selectedPromotion.getAnnee();
 
                 detailsTextArea.setText(details);
             } else {
-                detailsTextArea.setText(""); // Effacer les détails si rien n'est sélectionné
+                detailsTextArea.setText("");
             }
         });
 
@@ -94,14 +75,65 @@ public class ShowPromotionPage extends JFrame {
 
         add(mainPanel);
         setLocationRelativeTo(null);
+        
+    }
+
+    private void modifierPromotion(List<Promotion> promotions, JList<String> promotionList, DefaultListModel<String> listModel) {
+        int selectedIndex = promotionList.getSelectedIndex();
+        if (selectedIndex != -1) {
+            Promotion selectedPromotion = promotions.get(selectedIndex);
+
+            // Afficher une boîte de dialogue pour choisir de nouvelles informations
+            JTextField anneeField = new JTextField();
+            JComboBox<Formation> formationComboBox = new JComboBox<>(formations.toArray(new Formation[0]));
+
+            Object[] message = {
+                    "Nouvelle Année:", anneeField,
+                    "Nouvelle Formation:", formationComboBox
+            };
+
+            int option = JOptionPane.showConfirmDialog(
+                    ShowPromotionPage.this,
+                    message,
+                    "Modifier la promotion",
+                    JOptionPane.OK_CANCEL_OPTION);
+
+            if (option == JOptionPane.OK_OPTION) {
+                String nouvelleAnnee = anneeField.getText();
+                Formation nouvelleFormation = (Formation) formationComboBox.getSelectedItem();
+
+                // Vérifier si de nouvelles informations ont été saisies
+                if (!nouvelleAnnee.isEmpty() && nouvelleFormation != null) {
+                    // Mettre à jour les informations de la promotion dans la liste des promotions
+                    selectedPromotion.setAnnee(Integer.parseInt(nouvelleAnnee));
+                    selectedPromotion.setidFormation(nouvelleFormation.getId_Formation());
+                    // Mettre à jour les informations de la promotion dans la base de données
+                    DatabaseManager.updatePromotion(selectedPromotion.getId(), selectedPromotion.getAnnee(), selectedPromotion.getidFormation());
+
+                    // Mettre à jour le modèle de liste pour refléter les nouvelles informations
+                    listModel.setElementAt(DatabaseManager.getNomFormationById(selectedPromotion.getidFormation()) + " - Promotion " + selectedPromotion.getAnnee(), selectedIndex);
+                }
+                dispose();
+                List<Formation> formations = DatabaseManager.getFormations();
+
+                SwingUtilities.invokeLater(() -> {
+                    ShowPromotionPage showPromotionPage = new ShowPromotionPage(promotions, formations);
+                    showPromotionPage.setVisible(true);
+                });
+            }
+        } else {
+            JOptionPane.showMessageDialog(ShowPromotionPage.this,
+                    "Veuillez sélectionner une promotion avant de modifier.",
+                    "Avertissement", JOptionPane.WARNING_MESSAGE);
+        }
     }
 
     public static void main(String[] args) {
-        // Vous pouvez placer ici le code pour tester votre page
         List<Promotion> promotions = DatabaseManager.getPromotions();
+        List<Formation> formations = DatabaseManager.getFormations();
 
         SwingUtilities.invokeLater(() -> {
-            ShowPromotionPage showPromotionPage = new ShowPromotionPage(promotions);
+            ShowPromotionPage showPromotionPage = new ShowPromotionPage(promotions, formations);
             showPromotionPage.setVisible(true);
         });
     }
