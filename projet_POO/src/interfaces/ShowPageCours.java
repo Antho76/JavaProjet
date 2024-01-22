@@ -6,6 +6,7 @@ import classes.Cours;
 import classes.Salle;
 import classes.Enseignant;
 import classes.Matiere;
+import classes.Personnel;
 import database.DatabaseManager;
 
 import java.awt.*;
@@ -22,70 +23,6 @@ public class ShowPageCours extends JFrame {
         this.listCours = listCours;
         initUICours();
     }
-    
-    /*public ShowPageCours(List<Cours> Cours) {
-        // Créer un tableau de chaînes avec les informations à afficher
-        String[] coursArray = new String[Cours.size()];
-        Enseignant enseignantCours = null;
-        for (int i = 0; i < Cours.size(); i++) {
-        	Cours cours = Cours.get(i);
-        	List<Enseignant> listeEnseignants = DatabaseManager.getEnseignants();
-        	int idEnseignant = cours.getEnseignant();
-		    for (Enseignant enseignant : listeEnseignants) {
-		        if (enseignant.getId() == idEnseignant) {
-		        	enseignantCours = enseignant;
-		        }
-		    }
-		    int idMatiere = cours.getMatiere();
-        	Matiere matiereCours = null;
-        	List<Matiere> listeMatiere = DatabaseManager.getMatiere();
-		    for (Matiere matiere : listeMatiere) {
-		        if (matiere.getNumeroMatiere() == idMatiere) {
-		        	matiereCours = matiere;
-		        }
-		    }
-		    
-		    int idSalle = cours.getSalle();
-        	Salle salleCours = null;
-        	List<Salle> listeSalle = DatabaseManager.getSalle();
-		    for (Salle salle : listeSalle) {
-		        if (salle.getNumeroSalle() == idSalle) {
-		        	salleCours = salle;
-		        }
-		    }
-		    
-		    if (enseignantCours != null) {
-                coursArray[i] = "Cours de " + matiereCours.getNomMatiere() +
-                        " avec " + enseignantCours.getNom() + " " + enseignantCours.getPrenom() +
-                        " le " + cours.getDate() +
-                        " à " + cours.getHeure() +
-                        " en salle " + salleCours.getNumeroSalle();
-            } else {
-                coursArray[i] = "Cours de " + matiereCours.getNomMatiere() +
-                        " (Enseignant non trouvé)" +
-                        " le " + cours.getDate() +
-                        " à " + cours.getHeure() +
-                        " en salle " + salleCours.getNumeroSalle();
-            }
-            
-        }
-
-        // Créer une liste déroulante pour afficher les étudiants
-        coursList = new JList<>(coursArray);
-
-        // Mettre la liste dans un JScrollPane pour la faire défiler si nécessaire
-        JScrollPane scrollPane = new JScrollPane(coursList);
-
-        // Ajouter le JScrollPane à la fenêtre
-        add(scrollPane);
-
-        // Configurer la fenêtre
-        setTitle("Liste des cours");
-        setSize(400, 300);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Fermer seulement cette fenêtre
-        setLocationRelativeTo(null); // Centrer la fenêtre
-        setVisible(true);
-    }*/
     
     private void initUICours() {
         setTitle("Gestion des cours");
@@ -221,8 +158,16 @@ public class ShowPageCours extends JFrame {
             }
         });
 
+        JButton ajouterCoursButton = new JButton("Ajouter un cours");
+        ajouterCoursButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		InterfaceAddCours interfaceAddCours = new InterfaceAddCours();
+        		interfaceAddCours.afficherInterfaceCours();
+        	}
+        });
+        detailsPanel.add(ajouterCoursButton, BorderLayout.SOUTH);
         detailsPanel.add(retourButton, BorderLayout.NORTH);
-        detailsPanel.add(modifierButton, BorderLayout.SOUTH);
+        //detailsPanel.add(modifierButton, BorderLayout.SOUTH);
 
         // Zone de texte pour afficher les détails des étudiants
         JTextArea detailsTextArea = new JTextArea();

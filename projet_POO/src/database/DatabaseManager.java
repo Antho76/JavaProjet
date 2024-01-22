@@ -306,7 +306,7 @@ public class DatabaseManager {
                 preparedStatement.setInt(2, cours.getNbEtudiant());
                 preparedStatement.setString(3, cours.getTabEtudiants());
                 preparedStatement.setInt(4, cours.getEnseignant());
-                preparedStatement.setDate(5, java.sql.Date.valueOf(cours.getDate()));
+                preparedStatement.setObject(5, cours.getDate());
                 preparedStatement.setInt(6, cours.getHeure());
                 preparedStatement.setInt(7, cours.getMatiere());
                 preparedStatement.setInt(8, cours.getSalle());
@@ -947,6 +947,7 @@ public class DatabaseManager {
         return maxId;
     }
     
+<<<<<<< HEAD
     public static int getMaxFormationId() {
         int maxId = -1;
 
@@ -989,6 +990,28 @@ public class DatabaseManager {
         return maxId;
     }
     
+=======
+    public static int getMaxCoursId() {
+        int maxId = -1;
+
+        try (Connection connection = connect()) {
+            // Requête SQL pour obtenir le maximum de l'ID dans la table des étudiants
+            String query = "SELECT MAX(idCours) FROM cours";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        maxId = resultSet.getInt(1);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return maxId;
+    }
+>>>>>>> refs/remotes/origin/main_qui_marche_pas
     public static void disconnect(Connection connection) {
         if (connection != null) {
             try {
