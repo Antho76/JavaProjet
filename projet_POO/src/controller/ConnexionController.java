@@ -23,18 +23,18 @@ public class ConnexionController {
         return isLogged;
     }
 
-    public boolean checkConnexionEnseignant(String login, String password) {
+    public Object[] checkConnexionEnseignant(String login, String password) {
         List<Enseignant> listeEnseignant = DatabaseManager.getEnseignants();
         boolean isLogged = false;
 
         for (Enseignant enseignant : listeEnseignant) {
             if (enseignant.getLogin().equals(login) && enseignant.getPassword().equals(password)) {
                 isLogged = true;
-                return isLogged;
+                return new Object[] {isLogged, enseignant};
             }
         }
 
-        return isLogged;
+        return new Object[] {isLogged, 0};
     }
 
     public Object[] checkConnexionPersonnel(String login, String password) {
