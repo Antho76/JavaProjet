@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.text.MaskFormatter;
 import classes.Etudiant;
@@ -58,7 +59,7 @@ public class InterfaceAddCours {
         DefaultListModel<String> etudiantsListModel = new DefaultListModel<>();
         List<Etudiant> listeEtudiants = DatabaseManager.getStudents();
         for (Etudiant etudiant : listeEtudiants) {
-            etudiantsListModel.addElement(Integer.toString(etudiant.getId()));
+            etudiantsListModel.addElement(etudiant.getNom()+" " + etudiant.getPrenom());
         }
 
         JList<String> etudiantsSelectedList = new JList<>(etudiantsListModel);
@@ -114,13 +115,25 @@ public class InterfaceAddCours {
             public void actionPerformed(ActionEvent e) {
                 // Retrieve course information from the input fields
                 String dateString = dateCoursText.getText();
-                System.out.println(dateString);
                 LocalDate date = parseDate(dateString);
+                
                 int heure = Integer.parseInt(heureText.getText());
+                
                 int nbEtudiant = Integer.parseInt(nbEtudiantText.getText());
-
+                
+                List<Etudiant> listEtudiant = DatabaseManager.getStudents();
                 List<String> selectedEtudiants = etudiantsSelectedList.getSelectedValuesList();
-                String tabEtudiants = String.join(",", selectedEtudiants);
+                List<String> selectedEtudiantsID = new ArrayList<>();;
+                for (String selectedEtu : selectedEtudiants) {
+                	String[] etudiantNomPrenom = selectedEtu.split(" ");
+                	for (Etudiant etudiant : listEtudiant) {
+                        if ( etudiant.getNom().equals(etudiantNomPrenom[0]) && etudiant.getPrenom().equals(etudiantNomPrenom[1]) ) {
+                        	selectedEtudiantsID.add(Integer.toString(etudiant.getId()));
+                        }
+                    }
+                }
+                
+                String tabEtudiants = String.join(",", selectedEtudiantsID);
 
                 if (tabEtudiants.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Veuillez remplir tous les champs.", "Champs vides", JOptionPane.ERROR_MESSAGE);
@@ -185,7 +198,7 @@ public class InterfaceAddCours {
     private void loadEnseignantIntoComboBox(JComboBox<String> enseignantComboBox) {
         List<Enseignant> listEnseignant = DatabaseManager.getEnseignants();
         for (Enseignant enseignant : listEnseignant) {
-            enseignantComboBox.addItem(Integer.toString(enseignant.getId()));
+            enseignantComboBox.addItem(enseignant.getNom()+" "+enseignant.getPrenom());
         }
     }
 
@@ -213,9 +226,10 @@ public class InterfaceAddCours {
 
     private int getEnseignantIdFromComboBox(JComboBox<String> enseignantComboBox) {
         String selectedEnseignant = enseignantComboBox.getSelectedItem().toString();
+        String[] enseignantNomPrenom = selectedEnseignant.split(" ");
         List<Enseignant> listEnseignant = DatabaseManager.getEnseignants();
         for (Enseignant enseignant : listEnseignant) {
-            if (Integer.toString(enseignant.getId()).equals(selectedEnseignant)) {
+            if (enseignant.getNom().equals(enseignantNomPrenom[0]) && enseignant.getPrenom().equals(enseignantNomPrenom[1]) ) {
                 return enseignant.getId();
             }
         }
@@ -224,7 +238,8 @@ public class InterfaceAddCours {
 
     private LocalDate parseDate(String dateString) {
 
-            LocalDate localDate = LocalDate.parse(dateString, DateTimeFormatter.ISO_LOCAL_DATE);
+            LocalDate localDate = LocalDate.parse(dateString);
+            System.out.println(localDate);
             return localDate;
 
     }
