@@ -135,8 +135,6 @@ public class AdminPage {
         gererCoursButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Ajoutez ici la logique pour ouvrir la page de création de classe
-                JOptionPane.showMessageDialog(frame, "Ouvrir la page de gestion de cours");
                 
                 List<Cours> cours = DatabaseManager.getCours();
                 
