@@ -6,6 +6,7 @@ import classes.Cours;
 import classes.Salle;
 import classes.Enseignant;
 import classes.Matiere;
+import classes.Personnel;
 import database.DatabaseManager;
 
 import java.awt.*;
@@ -157,14 +158,16 @@ public class ShowPageCours extends JFrame {
             }
         });
 
-        JButton ajouterCoursButton = new JButton("Modifier");
+        JButton ajouterCoursButton = new JButton("Ajouter un cours");
         ajouterCoursButton.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		
+        		InterfaceAddCours interfaceAddCours = new InterfaceAddCours();
+        		interfaceAddCours.afficherInterfaceCours();
         	}
         });
+        detailsPanel.add(ajouterCoursButton, BorderLayout.SOUTH);
         detailsPanel.add(retourButton, BorderLayout.NORTH);
-        detailsPanel.add(modifierButton, BorderLayout.SOUTH);
+        //detailsPanel.add(modifierButton, BorderLayout.SOUTH);
 
         // Zone de texte pour afficher les détails des étudiants
         JTextArea detailsTextArea = new JTextArea();

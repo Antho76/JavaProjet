@@ -4,44 +4,39 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Date;
-import java.sql.SQLException;
+import java.text.ParseException;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.swing.text.MaskFormatter;
-import classes.Cours;
-import classes.Formation;
-import classes.Promotion;
+import classes.Etudiant;
+import classes.Matiere;
+import classes.Salle;
+import classes.Enseignant;
 import controller.CoursController;
 import database.DatabaseManager;
 
 public class InterfaceAddCours {
     private JFrame mainFrame;
     private CoursController coursController = new CoursController();
-    private Personnel person; // Assuming you have a Personnel class
 
-    public void afficherInterface(Personnel person) {
-        this.person = person;
+    public void afficherInterfaceCours() {
         mainFrame = new JFrame("Page d'Ajout de Cours");
-        mainFrame.setSize(400, 400);
+        mainFrame.setSize(500, 500);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JPanel panel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridwidth = GridBagConstraints.REMAINDER;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(5, 5, 5, 5);
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         mainFrame.add(panel);
         placeComponents(panel);
 
         JButton retourButton = new JButton("Retour");
-        retourButton.setBounds(10, 340, 120, 25);
         retourButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 mainFrame.dispose();
                 // Replace 'AdminPage' with the appropriate class for navigating back
-                new AdminPage().afficherInterface(person);
             }
         });
         panel.add(retourButton);
@@ -51,41 +46,93 @@ public class InterfaceAddCours {
     }
 
     private void placeComponents(JPanel panel) {
-        // Similar to your existing placeComponents method, add components for adding courses.
-        // You can reuse the structure and modify it accordingly.
+        JLabel nbEtudiantLabel = new JLabel("Nombre d'étudiants:");
+        panel.add(nbEtudiantLabel);
 
-        // Example components:
-        JLabel coursLabel = new JLabel("Nom du cours:");
-        coursLabel.setBounds(10, 20, 120, 25);
-        panel.add(coursLabel);
+        JTextField nbEtudiantText = new JTextField(20);
+        panel.add(nbEtudiantText);
 
-        JTextField coursText = new JTextField(20);
-        coursText.setBounds(150, 20, 165, 25);
-        panel.add(coursText);
+        JLabel etudiantsLabel = new JLabel("Étudiants:");
+        panel.add(etudiantsLabel);
 
-        // Add more components as needed for other course-related information.
+        DefaultListModel<String> etudiantsListModel = new DefaultListModel<>();
+        List<Etudiant> listeEtudiants = DatabaseManager.getStudents();
+        for (Etudiant etudiant : listeEtudiants) {
+            etudiantsListModel.addElement(Integer.toString(etudiant.getId()));
+        }
+
+        JList<String> etudiantsSelectedList = new JList<>(etudiantsListModel);
+        etudiantsSelectedList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+
+        JScrollPane etudiantsScrollPane = new JScrollPane(etudiantsSelectedList);
+        panel.add(etudiantsScrollPane);
+
+        JLabel enseignantLabel = new JLabel("Sélectionnez l'enseignant:");
+        panel.add(enseignantLabel);
+
+        JComboBox<String> enseignantComboBox = new JComboBox<>();
+        loadEnseignantIntoComboBox(enseignantComboBox);
+        panel.add(enseignantComboBox);
+
+        JLabel dateCoursLabel = new JLabel("Date du cours:");
+        panel.add(dateCoursLabel);
+
+        MaskFormatter dateFormatter = null;
+        try {
+            dateFormatter = new MaskFormatter("####-##-##");
+            dateFormatter.setPlaceholderCharacter('_');
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        JFormattedTextField dateCoursText = new JFormattedTextField(dateFormatter);
+        panel.add(dateCoursText);
+
+        JLabel heureLabel = new JLabel("Heure du cours:");
+        panel.add(heureLabel);
+
+        JTextField heureText = new JTextField(20);
+        panel.add(heureText);
+
+        JLabel matiereLabel = new JLabel("Sélectionnez la matière:");
+        panel.add(matiereLabel);
+
+        JComboBox<String> matiereComboBox = new JComboBox<>();
+        loadMatieresIntoComboBox(matiereComboBox);
+        panel.add(matiereComboBox);
+
+        JLabel salleLabel = new JLabel("Sélectionnez la salle:");
+        panel.add(salleLabel);
+
+        JComboBox<String> salleComboBox = new JComboBox<>();
+        loadSalleIntoComboBox(salleComboBox);
+        panel.add(salleComboBox);
 
         JButton addCoursButton = new JButton("Ajouter le cours");
-        addCoursButton.setBounds(10, 300, 150, 25);
-
         addCoursButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Retrieve course information from the input fields
-                String coursName = coursText.getText();
-                // Retrieve other course-related information similarly
+                String dateString = dateCoursText.getText();
+                System.out.println(dateString);
+                LocalDate date = parseDate(dateString);
+                int heure = Integer.parseInt(heureText.getText());
+                int nbEtudiant = Integer.parseInt(nbEtudiantText.getText());
 
-                if (coursName.isEmpty()) {
+                List<String> selectedEtudiants = etudiantsSelectedList.getSelectedValuesList();
+                String tabEtudiants = String.join(",", selectedEtudiants);
+
+                if (tabEtudiants.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Veuillez remplir tous les champs.", "Champs vides", JOptionPane.ERROR_MESSAGE);
                 } else {
                     try {
-                        // Create a new Cours object with the retrieved information
-                        Cours newCours = new Cours();
-                        newCours.setNom(coursName);
-                        // Set other course-related information similarly
+                        int maxCoursId = DatabaseManager.getMaxCoursId();
 
-                        // Call the method to insert the new course into the database
-                        coursController.insertCours(newCours);
+                        int idMatiere = getMatiereIdFromComboBox(matiereComboBox);
+                        int idSalle = getSalleIdFromComboBox(salleComboBox);
+                        int idEnseignant = getEnseignantIdFromComboBox(enseignantComboBox);
+
+                        coursController.ajoutCours(maxCoursId+1, nbEtudiant, tabEtudiants, idEnseignant, date, heure, idMatiere, idSalle);
 
                         // Show a success message or navigate to another page if needed
                         afficherMessageCoursAjoute();
@@ -114,10 +161,71 @@ public class InterfaceAddCours {
             @Override
             public void windowClosed(java.awt.event.WindowEvent windowEvent) {
                 // Replace 'AdminPage' with the appropriate class for navigating back
-                new AdminPage().afficherInterface(person);
+                //new AdminPage().afficherInterface();
             }
         });
 
         messageFrame.setVisible(true);
+    }
+
+    private void loadMatieresIntoComboBox(JComboBox<String> matiereComboBox) {
+        List<Matiere> matieres = DatabaseManager.getMatiere();
+        for (Matiere matiere : matieres) {
+            matiereComboBox.addItem(matiere.getNomMatiere());
+        }
+    }
+
+    private void loadSalleIntoComboBox(JComboBox<String> salleComboBox) {
+        List<Salle> listSalle = DatabaseManager.getSalle();
+        for (Salle salle : listSalle) {
+            salleComboBox.addItem(Integer.toString(salle.getNumeroSalle()));
+        }
+    }
+
+    private void loadEnseignantIntoComboBox(JComboBox<String> enseignantComboBox) {
+        List<Enseignant> listEnseignant = DatabaseManager.getEnseignants();
+        for (Enseignant enseignant : listEnseignant) {
+            enseignantComboBox.addItem(Integer.toString(enseignant.getId()));
+        }
+    }
+
+    private int getMatiereIdFromComboBox(JComboBox<String> matiereComboBox) {
+        String selectedMatiere = matiereComboBox.getSelectedItem().toString();
+        List<Matiere> matieres = DatabaseManager.getMatiere();
+        for (Matiere matiere : matieres) {
+            if (matiere.getNomMatiere().equals(selectedMatiere)) {
+                return matiere.getNumeroMatiere();
+            }
+        }
+        return 0; // Ou une valeur par défaut, selon votre logique
+    }
+
+    private int getSalleIdFromComboBox(JComboBox<String> salleComboBox) {
+        String selectedSalle = salleComboBox.getSelectedItem().toString();
+        List<Salle> listSalle = DatabaseManager.getSalle();
+        for (Salle salle : listSalle) {
+            if (Integer.toString(salle.getNumeroSalle()).equals(selectedSalle)) {
+                return salle.getNumeroSalle();
+            }
+        }
+        return 0; // Ou une valeur par défaut, selon votre logique
+    }
+
+    private int getEnseignantIdFromComboBox(JComboBox<String> enseignantComboBox) {
+        String selectedEnseignant = enseignantComboBox.getSelectedItem().toString();
+        List<Enseignant> listEnseignant = DatabaseManager.getEnseignants();
+        for (Enseignant enseignant : listEnseignant) {
+            if (Integer.toString(enseignant.getId()).equals(selectedEnseignant)) {
+                return enseignant.getId();
+            }
+        }
+        return 0; // Ou une valeur par défaut, selon votre logique
+    }
+
+    private LocalDate parseDate(String dateString) {
+
+            LocalDate localDate = LocalDate.parse(dateString, DateTimeFormatter.ISO_LOCAL_DATE);
+            return localDate;
+
     }
 }
