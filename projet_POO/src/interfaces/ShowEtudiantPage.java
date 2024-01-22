@@ -2,6 +2,8 @@ package interfaces;
 import javax.swing.*;
 
 import classes.Etudiant;
+import classes.Formation;
+import classes.Promotion;
 import database.DatabaseManager;
 
 import java.awt.*;
@@ -57,9 +59,74 @@ public class ShowEtudiantPage extends JFrame {
                 int selectedIndex = etudiantList.getSelectedIndex();
                 if (selectedIndex != -1) {
                     Etudiant selectedEtudiant = etudiants.get(selectedIndex);
-                    JOptionPane.showMessageDialog(ShowEtudiantPage.this,
-                            "Modifier un évènement pour l'étudiant : " + selectedEtudiant.getNom() + " " + selectedEtudiant.getPrenom(),
-                            "Modifier un évènement", JOptionPane.INFORMATION_MESSAGE);
+
+                    // Récupérer les listes de promotions et de formations depuis la base de données
+                    List<Promotion> promotions = DatabaseManager.getPromotions();
+                    List<Formation> formations = DatabaseManager.getFormations();
+
+                    // Créer des tableaux pour stocker les noms des promotions et des formations
+                    String[] promotionNames = promotions.stream().map(Promotion::toString).toArray(String[]::new);
+                    String[] formationNames = formations.stream().map(Formation::toString).toArray(String[]::new);
+
+                    // Créer des JComboBox avec les noms des promotions et des formations
+                    JComboBox<String> promotionComboBox = new JComboBox<>(promotionNames);
+                    JComboBox<String> formationComboBox = new JComboBox<>(formationNames);
+
+                    // Sélectionner les valeurs actuelles de l'étudiant dans les JComboBox
+                    promotionComboBox.setSelectedItem(selectedEtudiant.getPromotion());
+                    formationComboBox.setSelectedItem(selectedEtudiant.getFormation());
+
+                 // Créer une boîte de dialogue avec les JComboBox et les nouveaux champs
+                    JPanel panel = new JPanel(new GridLayout(0, 2));
+                    panel.add(new JLabel("Nom:"));
+                    panel.add(new JTextField(selectedEtudiant.getNom()));
+                    panel.add(new JLabel("Prénom:"));
+                    panel.add(new JTextField(selectedEtudiant.getPrenom()));
+                    panel.add(new JLabel("Date de naissance:"));
+                    panel.add(new JTextField(selectedEtudiant.getDateNaissance()));
+                    panel.add(new JLabel("Login:"));
+                    panel.add(new JTextField(selectedEtudiant.getLogin()));
+                    panel.add(new JLabel("Mot de passe:"));
+                    panel.add(new JTextField(selectedEtudiant.getPassword()));
+                    panel.add(new JLabel("Promotion:"));
+                    panel.add(promotionComboBox);
+                    panel.add(new JLabel("Formation:"));
+                    panel.add(formationComboBox);
+
+                    int result = JOptionPane.showConfirmDialog(null, panel, "Modifier l'étudiant",
+                            JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+                    if (result == JOptionPane.OK_OPTION) {
+                        // Mettre à jour les informations de l'étudiant avec les nouvelles valeurs
+                        selectedEtudiant.setNom(((JTextField) panel.getComponent(1)).getText());
+                        selectedEtudiant.setPrenom(((JTextField) panel.getComponent(3)).getText());
+                        selectedEtudiant.setDateNaissance(((JTextField) panel.getComponent(5)).getText());
+                        selectedEtudiant.setLogin(((JTextField) panel.getComponent(7)).getText());
+                        selectedEtudiant.setPassword(((JTextField) panel.getComponent(9)).getText());
+
+                        // Mettre à jour les ID de promotion et de formation
+                        int selectedPromotionIndex = promotionComboBox.getSelectedIndex();
+                        if (selectedPromotionIndex != -1) {
+                            selectedEtudiant.setPromotion(promotions.get(selectedPromotionIndex).getId());
+                        }
+
+                        int selectedFormationIndex = formationComboBox.getSelectedIndex();
+                        if (selectedFormationIndex != -1) {
+                            selectedEtudiant.setFormation(formations.get(selectedFormationIndex).getId_Formation());
+                        }
+
+                        // Appeler la méthode pour mettre à jour l'étudiant dans la base de données
+                        DatabaseManager.updateEtudiant(selectedEtudiant);
+
+                        // Fermer la fenêtre actuelle
+                        ((Window) SwingUtilities.getRoot(panel)).dispose();
+                        dispose();
+                        // Relancer la fenêtre avec les mises à jour
+                        SwingUtilities.invokeLater(() -> {
+                            ShowEtudiantPage showEtudiantPage = new ShowEtudiantPage(etudiants);
+                            showEtudiantPage.setVisible(true);
+                        });
+                    }
                 } else {
                     JOptionPane.showMessageDialog(ShowEtudiantPage.this,
                             "Veuillez sélectionner un étudiant avant de modifier.",
@@ -81,10 +148,26 @@ public class ShowEtudiantPage extends JFrame {
             int selectedIndex = etudiantList.getSelectedIndex();
             if (selectedIndex != -1) {
                 Etudiant selectedEtudiant = etudiants.get(selectedIndex);
+
+                List<Promotion> promotions = DatabaseManager.getPromotions();
+                List<Formation> formations = DatabaseManager.getFormations();
+
+                String promotionName = promotions.stream()
+                        .filter(promotion -> promotion.getId() == selectedEtudiant.getPromotion())
+                        .findFirst()
+                        .map(Promotion::toString)
+                        .orElse("");
+
+                String formationName = formations.stream()
+                        .filter(formation -> formation.getId_Formation() == selectedEtudiant.getFormation())
+                        .findFirst()
+                        .map(Formation::getNomFormation)
+                        .orElse("");
+
                 String details = "Nom : " + selectedEtudiant.getNom() + "\n" +
-                                 "Prénom : " + selectedEtudiant.getPrenom() + "\n" +
-                                 "Promotion : " + selectedEtudiant.getPromotion() + "\n" +
-                                 "Formation : " + selectedEtudiant.getFormation();
+                        "Prénom : " + selectedEtudiant.getPrenom() + "\n" +
+                        "Promotion : " + promotionName + "\n" +
+                        "Formation : " + formationName;
 
                 detailsTextArea.setText(details);
             } else {
