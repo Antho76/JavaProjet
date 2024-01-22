@@ -1010,6 +1010,20 @@ public class DatabaseManager {
 
         return maxId;
     }
+    
+    public static void deleteCours(int idCours) {
+        try (Connection connection = connect()) {
+            String query = "DELETE FROM cours WHERE idCours = ?";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, idCours);
+
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void disconnect(Connection connection) {
         if (connection != null) {
