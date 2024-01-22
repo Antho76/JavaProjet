@@ -13,6 +13,7 @@ import java.util.List;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import classes.Cours;
 import java.time.*;
 
 import classes.*;
@@ -558,37 +559,53 @@ public class DatabaseManager {
         return enseignants;
     }
     
-    public static List<Cours> getCoursPourSemaine(int numeroSemaine) {
+    public static List<Cours> getCoursPourSemaine(Date dateDebut, Date dateFin) {
         List<Cours> coursList = new ArrayList<>();
 
-        try (Connection connection = connect()) {
-            String query = "SELECT * FROM cours WHERE semaine = ?";
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
 
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setInt(1, numeroSemaine);
-                try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                    while (resultSet.next()) {
-                    	LocalDate ld = resultSet.getObject( "date" , LocalDate.class );
-                    	Cours cours = new Cours(
-                        resultSet.getInt("idCours"),
-                        resultSet.getInt("nbEtudiant"),
-                        resultSet.getString("tabEtudiant"),
-                        resultSet.getInt("enseignant"),
-                        ld,
-                        resultSet.getInt("heure"),
-                        resultSet.getInt("idMatiere"),
-                        resultSet.getInt("idSalle") 
-                        );
-                        coursList.add(cours);
-                    }
-                }
+        try {
+            connection = connect();
+            String query = "SELECT * FROM cours WHERE date BETWEEN ? AND ?";
+            preparedStatement = connection.prepareStatement(query);
+
+            java.sql.Date sqlDateDebut = new java.sql.Date(dateDebut.getTime());
+            java.sql.Date sqlDateFin = new java.sql.Date(dateFin.getTime());
+            preparedStatement.setDate(1, sqlDateDebut);
+            preparedStatement.setDate(2, sqlDateFin);
+
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                LocalDate ld = resultSet.getObject("date", LocalDate.class);
+                Cours cours = new Cours(
+                    resultSet.getInt("idCours"),
+                    resultSet.getInt("nbEtudiant"),
+                    resultSet.getString("tabEtudiant"),
+                    resultSet.getInt("enseignant"),
+                    ld,
+                    resultSet.getInt("heure"),
+                    resultSet.getInt("idMatiere"),
+                    resultSet.getInt("idSalle")
+                );
+                coursList.add(cours);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (preparedStatement != null) preparedStatement.close();
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
         return coursList;
     }
+
     public static List<Matiere> getMatiere() {
         List<Matiere> listMatiere = new ArrayList<>();
 
