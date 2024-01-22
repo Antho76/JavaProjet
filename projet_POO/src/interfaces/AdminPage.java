@@ -6,10 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-import classes.Cours;
-import classes.Enseignant;
-import classes.Etudiant;
-import classes.Personnel;
+import classes.*;
+
 import database.DatabaseManager;
 
 public class AdminPage {
@@ -50,10 +48,12 @@ public class AdminPage {
             public void actionPerformed(ActionEvent e) {
                 // Ajoutez ici la logique pour ouvrir la page d'affichage des enseignants
                 List<Enseignant> enseignants = DatabaseManager.getEnseignants();
+                List<Matiere> matieres = DatabaseManager.getMatiere();
+
 
                 // Créer une instance de la page d'affichage des enseignants
                 SwingUtilities.invokeLater(() -> {
-                    ShowProfesseurPage showProfesseurPage = new ShowProfesseurPage(enseignants);
+                    ShowProfesseurPage showProfesseurPage = new ShowProfesseurPage(enseignants,matieres);
                     showProfesseurPage.setVisible(true);
                 });
             }
