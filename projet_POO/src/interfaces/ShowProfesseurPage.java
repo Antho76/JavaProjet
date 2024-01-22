@@ -40,6 +40,7 @@ public class ShowProfesseurPage extends JFrame {
 
         JScrollPane scrollPane = new JScrollPane(professeurList);
         mainPanel.add(scrollPane, BorderLayout.WEST);
+        scrollPane.setPreferredSize(new Dimension(300, getHeight()));  // Ajustez la largeur ici
 
         // Panel pour afficher les détails des professeurs
         JPanel detailsPanel = new JPanel();

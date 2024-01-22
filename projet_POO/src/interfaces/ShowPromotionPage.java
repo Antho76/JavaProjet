@@ -1,7 +1,7 @@
 package interfaces;
 import javax.swing.*;
 
-import classes.Etudiant;
+import classes.Promotion;
 import database.DatabaseManager;
 
 import java.awt.*;
@@ -9,17 +9,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-public class ShowEtudiantPage extends JFrame {
+public class ShowPromotionPage extends JFrame {
 
-    private List<Etudiant> etudiants;
+    private List<Promotion> promotions;
 
-    public ShowEtudiantPage(List<Etudiant> etudiants) {
-        this.etudiants = etudiants;
+    public ShowPromotionPage(List<Promotion> promotions) {
+        this.promotions = promotions;
         initUI();
     }
 
     private void initUI() {
-        setTitle("Liste des étudiants");
+        setTitle("Liste des promotions");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -27,18 +27,17 @@ public class ShowEtudiantPage extends JFrame {
         mainPanel.setLayout(new BorderLayout());
 
         DefaultListModel<String> listModel = new DefaultListModel<>();
-        for (Etudiant etudiant : etudiants) {
-            listModel.addElement(etudiant.getNom() + " " + etudiant.getPrenom());
+        for (Promotion promotion : promotions) {
+            listModel.addElement(promotion.toString());
         }
 
-        JList<String> etudiantList = new JList<>(listModel);
-        etudiantList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        JList<String> promotionList = new JList<>(listModel);
+        promotionList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        JScrollPane scrollPane = new JScrollPane(etudiantList);
+        JScrollPane scrollPane = new JScrollPane(promotionList);
         mainPanel.add(scrollPane, BorderLayout.WEST);
-        scrollPane.setPreferredSize(new Dimension(300, getHeight()));  // Ajustez la largeur ici
 
-        // Panel pour afficher les détails des étudiants
+        // Panel pour afficher les détails des promotions
         JPanel detailsPanel = new JPanel();
         detailsPanel.setLayout(new BorderLayout());
 
@@ -54,15 +53,15 @@ public class ShowEtudiantPage extends JFrame {
         modifierButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int selectedIndex = etudiantList.getSelectedIndex();
+                int selectedIndex = promotionList.getSelectedIndex();
                 if (selectedIndex != -1) {
-                    Etudiant selectedEtudiant = etudiants.get(selectedIndex);
-                    JOptionPane.showMessageDialog(ShowEtudiantPage.this,
-                            "Modifier un évènement pour l'étudiant : " + selectedEtudiant.getNom() + " " + selectedEtudiant.getPrenom(),
-                            "Modifier un évènement", JOptionPane.INFORMATION_MESSAGE);
+                    Promotion selectedPromotion = promotions.get(selectedIndex);
+                    JOptionPane.showMessageDialog(ShowPromotionPage.this,
+                            "Modifier la promotion : " + selectedPromotion.toString(),
+                            "Modifier la promotion", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(ShowEtudiantPage.this,
-                            "Veuillez sélectionner un étudiant avant de modifier.",
+                    JOptionPane.showMessageDialog(ShowPromotionPage.this,
+                            "Veuillez sélectionner une promotion avant de modifier.",
                             "Avertissement", JOptionPane.WARNING_MESSAGE);
                 }
             }
@@ -71,20 +70,19 @@ public class ShowEtudiantPage extends JFrame {
         detailsPanel.add(retourButton, BorderLayout.NORTH);
         detailsPanel.add(modifierButton, BorderLayout.SOUTH);
 
-        // Zone de texte pour afficher les détails des étudiants
+        // Zone de texte pour afficher les détails des promotions
         JTextArea detailsTextArea = new JTextArea();
         detailsTextArea.setEditable(false);
         detailsPanel.add(new JScrollPane(detailsTextArea), BorderLayout.CENTER);
 
         // Écouteur pour mettre à jour les détails lorsque la sélection change
-        etudiantList.addListSelectionListener(e -> {
-            int selectedIndex = etudiantList.getSelectedIndex();
+        promotionList.addListSelectionListener(e -> {
+            int selectedIndex = promotionList.getSelectedIndex();
             if (selectedIndex != -1) {
-                Etudiant selectedEtudiant = etudiants.get(selectedIndex);
-                String details = "Nom : " + selectedEtudiant.getNom() + "\n" +
-                                 "Prénom : " + selectedEtudiant.getPrenom() + "\n" +
-                                 "Promotion : " + selectedEtudiant.getPromotion() + "\n" +
-                                 "Formation : " + selectedEtudiant.getFormation();
+                Promotion selectedPromotion = promotions.get(selectedIndex);
+                String details = "Numéro de Promotion : " + selectedPromotion.getId() + "\n" +
+                                 "Année : " + selectedPromotion.getAnnee() + "\n" +
+                                 "ID Formation : " + selectedPromotion.getidFormation();
 
                 detailsTextArea.setText(details);
             } else {
@@ -98,15 +96,13 @@ public class ShowEtudiantPage extends JFrame {
         setLocationRelativeTo(null);
     }
 
-    
     public static void main(String[] args) {
         // Vous pouvez placer ici le code pour tester votre page
-        List<Etudiant> etudiants = DatabaseManager.getStudents();
-        
+        List<Promotion> promotions = DatabaseManager.getPromotions();
+
         SwingUtilities.invokeLater(() -> {
-            ShowEtudiantPage showEtudiantPage = new ShowEtudiantPage(etudiants);
-            showEtudiantPage.setVisible(true);
+            ShowPromotionPage showPromotionPage = new ShowPromotionPage(promotions);
+            showPromotionPage.setVisible(true);
         });
     }
 }
-

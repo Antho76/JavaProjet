@@ -85,6 +85,7 @@ public class ShowPageCours extends JFrame {
 
         JScrollPane scrollPane = new JScrollPane(jListCours);
         mainPanel.add(scrollPane, BorderLayout.WEST);
+        scrollPane.setPreferredSize(new Dimension(500, getHeight()));  // Ajustez la largeur ici
 
         // Panel pour afficher les détails des étudiants
         JPanel detailsPanel = new JPanel();

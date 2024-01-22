@@ -103,12 +103,25 @@ public class AdminPage {
 			creerPromotionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Ajoutez ici la logique pour ouvrir la page de création de promotion
-                JOptionPane.showMessageDialog(frame, "Ouvrir la page d'ajout de promotion");
+            	InterfaceAddPromotion addPromotionPage = new InterfaceAddPromotion();
+                addPromotionPage.setVisible(true);
             }
         });
         panel.add(creerPromotionButton, gbc);
+        
+        JButton afficherPromotionButton = new JButton("Afficher Promotion");
+        afficherPromotionButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Ajoutez ici la logique pour ouvrir la page d'affichage des promotions
+                List<Promotion> promotions = DatabaseManager.getPromotions();
+                ShowPromotionPage showPromotionPage = new ShowPromotionPage(promotions);
+                showPromotionPage.setVisible(true);
 
+           }
+        });
+        panel.add(afficherPromotionButton, gbc);
+   
         JButton creerBatimentsButton = new JButton("Créer un bâtiment");
         creerBatimentsButton.addActionListener(new ActionListener() {
             @Override
@@ -129,7 +142,7 @@ public class AdminPage {
         });
         panel.add(creerSalleeButton, gbc);
 
-        panel.add(creerPromotionButton, gbc);
+        
         
         JButton gererCoursButton = new JButton("Gérer les cours");
         gererCoursButton.addActionListener(new ActionListener() {

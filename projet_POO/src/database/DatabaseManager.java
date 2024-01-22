@@ -153,6 +153,8 @@ public class DatabaseManager {
 	    try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 	        preparedStatement.setInt(1, promotion.getId());
 	        preparedStatement.setInt(2, promotion.getAnnee());
+	        preparedStatement.setInt(3, promotion.getidFormation());
+
 	
 	        preparedStatement.executeUpdate();
 	    }
@@ -755,7 +757,7 @@ public class DatabaseManager {
         List<Promotion> promotions = new ArrayList<>();
 
         try (Connection connection = connect()) {
-            String query = "SELECT numeroPromotion, annee FROM promotion";
+            String query = "SELECT numeroPromotion, annee, idFormation FROM promotion";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {

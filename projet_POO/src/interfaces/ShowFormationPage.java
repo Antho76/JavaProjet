@@ -1,7 +1,7 @@
 package interfaces;
 import javax.swing.*;
 
-import classes.Etudiant;
+import classes.Formation;
 import database.DatabaseManager;
 
 import java.awt.*;
@@ -9,17 +9,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-public class ShowEtudiantPage extends JFrame {
+public class ShowFormationPage extends JFrame {
 
-    private List<Etudiant> etudiants;
+    private List<Formation> formations;
 
-    public ShowEtudiantPage(List<Etudiant> etudiants) {
-        this.etudiants = etudiants;
+    public ShowFormationPage(List<Formation> formations) {
+        this.formations = formations;
         initUI();
     }
 
     private void initUI() {
-        setTitle("Liste des étudiants");
+        setTitle("Liste des formations");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -27,18 +27,20 @@ public class ShowEtudiantPage extends JFrame {
         mainPanel.setLayout(new BorderLayout());
 
         DefaultListModel<String> listModel = new DefaultListModel<>();
-        for (Etudiant etudiant : etudiants) {
-            listModel.addElement(etudiant.getNom() + " " + etudiant.getPrenom());
+        for (Formation formation : formations) {
+            listModel.addElement(formation.toString());
         }
 
-        JList<String> etudiantList = new JList<>(listModel);
-        etudiantList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        JList<String> formationList = new JList<>(listModel);
+        formationList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        
+        JScrollPane scrollPane = new JScrollPane(formationList);
+        scrollPane.setPreferredSize(new Dimension(300, getHeight()));  // Ajustez la largeur ici
 
-        JScrollPane scrollPane = new JScrollPane(etudiantList);
         mainPanel.add(scrollPane, BorderLayout.WEST);
         scrollPane.setPreferredSize(new Dimension(300, getHeight()));  // Ajustez la largeur ici
 
-        // Panel pour afficher les détails des étudiants
+        // Panel pour afficher les détails des formations
         JPanel detailsPanel = new JPanel();
         detailsPanel.setLayout(new BorderLayout());
 
@@ -54,15 +56,15 @@ public class ShowEtudiantPage extends JFrame {
         modifierButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int selectedIndex = etudiantList.getSelectedIndex();
+                int selectedIndex = formationList.getSelectedIndex();
                 if (selectedIndex != -1) {
-                    Etudiant selectedEtudiant = etudiants.get(selectedIndex);
-                    JOptionPane.showMessageDialog(ShowEtudiantPage.this,
-                            "Modifier un évènement pour l'étudiant : " + selectedEtudiant.getNom() + " " + selectedEtudiant.getPrenom(),
-                            "Modifier un évènement", JOptionPane.INFORMATION_MESSAGE);
+                    Formation selectedFormation = formations.get(selectedIndex);
+                    JOptionPane.showMessageDialog(ShowFormationPage.this,
+                            "Modifier la formation : " + selectedFormation.toString(),
+                            "Modifier la formation", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(ShowEtudiantPage.this,
-                            "Veuillez sélectionner un étudiant avant de modifier.",
+                    JOptionPane.showMessageDialog(ShowFormationPage.this,
+                            "Veuillez sélectionner une formation avant de modifier.",
                             "Avertissement", JOptionPane.WARNING_MESSAGE);
                 }
             }
@@ -71,20 +73,18 @@ public class ShowEtudiantPage extends JFrame {
         detailsPanel.add(retourButton, BorderLayout.NORTH);
         detailsPanel.add(modifierButton, BorderLayout.SOUTH);
 
-        // Zone de texte pour afficher les détails des étudiants
+        // Zone de texte pour afficher les détails des formations
         JTextArea detailsTextArea = new JTextArea();
         detailsTextArea.setEditable(false);
         detailsPanel.add(new JScrollPane(detailsTextArea), BorderLayout.CENTER);
 
         // Écouteur pour mettre à jour les détails lorsque la sélection change
-        etudiantList.addListSelectionListener(e -> {
-            int selectedIndex = etudiantList.getSelectedIndex();
+        formationList.addListSelectionListener(e -> {
+            int selectedIndex = formationList.getSelectedIndex();
             if (selectedIndex != -1) {
-                Etudiant selectedEtudiant = etudiants.get(selectedIndex);
-                String details = "Nom : " + selectedEtudiant.getNom() + "\n" +
-                                 "Prénom : " + selectedEtudiant.getPrenom() + "\n" +
-                                 "Promotion : " + selectedEtudiant.getPromotion() + "\n" +
-                                 "Formation : " + selectedEtudiant.getFormation();
+                Formation selectedFormation = formations.get(selectedIndex);
+                String details = "ID de la Formation : " + selectedFormation.getId_Formation() + "\n" +
+                                 "Nom de la Formation : " + selectedFormation.getNomFormation();
 
                 detailsTextArea.setText(details);
             } else {
@@ -98,15 +98,13 @@ public class ShowEtudiantPage extends JFrame {
         setLocationRelativeTo(null);
     }
 
-    
     public static void main(String[] args) {
         // Vous pouvez placer ici le code pour tester votre page
-        List<Etudiant> etudiants = DatabaseManager.getStudents();
-        
+        List<Formation> formations = DatabaseManager.getFormations();
+
         SwingUtilities.invokeLater(() -> {
-            ShowEtudiantPage showEtudiantPage = new ShowEtudiantPage(etudiants);
-            showEtudiantPage.setVisible(true);
+            ShowFormationPage showFormationPage = new ShowFormationPage(formations);
+            showFormationPage.setVisible(true);
         });
     }
 }
-
