@@ -59,9 +59,31 @@ public class ShowFormationPage extends JFrame {
                 int selectedIndex = formationList.getSelectedIndex();
                 if (selectedIndex != -1) {
                     Formation selectedFormation = formations.get(selectedIndex);
-                    JOptionPane.showMessageDialog(ShowFormationPage.this,
-                            "Modifier la formation : " + selectedFormation.toString(),
-                            "Modifier la formation", JOptionPane.INFORMATION_MESSAGE);
+
+                    // Demander le nouveau nom de la formation via une boîte de dialogue
+                    String nouveauNomFormation = JOptionPane.showInputDialog(
+                            ShowFormationPage.this,
+                            "Veuillez entrer le nouveau nom de la formation :",
+                            "Modifier la formation",
+                            JOptionPane.PLAIN_MESSAGE);
+
+                    // Vérifier si l'utilisateur a cliqué sur OK et si un nouveau nom a été saisi
+                    if (nouveauNomFormation != null && !nouveauNomFormation.isEmpty()) {
+                        // Mettre à jour le nom de la formation dans la liste des formations
+                        selectedFormation.setNomFormation(nouveauNomFormation);
+                        // Mettre à jour le nom de la formation dans la base de données
+                        DatabaseManager.updateFormation(selectedFormation);
+
+                        // Mettre à jour le modèle de liste pour refléter le nouveau nom
+                        listModel.setElementAt(selectedFormation.toString(), selectedIndex);
+                        // Mettre à jour les détails
+                        dispose();
+                        List<Formation> formations = DatabaseManager.getFormations();
+                        SwingUtilities.invokeLater(() -> {
+                            ShowFormationPage showFormationPage = new ShowFormationPage(formations);
+                            showFormationPage.setVisible(true);
+                        });
+                    }
                 } else {
                     JOptionPane.showMessageDialog(ShowFormationPage.this,
                             "Veuillez sélectionner une formation avant de modifier.",

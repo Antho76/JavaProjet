@@ -1084,6 +1084,21 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
+    
+    public static void updateFormation(Formation formation) {
+        try (Connection connection = connect()) {
+            String query = "UPDATE formation SET nomFormation=? WHERE id_formation=?";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, formation.getNomFormation());
+                preparedStatement.setInt(2, formation.getId_Formation());
+
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     public static void disconnect(Connection connection) {
