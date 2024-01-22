@@ -136,36 +136,36 @@ public class AdminPage {
 
 
         // Créer une Salle
-        addButton("Créer une Salle", panel, gbc, frame, new ActionListener() {
+        addButtonPair("Créer une Salle", "Afficher les salles", panel, gbc, frame, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog(frame, "Ouvrir la page de création de salle");
             }
+        },
+        		new ActionListener() {
+        		List<Salle> salles = DatabaseManager.getSalle();
+        		public void actionPerformed(ActionEvent e) {
+		        SwingUtilities.invokeLater(() -> {
+		            ShowSallePage showSallePage = new ShowSallePage(salles);
+		            showSallePage.setVisible(true);
+		        });
+        		}
         });
+        		
 
-        // Gérer les Cours
-        addButtonPair("Afficher les Cours", "ajouter un cours", panel, gbc, frame, 
-
-        new ActionListener() {
-	        	public void actionPerformed(ActionEvent e) {
-	                List<Cours> cours = DatabaseManager.getCours();
-	                SwingUtilities.invokeLater(() -> {
-	                    ShowPageCours showPageCours = new ShowPageCours(cours);
-	                    showPageCours.setVisible(true);
-	                });
-	        		
-	        	}
-	        },
-        
-        new ActionListener() {
-            @Override
+     // Gérer les Cours
+        addButton("Gérer les cours", panel, gbc, frame, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	InterfaceAddCours interfaceAddCours = new InterfaceAddCours();
-        		interfaceAddCours.afficherInterfaceCours();
-
-                
+                List<Cours> cours = DatabaseManager.getCours();
+                SwingUtilities.invokeLater(() -> {
+                    ShowPageCours showPageCours = new ShowPageCours(cours);
+                    showPageCours.setVisible(true);
+                });
             }
         });
+
+        // Saut de ligne
+        gbc.gridy++;
 
         // Déconnexion
         JButton retourButton = new JButton("Déconnexion");
