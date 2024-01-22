@@ -7,14 +7,13 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 import classes.*;
-
 import database.DatabaseManager;
 
 public class AdminPage {
     public void afficherInterface(Personnel person) {
         // Création de la fenêtre principale
         JFrame frame = new JFrame("Page d'Administration");
-        frame.setSize(700, 600); // Ajustez la taille selon vos besoins
+        frame.setSize(700, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Création du panel pour ajouter les composants
@@ -30,142 +29,149 @@ public class AdminPage {
 
         frame.add(panel);
 
-        // Ajout des boutons
-        JButton ajouterProfesseurButton = new JButton("Ajouter un Enseignant");
-        ajouterProfesseurButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                interfaceAddProfesseurs interfaceAddProfesseurs = new interfaceAddProfesseurs();
-                interfaceAddProfesseurs.afficherInterface(person);
-                frame.dispose();
-            }
-        });
-        panel.add(ajouterProfesseurButton, gbc);
-
-        JButton afficherProfesseurButton = new JButton("Afficher les Enseignants");
-        afficherProfesseurButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Ajoutez ici la logique pour ouvrir la page d'affichage des enseignants
-                List<Enseignant> enseignants = DatabaseManager.getEnseignants();
-                List<Matiere> matieres = DatabaseManager.getMatiere();
-
-
-                // Créer une instance de la page d'affichage des enseignants
-                SwingUtilities.invokeLater(() -> {
-                    ShowProfesseurPage showProfesseurPage = new ShowProfesseurPage(enseignants,matieres);
-                    showProfesseurPage.setVisible(true);
+        // Ajout des boutons "Créer" et "Afficher"
+        // Enseignants
+        addButtonPair("Ajouter un Enseignant", "Afficher les Enseignants", panel, gbc, frame,
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        interfaceAddProfesseurs interfaceAddProfesseurs = new interfaceAddProfesseurs();
+                        interfaceAddProfesseurs.afficherInterface(person);
+                        frame.dispose();
+                    }
+                },
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        List<Enseignant> enseignants = DatabaseManager.getEnseignants();
+                        List<Matiere> matieres = DatabaseManager.getMatiere();
+                        SwingUtilities.invokeLater(() -> {
+                            ShowProfesseurPage showProfesseurPage = new ShowProfesseurPage(enseignants, matieres);
+                            showProfesseurPage.setVisible(true);
+                        });
+                    }
                 });
-            }
-        });
-        panel.add(afficherProfesseurButton, gbc);
 
-        JButton ajouterElevesButton = new JButton("Ajouter des Élèves");
-        ajouterElevesButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                interfaceAddEtudiant interfaceAddEtudiant = new interfaceAddEtudiant();
-                interfaceAddEtudiant.afficherInterface(person);
-                frame.dispose();
-            }
-        });
-        panel.add(ajouterElevesButton, gbc);
-
-        JButton afficherEleves = new JButton("Afficher les Élèves");
-        afficherEleves.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Ajoutez ici la logique pour ouvrir la page d'affichage des étudiants
-                List<Etudiant> etudiants = DatabaseManager.getStudents();
-
-                // Créer une instance de la page d'affichage des étudiants
-                SwingUtilities.invokeLater(() -> {
-                    ShowEtudiantPage showEtudiantPage = new ShowEtudiantPage(etudiants);
-                    showEtudiantPage.setVisible(true);
+        // Élèves
+        addButtonPair("Ajouter des Élèves", "Afficher les Élèves", panel, gbc, frame,
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        interfaceAddEtudiant interfaceAddEtudiant = new interfaceAddEtudiant();
+                        interfaceAddEtudiant.afficherInterface(person);
+                        frame.dispose();
+                    }
+                },
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        List<Etudiant> etudiants = DatabaseManager.getStudents();
+                        SwingUtilities.invokeLater(() -> {
+                            ShowEtudiantPage showEtudiantPage = new ShowEtudiantPage(etudiants);
+                            showEtudiantPage.setVisible(true);
+                        });
+                    }
                 });
-            }
-        });
-        panel.add(afficherEleves, gbc);
+
+        // Formations
+        addButtonPair("Ajouter une Formation", "Afficher les Formations", panel, gbc, frame,
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        InterfaceAddFormation addFormationPage = new InterfaceAddFormation();
+                        addFormationPage.setVisible(true);
+                    }
+                },
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        List<Formation> formations = DatabaseManager.getFormations();
+                        SwingUtilities.invokeLater(() -> {
+                            ShowFormationPage showFormationPage = new ShowFormationPage(formations);
+                            showFormationPage.setVisible(true);
+                        });
+                    }
+                });
+
+        // Promotions
+        addButtonPair("Créer une Promotion", "Afficher les Promotions", panel, gbc, frame,
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        InterfaceAddPromotion addPromotionPage = new InterfaceAddPromotion();
+                        addPromotionPage.setVisible(true);
+                    }
+                },
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        List<Promotion> promotions = DatabaseManager.getPromotions();
+                        SwingUtilities.invokeLater(() -> {
+                            ShowPromotionPage showPromotionPage = new ShowPromotionPage(promotions);
+                            showPromotionPage.setVisible(true);
+                        });
+                    }
+                });
+
+        // Autres boutons
+        // Créer un bâtiment
+        addButtonPair("Créer un Bâtiment", "afficher Batiment", panel, gbc, frame, 
+	        	new ActionListener() {
+		            @Override
+		            public void actionPerformed(ActionEvent e) {
+		                JOptionPane.showMessageDialog(frame, "Ouvrir la page de création de bâtiment");
+		            }
+	        	},
+            
+	            new ActionListener() {
+	                @Override
+	            public void actionPerformed(ActionEvent e) {
+	            List<Batiment> batiments = DatabaseManager.getBatiments();
+	            SwingUtilities.invokeLater(() -> {
+	                ShowBatimentPage showBatimentPage = new ShowBatimentPage(batiments);
+	                showBatimentPage.setVisible(true);
+	            		});
+	                }
+	        	});
 
 
-        JButton creerFormationButton = new JButton("ajouter une formation");
-        creerFormationButton.addActionListener(new ActionListener() {
+        // Créer une Salle
+        addButton("Créer une Salle", panel, gbc, frame, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Ajoutez ici la logique pour ouvrir la page de création de formation
-                InterfaceAddFormation addFormationPage = new InterfaceAddFormation();
-                addFormationPage.setVisible(true);            }
-        });
-
-        panel.add(creerFormationButton, gbc);
-
-			JButton creerPromotionButton = new JButton("Créer une Promotion");
-			creerPromotionButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            	InterfaceAddPromotion addPromotionPage = new InterfaceAddPromotion();
-                addPromotionPage.setVisible(true);
-            }
-        });
-        panel.add(creerPromotionButton, gbc);
-        
-        JButton afficherPromotionButton = new JButton("Afficher Promotion");
-        afficherPromotionButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Ajoutez ici la logique pour ouvrir la page d'affichage des promotions
-                List<Promotion> promotions = DatabaseManager.getPromotions();
-                ShowPromotionPage showPromotionPage = new ShowPromotionPage(promotions);
-                showPromotionPage.setVisible(true);
-
-           }
-        });
-        panel.add(afficherPromotionButton, gbc);
-   
-        JButton creerBatimentsButton = new JButton("Créer un bâtiment");
-        creerBatimentsButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Ajoutez ici la logique pour ouvrir la page de création de bâtiment
-                JOptionPane.showMessageDialog(frame, "Ouvrir la page de création de bâtiment");
-            }
-        });
-        panel.add(creerBatimentsButton, gbc);
-
-        JButton creerSalleeButton = new JButton("Créer une Salle");
-        creerSalleeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Ajoutez ici la logique pour ouvrir la page de création de salle
                 JOptionPane.showMessageDialog(frame, "Ouvrir la page de création de salle");
             }
         });
-        panel.add(creerSalleeButton, gbc);
 
+        // Gérer les Cours
+        addButtonPair("Afficher les Cours", "ajouter un cours", panel, gbc, frame, 
+
+        new ActionListener() {
+	        	public void actionPerformed(ActionEvent e) {
+	                List<Cours> cours = DatabaseManager.getCours();
+	                SwingUtilities.invokeLater(() -> {
+	                    ShowPageCours showPageCours = new ShowPageCours(cours);
+	                    showPageCours.setVisible(true);
+	                });
+	        		
+	        	}
+	        },
         
-        
-        JButton gererCoursButton = new JButton("Gérer les cours");
-        gererCoursButton.addActionListener(new ActionListener() {
+        new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
-                List<Cours> cours = DatabaseManager.getCours();
-                
-                SwingUtilities.invokeLater(() -> {
-                    ShowPageCours showPageCours = new ShowPageCours(cours);
-                    showPageCours.setVisible(true);
-                });
-            }
-           });
-        panel.add(gererCoursButton, gbc);
-        
-        JButton retourButton = new JButton("Deconnection");
-        retourButton.setBounds(10, 340, 120, 25);
+            	InterfaceAddCours interfaceAddCours = new InterfaceAddCours();
+        		interfaceAddCours.afficherInterfaceCours();
 
+                
+            }
+        });
+
+        // Déconnexion
+        JButton retourButton = new JButton("Déconnexion");
         retourButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Fermer la fenêtre d'administration et réafficher la fenêtre de connexion
                 frame.dispose();
                 new ConnectionInterface().afficherInterface();
             }
@@ -175,5 +181,35 @@ public class AdminPage {
         // Affichage de la fenêtre principale
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+
+    private void addButtonPair(String createLabel, String showLabel, JPanel panel, GridBagConstraints gbc,
+            JFrame frame, ActionListener createAction, ActionListener showAction) {
+	// Ajout du message d'accueil au milieu de la fenêtre
+    	gbc.gridy++;
+	// Ajouter une ligne vide
+	gbc.gridy++;
+	
+	// Bouton "Créer"
+	JButton createButton = new JButton(createLabel);
+	createButton.addActionListener(createAction);
+	
+	// Bouton "Afficher"
+	JButton showButton = new JButton(showLabel);
+	showButton.addActionListener(showAction);
+	
+	// Ajouter les boutons dans la même colonne
+	panel.add(createButton, gbc);
+	panel.add(showButton, gbc);
+	
+	// Passer à une nouvelle ligne
+	gbc.gridy++;
+	}
+
+    private void addButton(String label, JPanel panel, GridBagConstraints gbc, JFrame frame,
+                           ActionListener action) {
+        JButton button = new JButton(label);
+        button.addActionListener(action);
+        panel.add(button, gbc);
     }
 }
