@@ -6,23 +6,20 @@ public class Batiment
   private int numeroBatiment;
   private String ville;
   private String nomBatiment;
-  private int nbSalles;
-  private String tabSalles;
+
 
   public Batiment() {
     this.numeroBatiment = 0;
     this.ville = "";
     this.nomBatiment = "";
-    this.nbSalles = 0;
-    this.tabSalles = "";
+
   }
 
-  public Batiment(int numeroBatiment, String ville, String nomBatiment, int nbSalles, String tabSalles) {
+  public Batiment(int numeroBatiment, String ville, String nomBatiment) {
     this.numeroBatiment = numeroBatiment;
     this.ville = ville;
     this.nomBatiment = nomBatiment;
-    this.nbSalles = nbSalles;
-    this.tabSalles = tabSalles;
+
   }
 
   public int getNumeroBatiment() {
@@ -37,13 +34,8 @@ public class Batiment
     return this.nomBatiment;
   }
 
-  public int getNbSalles() {
-    return this.nbSalles;
-  }
 
-  public String getTabSalles() {
-    return this.tabSalles;
-  }
+
 
   public void setNumeroBatiment(int numeroBatiment) {
     this.numeroBatiment = numeroBatiment;
@@ -57,13 +49,7 @@ public class Batiment
     this.nomBatiment = nomBatiment;
   }
 
-  public void setNbSalles(int nbSalles) {
-    this.nbSalles = nbSalles;
-  }
 
-  public void setTabSalles(String tabSalles) {
-    this.tabSalles = tabSalles;
-  }
 }
 
 

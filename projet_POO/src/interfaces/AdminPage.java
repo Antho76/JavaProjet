@@ -117,7 +117,7 @@ public class AdminPage {
 
      // Autres boutons
      // Créer un bâtiment
-     addButtonPair("Créer un Bâtiment", "afficher Batiment", panel, gbc, frame, 
+     addButtonPair("Créer un Bâtiment", "afficher les Batiments", panel, gbc, frame, 
              new ActionListener() {
                  @Override
                  public void actionPerformed(ActionEvent e) {

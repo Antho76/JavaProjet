@@ -283,14 +283,14 @@ public class DatabaseManager {
     
     public static void insertBatiment(Batiment batiment) {
         try (Connection connection = connect()) {
-            String query = "INSERT INTO batiment (numeroBatiment, ville, nomBatiment, nbSalles, tabSalles) VALUES (?, ?, ?, ?, ?)";
+        	int val = getMaxBatId();
+            String query = "INSERT INTO batiment (numeroBatiment, ville, nomBatiment) VALUES (?, ?, ?)";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setInt(1, batiment.getNumeroBatiment());
+                preparedStatement.setInt(1, val+1);
                 preparedStatement.setString(2, batiment.getVille());
                 preparedStatement.setString(3, batiment.getNomBatiment());
-                preparedStatement.setInt(4, batiment.getNbSalles());
-                preparedStatement.setString(5, batiment.getTabSalles());
+
 
                 preparedStatement.executeUpdate();
             }
@@ -827,7 +827,7 @@ public class DatabaseManager {
         List<Batiment> batiments = new ArrayList<>();
 
         try (Connection connection = connect()) {
-            String query = "SELECT numeroBatiment, ville, nomBatiment, nbSalles, tabSalles FROM batiment";
+            String query = "SELECT numeroBatiment, ville, nomBatiment FROM batiment";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -835,9 +835,7 @@ public class DatabaseManager {
                         Batiment batiment = new Batiment(
                                 resultSet.getInt("numeroBatiment"),
                                 resultSet.getString("ville"),
-                                resultSet.getString("nomBatiment"),
-                                resultSet.getInt("nbSalles"),
-                                resultSet.getString("tabSalles")
+                                resultSet.getString("nomBatiment")
                         );
                         batiments.add(batiment);
                     }
@@ -1033,6 +1031,27 @@ public class DatabaseManager {
         return maxId;
     }
     
+    public static int getMaxBatId() {
+        int maxId = -1;
+
+        try (Connection connection = connect()) {
+            // Requête SQL pour obtenir le maximum de l'ID dans la table des étudiants
+            String query = "SELECT MAX(numeroBatiment) FROM batiment";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        maxId = resultSet.getInt(1);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return maxId;
+    }
+    
     public static void deleteCours(int idCours) {
         try (Connection connection = connect()) {
             String query = "DELETE FROM cours WHERE idCours = ?";
@@ -1135,6 +1154,23 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
+    
+    public static void updateBatiment(Batiment batiment) {
+        try (Connection connection = connect()) {
+            String query = "UPDATE batiment SET ville=?, nomBatiment=? WHERE numeroBatiment=?";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, batiment.getVille());
+                preparedStatement.setString(2, batiment.getNomBatiment());
+                preparedStatement.setInt(3, batiment.getNumeroBatiment());
+
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
     public static void disconnect(Connection connection) {

@@ -12,6 +12,9 @@ import database.DatabaseManager;
 public class ShowBatimentPage extends JFrame {
 
     private List<Batiment> batiments;
+    private DefaultListModel<String> listModel;
+    private JList<String> batimentList;
+    private JTextArea detailsTextArea;
 
     public ShowBatimentPage(List<Batiment> batiments) {
         this.batiments = batiments;
@@ -26,12 +29,12 @@ public class ShowBatimentPage extends JFrame {
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
 
-        DefaultListModel<String> listModel = new DefaultListModel<>();
+        listModel = new DefaultListModel<>();
         for (Batiment batiment : batiments) {
             listModel.addElement(batiment.getNomBatiment());
         }
 
-        JList<String> batimentList = new JList<>(listModel);
+        batimentList = new JList<>(listModel);
         batimentList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         JScrollPane scrollPane = new JScrollPane(batimentList);
@@ -54,24 +57,14 @@ public class ShowBatimentPage extends JFrame {
         modifierButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int selectedIndex = batimentList.getSelectedIndex();
-                if (selectedIndex != -1) {
-                    Batiment selectedBatiment = batiments.get(selectedIndex);
-                    JOptionPane.showMessageDialog(ShowBatimentPage.this,
-                            "Modifier le bâtiment : " + selectedBatiment.getNomBatiment(),
-                            "Modifier le bâtiment", JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(ShowBatimentPage.this,
-                            "Veuillez sélectionner un bâtiment avant de modifier.",
-                            "Avertissement", JOptionPane.WARNING_MESSAGE);
-                }
+                modifierBatiment();
             }
         });
 
         detailsPanel.add(retourButton, BorderLayout.NORTH);
         detailsPanel.add(modifierButton, BorderLayout.SOUTH);
 
-        JTextArea detailsTextArea = new JTextArea();
+        detailsTextArea = new JTextArea();
         detailsTextArea.setEditable(false);
         detailsPanel.add(new JScrollPane(detailsTextArea), BorderLayout.CENTER);
 
@@ -81,9 +74,7 @@ public class ShowBatimentPage extends JFrame {
                 Batiment selectedBatiment = batiments.get(selectedIndex);
                 String details = "ID du Bâtiment : " + selectedBatiment.getNumeroBatiment() + "\n" +
                         "Ville : " + selectedBatiment.getVille() + "\n" +
-                        "Nom du Bâtiment : " + selectedBatiment.getNomBatiment() + "\n" +
-                        "Nombre de Salles : " + selectedBatiment.getNbSalles() + "\n" +
-                        "Liste des Salles : " + selectedBatiment.getTabSalles();
+                        "Nom du Bâtiment : " + selectedBatiment.getNomBatiment();
 
                 detailsTextArea.setText(details);
             } else {
@@ -95,6 +86,51 @@ public class ShowBatimentPage extends JFrame {
 
         add(mainPanel);
         setLocationRelativeTo(null);
+    }
+
+    private void modifierBatiment() {
+        int selectedIndex = batimentList.getSelectedIndex();
+        if (selectedIndex != -1) {
+            Batiment selectedBatiment = batiments.get(selectedIndex);
+
+            // Demander les nouvelles informations via des boîtes de dialogue
+            String nouvelleVille = JOptionPane.showInputDialog(
+                    ShowBatimentPage.this,
+                    "Veuillez entrer la nouvelle ville du bâtiment :",
+                    "Modifier le bâtiment",
+                    JOptionPane.PLAIN_MESSAGE);
+
+            String nouveauNomBatiment = JOptionPane.showInputDialog(
+                    ShowBatimentPage.this,
+                    "Veuillez entrer le nouveau nom du bâtiment (laissez vide pour conserver l'ancien) :",
+                    "Modifier le bâtiment",
+                    JOptionPane.PLAIN_MESSAGE);
+
+            // Mettre à jour les informations du bâtiment dans la liste des bâtiments
+            if (nouvelleVille != null && !nouvelleVille.isEmpty()) {
+                selectedBatiment.setVille(nouvelleVille);
+            }
+
+            if (nouveauNomBatiment != null && !nouveauNomBatiment.isEmpty()) {
+                selectedBatiment.setNomBatiment(nouveauNomBatiment);
+                // Mettre à jour les informations du bâtiment dans la base de données
+                DatabaseManager.updateBatiment(selectedBatiment);
+            }
+
+            // Mettre à jour le modèle de liste pour refléter les nouvelles informations
+            listModel.setElementAt(selectedBatiment.getNomBatiment(), selectedIndex);
+        } else {
+            JOptionPane.showMessageDialog(ShowBatimentPage.this,
+                    "Veuillez sélectionner un bâtiment avant de modifier.",
+                    "Avertissement", JOptionPane.WARNING_MESSAGE);
+        }
+        dispose();
+        List<Batiment> batiments = DatabaseManager.getBatiments();
+
+        SwingUtilities.invokeLater(() -> {
+            ShowBatimentPage showBatimentPage = new ShowBatimentPage(batiments);
+            showBatimentPage.setVisible(true);
+        });
     }
 
     public static void main(String[] args) {
