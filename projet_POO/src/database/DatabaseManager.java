@@ -146,9 +146,9 @@ public class DatabaseManager {
     
     private static void insertPromoPrincipal(Connection connection) {
 
-	    Promotion promotion = new Promotion(0,2023);
+	    Promotion promotion = new Promotion(0,2023, 0);
 		
-		String query = "INSERT INTO promotion (numeroPromotion, annee) VALUES (?, ?)";
+		String query = "INSERT INTO promotion (numeroPromotion, annee, idFormation) VALUES (?, ?, ?)";
 	
 	    try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 	        preparedStatement.setInt(1, promotion.getId());
@@ -162,16 +162,15 @@ public class DatabaseManager {
     }
     private static void insertFormationPrincipal(Connection connection) {
 
-    Formation formation = new Formation(0,"formation",0);
+    Formation formation = new Formation(0,"formation");
 	
 
-	String query = "INSERT INTO formation (id_formation,nomFormation, idpromotion) VALUES (?, ?,?)";
+	String query = "INSERT INTO formation (id_formation,nomFormation, idpromotion) VALUES (?, ?)";
 
 
     try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
         preparedStatement.setInt(1, formation.getId_Formation());
         preparedStatement.setString(2, formation.getNomFormation());
-        preparedStatement.setInt(3, formation.getIdPromotion());
 
         preparedStatement.executeUpdate();
     }
@@ -379,14 +378,14 @@ public class DatabaseManager {
         }
     }
     
-    public static void insertFormation(Formation formation) {
+    public static void insertFormation(String nomFormation) {
         try (Connection connection = connect()) {
-            String query = "INSERT INTO formation (id_formation, nomFormation, idPromotion) VALUES (?, ?, ?)";
+        	int value = getMaxFormationId();
+            String query = "INSERT INTO formation (id_formation, nomFormation) VALUES (?, ?)";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setInt(1, formation.getId_Formation());
-                preparedStatement.setString(2, formation.getNomFormation());
-                preparedStatement.setInt(3, formation.getIdPromotion());
+                preparedStatement.setInt(1, value+1);
+                preparedStatement.setString(2, nomFormation);
 
                 preparedStatement.executeUpdate();
             }
@@ -758,7 +757,9 @@ public class DatabaseManager {
                     while (resultSet.next()) {
                         Promotion promotion = new Promotion(
                                 resultSet.getInt("numeroPromotion"),
-                                resultSet.getInt("annee")
+                                resultSet.getInt("annee"),
+                                resultSet.getInt("idFormation")
+
                         );
                         promotions.add(promotion);
                     }
@@ -775,15 +776,14 @@ public class DatabaseManager {
         List<Formation> formations = new ArrayList<>();
 
         try (Connection connection = connect()) {
-            String query = "SELECT id_formation, nomFormation, idPromotion FROM formation";
+            String query = "SELECT id_formation, nomFormation FROM formation";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     while (resultSet.next()) {
                         Formation formation = new Formation(
                                 resultSet.getInt("id_formation"),
-                                resultSet.getString("nomFormation"),
-                                resultSet.getInt("idPromotion")
+                                resultSet.getString("nomFormation")
                         );
                         formations.add(formation);
                     }
@@ -941,6 +941,28 @@ public class DatabaseManager {
 
         return maxId;
     }
+    
+    public static int getMaxFormationId() {
+        int maxId = -1;
+
+        try (Connection connection = connect()) {
+            // Requête SQL pour obtenir le maximum de l'ID dans la table des étudiants
+            String query = "SELECT MAX(id_formation) FROM formation";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        maxId = resultSet.getInt(1);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return maxId;
+    }
+    
     public static void disconnect(Connection connection) {
         if (connection != null) {
             try {
