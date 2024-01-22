@@ -60,7 +60,7 @@ public class EmploiDuTempsController {
 	}
 
 
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 
     public String[][] getCoursPourSemaineInterface(LocalDate dateDebutSemaine, LocalDate dateFinSemaine) {
         LocalDate dateDebut = dateDebutSemaine;

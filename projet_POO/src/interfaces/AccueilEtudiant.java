@@ -73,7 +73,7 @@ public class AccueilEtudiant {
     private void changeSemaine(int amount) {
         calendar.add(Calendar.WEEK_OF_YEAR, amount);
         updateLabelSemaine();
-        /*updateTable();*/
+        updateTable();
     }
 
     private void updateLabelSemaine() {
@@ -107,6 +107,9 @@ public class AccueilEtudiant {
             return;  // Ou initialiser le model ici si nécessaire
         }
     	String[][] dataFromController = emploiDuTempsController.getCoursPourSemaineInterface(dateDebutSemaine, dateFinSemaine);
+    	System.out.println(dataFromController[0][0]);
+    	System.out.println(dateDebutSemaine);
+    	System.out.println(dateFinSemaine);
         String[][] updatedData = mergeDataWithHours(dataFromController);
 
     	String[] columns = new String[]{"Heure", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"};
