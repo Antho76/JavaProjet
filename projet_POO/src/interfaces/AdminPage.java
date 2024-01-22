@@ -93,8 +93,8 @@ public class AdminPage {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Ajoutez ici la logique pour ouvrir la page de création de formation
-                JOptionPane.showMessageDialog(frame, "Ouvrir la page de création de formation");
-            }
+                InterfaceAddFormation addFormationPage = new InterfaceAddFormation();
+                addFormationPage.setVisible(true);            }
         });
 
         panel.add(creerFormationButton, gbc);

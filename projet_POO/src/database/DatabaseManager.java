@@ -165,7 +165,7 @@ public class DatabaseManager {
     Formation formation = new Formation(0,"formation");
 	
 
-	String query = "INSERT INTO formation (id_formation,nomFormation, idpromotion) VALUES (?, ?)";
+	String query = "INSERT INTO formation (id_formation,nomFormation) VALUES (?, ?)";
 
 
     try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -431,13 +431,18 @@ public class DatabaseManager {
         }
     }
     
-    public static void insertPromotion(Promotion promotion) {
+    public static void insertPromotion(int annee, int idFormation) {
         try (Connection connection = connect()) {
-            String query = "INSERT INTO promotion (numeroPromotion, annee) VALUES (?, ?)";
+        	int val = getMaxPromotionId();
+        	System.out.println(idFormation);
+            String query = "INSERT INTO promotion (numeroPromotion, annee, idFormation ) VALUES (?, ?,?)";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setInt(1, promotion.getId());
-                preparedStatement.setInt(2, promotion.getAnnee());
+                preparedStatement.setInt(1, val+1);
+                preparedStatement.setInt(2, annee);
+                preparedStatement.setInt(3, idFormation);
+
+                
 
                 preparedStatement.executeUpdate();
             }
@@ -948,6 +953,27 @@ public class DatabaseManager {
         try (Connection connection = connect()) {
             // Requête SQL pour obtenir le maximum de l'ID dans la table des étudiants
             String query = "SELECT MAX(id_formation) FROM formation";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        maxId = resultSet.getInt(1);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return maxId;
+    }
+    
+    public static int getMaxPromotionId() {
+        int maxId = -1;
+
+        try (Connection connection = connect()) {
+            // Requête SQL pour obtenir le maximum de l'ID dans la table des étudiants
+            String query = "SELECT MAX(numeroPromotion) FROM promotion";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
