@@ -50,7 +50,7 @@ public class ShowProfesseurPage extends JFrame {
         retourButton.addActionListener(e -> dispose()); // Ferme la fenêtre actuelle
 
         JButton modifierButton = new JButton("Modifier");
-        modifierButton.addActionListener(e -> modifierProfesseur(professeurs));
+        modifierButton.addActionListener(e -> modifierProfesseur(professeurs, matieres));
 
         detailsPanel.add(retourButton, BorderLayout.NORTH);
         detailsPanel.add(modifierButton, BorderLayout.SOUTH);
@@ -84,13 +84,70 @@ public class ShowProfesseurPage extends JFrame {
         }
     }
 
-    private void modifierProfesseur(List<Enseignant> professeurs) {
+    private void modifierProfesseur(List<Enseignant> professeurs, List<Matiere> matieres) {
         int selectedIndex = professeurList.getSelectedIndex();
         if (selectedIndex != -1) {
             Enseignant selectedProfesseur = professeurs.get(selectedIndex);
-            JOptionPane.showMessageDialog(this,
-                    "Modifier un professeur : " + selectedProfesseur.getNom() + " " + selectedProfesseur.getPrenom(),
-                    "Modifier un professeur", JOptionPane.INFORMATION_MESSAGE);
+
+            // Récupérer les noms de matières depuis la liste de matières
+            String[] matiereNames = matieres.stream().map(Matiere::getNomMatiere).toArray(String[]::new);
+
+            // Créer une JComboBox avec les noms de matières
+            JComboBox<String> matiereComboBox = new JComboBox<>(matiereNames);
+
+            // Sélectionner la matière actuelle de l'enseignant dans la JComboBox
+            matiereComboBox.setSelectedItem(findMatiereName(matieres, selectedProfesseur.getMatiere()));
+
+            // Créer une boîte de dialogue avec les composants nécessaires
+            JPanel panel = new JPanel(new GridLayout(0, 2));
+            panel.add(new JLabel("Nom:"));
+            panel.add(new JTextField(selectedProfesseur.getNom()));
+            panel.add(new JLabel("Prénom:"));
+            panel.add(new JTextField(selectedProfesseur.getPrenom()));
+            panel.add(new JLabel("Date de naissance:"));
+            panel.add(new JTextField(selectedProfesseur.getDateNaissance()));
+            panel.add(new JLabel("Matière:"));
+            panel.add(matiereComboBox);
+            panel.add(new JLabel("Login:"));
+            panel.add(new JTextField(selectedProfesseur.getLogin()));
+            panel.add(new JLabel("Mot de passe:"));
+            panel.add(new JPasswordField(selectedProfesseur.getPassword()));
+
+            int result = JOptionPane.showConfirmDialog(null, panel, "Modifier le professeur",
+                    JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+            if (result == JOptionPane.OK_OPTION) {
+                // Mettre à jour les informations du professeur avec les nouvelles valeurs
+                selectedProfesseur.setNom(((JTextField) panel.getComponent(1)).getText());
+                selectedProfesseur.setPrenom(((JTextField) panel.getComponent(3)).getText());
+                selectedProfesseur.setDateNaissance(((JTextField) panel.getComponent(5)).getText());
+
+                // Mettre à jour l'ID de la matière
+                int selectedMatiereIndex = matiereComboBox.getSelectedIndex();
+                if (selectedMatiereIndex != -1) {
+                    selectedProfesseur.setMatiere(matieres.get(selectedMatiereIndex).getNumeroMatiere());
+                }
+
+                // Mettre à jour le login et le mot de passe
+                selectedProfesseur.setLogin(((JTextField) panel.getComponent(9)).getText());
+                selectedProfesseur.setPassword(new String(((JPasswordField) panel.getComponent(11)).getPassword()));
+
+                // Appeler la méthode pour mettre à jour le professeur dans la base de données
+
+                DatabaseManager.updateEnseignant(selectedProfesseur);
+
+                // Afficher un message d'information pour indiquer que la modification a été effectuée
+                JOptionPane.showMessageDialog(this,
+                        "Professeur modifié avec succès.",
+                        "Modification réussie", JOptionPane.INFORMATION_MESSAGE);
+                dispose();
+                    List<Enseignant> upprofesseurs = DatabaseManager.getEnseignants();
+                    List<Matiere> upmatieres = DatabaseManager.getMatiere();
+                    SwingUtilities.invokeLater(() -> new ShowProfesseurPage(upprofesseurs, upmatieres).setVisible(true));
+
+                // Mettre à jour les détails après la modification
+                updateDetails(professeurs, matieres);
+            }
         } else {
             JOptionPane.showMessageDialog(this,
                     "Veuillez sélectionner un professeur avant de modifier.",

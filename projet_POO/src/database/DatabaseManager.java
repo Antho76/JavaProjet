@@ -1064,6 +1064,26 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
+    
+    public static void updateEnseignant(Enseignant enseignant) {
+        try (Connection connection = connect()) {
+            String query = "UPDATE enseignant SET nom=?, prenom=?, dateNaissance=?, idMatiere=?, login=?, password=? WHERE id=?";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, enseignant.getNom());
+                preparedStatement.setString(2, enseignant.getPrenom());
+                preparedStatement.setString(3, enseignant.getDateNaissance());
+                preparedStatement.setInt(4, enseignant.getMatiere());
+                preparedStatement.setString(5, enseignant.getLogin());
+                preparedStatement.setString(6, enseignant.getPassword());
+                preparedStatement.setInt(7, enseignant.getId());
+
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     public static void disconnect(Connection connection) {
