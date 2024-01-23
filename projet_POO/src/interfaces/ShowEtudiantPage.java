@@ -3,12 +3,18 @@ import javax.swing.*;
 
 import classes.Etudiant;
 import classes.Formation;
+import classes.Personnel;
 import classes.Promotion;
 import database.DatabaseManager;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ShowEtudiantPage extends JFrame {
@@ -142,6 +148,8 @@ public class ShowEtudiantPage extends JFrame {
         JTextArea detailsTextArea = new JTextArea();
         detailsTextArea.setEditable(false);
         detailsPanel.add(new JScrollPane(detailsTextArea), BorderLayout.CENTER);
+        
+       
 
         // Écouteur pour mettre à jour les détails lorsque la sélection change
         etudiantList.addListSelectionListener(e -> {
@@ -180,7 +188,8 @@ public class ShowEtudiantPage extends JFrame {
         add(mainPanel);
         setLocationRelativeTo(null);
     }
-
+    
+   
     
     public static void main(String[] args) {
         // Vous pouvez placer ici le code pour tester votre page

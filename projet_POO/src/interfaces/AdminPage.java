@@ -53,7 +53,7 @@ public class AdminPage {
              });
 
      // Élèves
-     addButtonPair("Ajouter des Élèves", "Afficher les Élèves", panel, gbc, frame,
+     addButtonPair("Ajouter des Etudiant", "Afficher les Etudiants", panel, gbc, frame,
              new ActionListener() {
                  @Override
                  public void actionPerformed(ActionEvent e) {
