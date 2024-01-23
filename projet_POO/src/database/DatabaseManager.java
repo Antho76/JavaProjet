@@ -714,6 +714,9 @@ public class DatabaseManager {
 
         return coursList;
     }
+    
+    
+    
 
     public static List<Matiere> getMatiere() {
         List<Matiere> listMatiere = new ArrayList<>();
