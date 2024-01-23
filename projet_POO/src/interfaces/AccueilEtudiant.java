@@ -7,6 +7,7 @@ import database.DatabaseManager;
 import javax.swing.table.DefaultTableModel;
 
 import classes.Enseignant;
+import classes.Etudiant;
 import classes.Evaluation;
 import classes.Matiere;
 import classes.Salle;
@@ -34,7 +35,7 @@ public class AccueilEtudiant {
     private LocalDate dateDebutSemaine;
     private LocalDate dateFinSemaine;
 
-    public void afficherInterface() {
+    public void afficherInterface(Etudiant connectedEtudiant) {
         JFrame frame = new JFrame("Emploi du Temps");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
