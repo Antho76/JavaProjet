@@ -36,7 +36,7 @@ public class EmploiDuTempsEnseignant {
         JFrame frame = new JFrame("Emploi du Temps Enseignant");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
-        frame.setSize(600, 400);
+        frame.setSize(1400, 1000);
 
         initSemaine();
         JPanel panelSemaine = new JPanel();
@@ -77,6 +77,7 @@ public class EmploiDuTempsEnseignant {
         frame.add(scrollPane, BorderLayout.CENTER);
 
         // Ajouter ici d'autres boutons si nécessaire
+        frame.setLocationRelativeTo(null);
 
         frame.setVisible(true);
     }
