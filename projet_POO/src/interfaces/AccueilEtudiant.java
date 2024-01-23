@@ -1,7 +1,16 @@
 package interfaces;
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import controller.EmploiDuTempsController;
+import database.DatabaseManager;
+
 import javax.swing.table.DefaultTableModel;
+
+import classes.Enseignant;
+import classes.Evaluation;
+import classes.Matiere;
+import classes.Salle;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.time.*;
@@ -10,7 +19,9 @@ import java.time.temporal.WeekFields;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
+import interfaces.ShowNotesEtudiant;
 
 public class AccueilEtudiant {
 
@@ -52,8 +63,41 @@ public class AccueilEtudiant {
         String[] columns = new String[]{"Heure", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"};
         model = new DefaultTableModel(generateData(), columns);
         JTable table = new JTable(model);
+        table.setRowHeight(70); // Définir la hauteur de la ligne (ajustez selon vos besoins)
+
+        table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                if (c instanceof JLabel) {
+                    JLabel label = (JLabel) c;
+                    label.setHorizontalAlignment(JLabel.CENTER);
+                    label.setVerticalAlignment(JLabel.TOP);
+                    if (value != null) {
+                        label.setText("<html><div style='text-align:center;'>" + value.toString().replaceAll("\n", "<br>") + "</div></html>");
+                    }
+                }
+                return c;
+            }
+        });
         JScrollPane scrollPane = new JScrollPane(table);
         frame.add(scrollPane, BorderLayout.CENTER);
+        
+        JPanel panelBouton = new JPanel(new FlowLayout(FlowLayout.CENTER)); // Utiliser FlowLayout pour centrer le bouton
+        JButton voirNotesButton = new JButton("Voir mes notes");
+        List<Evaluation> evaluations = DatabaseManager.getEvaluations();
+        voirNotesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	ShowNotesEtudiant shownotes= new ShowNotesEtudiant(evaluations);
+            	shownotes.setVisible(true);
+            }
+        });
+
+        // Ajouter le bouton à votre interface graphique
+        // Supposons que vous ayez un panneau `panel` auquel vous voulez ajouter ce bouton
+        panelBouton.add(voirNotesButton);
+        frame.add(panelBouton, BorderLayout.SOUTH);
 
         // Afficher la fenêtre
         frame.setVisible(true);

@@ -201,7 +201,7 @@ public class DatabaseManager {
     
     private static void insertSallePrincipale(Connection connection) {
     	
-        Salle salle = new Salle(0,10,false,0);
+        Salle salle = new Salle(0,10,false,1);
     	
        	String query = "INSERT INTO salle (numeroSalle, nbPlaces, equipInfo, idBatiment) VALUES ( ?, ?, ?, ?)";
 
@@ -590,6 +590,33 @@ public class DatabaseManager {
         }
 
         return enseignant;
+    }
+    
+    public static Salle getSalleById(int id) {
+        Salle salle = null;
+
+        try (Connection connection = connect()) {
+            String query = "SELECT * FROM salle WHERE numeroSalle = ?";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, id);
+
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        salle = new Salle(
+                            resultSet.getInt("numeroSalle"),
+                            resultSet.getInt("nbPlaces"),
+                            resultSet.getBoolean("EquipInfo"),
+                            resultSet.getInt("idBatiment")
+                        );
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return salle;
     }
 
     
