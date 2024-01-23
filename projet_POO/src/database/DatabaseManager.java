@@ -380,6 +380,7 @@ public class DatabaseManager {
         }
     }
     
+    
     public static void insertFormation(String nomFormation) {
         try (Connection connection = connect()) {
         	int value = getMaxFormationId();

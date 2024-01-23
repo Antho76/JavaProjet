@@ -118,10 +118,14 @@ public class ConnectionInterface {
                 JOptionPane.showMessageDialog(frame, "Login ou mot de passe incorrect");
             }
         } else if (radioButtonEnseignant.isSelected()) {
-            if (connexionController.checkConnexionEnseignant(username, password)) {
+        	Object[] result = connexionController.checkConnexionEnseignant(username, password);
+        	boolean exist = (boolean) result[0];
+            if (exist) {
+            	Enseignant enseignant = (Enseignant) result[1];
                 JOptionPane.showMessageDialog(frame, "Connexion réussie");
-                // Ajoutez ici le code pour l'interface de l'enseignant si nécessaire
                 frame.dispose();
+                EnseignantPage enseignantPage = new EnseignantPage();
+                enseignantPage.afficherInterface(enseignant);
             } else {
                 JOptionPane.showMessageDialog(frame, "Login ou mot de passe incorrect");
             }
