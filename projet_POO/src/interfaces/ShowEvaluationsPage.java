@@ -151,7 +151,8 @@ public class ShowEvaluationsPage extends JFrame {
                 
                 String details = "Nom de l'évaluation : " + selectedEvaluation.getNom() + "\n" +
                                  "Etudiant : " + etudiantNom + " " + etudiantPrenom + "\n" +
-                                 "Matiere : " + matiereNom;
+                                 "Matiere : " + matiereNom + "\n" +
+                                 "Note : " + selectedEvaluation.getNote()
                                  ;
 
                 detailsTextArea.setText(details);
