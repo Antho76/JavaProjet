@@ -41,7 +41,8 @@ public class AccueilEtudiant {
         JFrame frame = new JFrame("Emploi du Temps");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
-        frame.setSize(600, 400);
+        frame.setSize(1400, 1000);
+        frame.setLocationRelativeTo(null);
 
         // Initialisation de la matrice semaine
         initSemaine();
