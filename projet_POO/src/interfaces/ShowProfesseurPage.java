@@ -46,15 +46,6 @@ public class ShowProfesseurPage extends JFrame {
         JPanel detailsPanel = new JPanel();
         detailsPanel.setLayout(new BorderLayout());
 
-        JButton retourButton = new JButton("Retour");
-        retourButton.addActionListener(e -> dispose()); // Ferme la fenêtre actuelle
-
-        JButton modifierButton = new JButton("Modifier");
-        modifierButton.addActionListener(e -> modifierProfesseur(professeurs, matieres));
-
-        detailsPanel.add(retourButton, BorderLayout.NORTH);
-        detailsPanel.add(modifierButton, BorderLayout.SOUTH);
-
         // Zone de texte pour afficher les détails des professeurs
         detailsTextArea = new JTextArea();
         detailsTextArea.setEditable(false);
@@ -64,6 +55,23 @@ public class ShowProfesseurPage extends JFrame {
         professeurList.addListSelectionListener(e -> updateDetails(professeurs, matieres));
 
         mainPanel.add(detailsPanel, BorderLayout.CENTER);
+
+        // Boutons en bas de la colonne de gauche
+        JButton retourButton = new JButton("Retour");
+        JButton modifierButton = new JButton("Modifier");
+        JButton supprimerButton = new JButton("Supprimer");
+
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.add(retourButton);
+        buttonsPanel.add(modifierButton);
+        buttonsPanel.add(supprimerButton);
+
+        // Écouteurs pour les boutons
+        retourButton.addActionListener(e -> dispose());
+        modifierButton.addActionListener(e -> modifierProfesseur(professeurs, matieres));
+        supprimerButton.addActionListener(e -> supprimerProfesseur(professeurs));
+
+        mainPanel.add(buttonsPanel, BorderLayout.SOUTH);
 
         add(mainPanel);
         setLocationRelativeTo(null);
@@ -82,6 +90,37 @@ public class ShowProfesseurPage extends JFrame {
         } else {
             detailsTextArea.setText(""); // Effacer les détails si rien n'est sélectionné
         }
+    }
+
+    private void supprimerProfesseur(List<Enseignant> professeurs) {
+        int selectedIndex = professeurList.getSelectedIndex();
+        if (selectedIndex != -1) {
+            Enseignant selectedProfesseur = professeurs.get(selectedIndex);
+
+            int confirmation = JOptionPane.showConfirmDialog(null,
+                    "Voulez-vous vraiment supprimer le professeur sélectionné ?", "Confirmation de suppression",
+                    JOptionPane.YES_NO_OPTION);
+
+            if (confirmation == JOptionPane.YES_OPTION) {
+                DatabaseManager.deleteEnseignantById(selectedProfesseur.getId());
+                professeurs.remove(selectedIndex);
+                // Mettre à jour la liste affichée
+                updateProfesseurList(professeurs);
+                detailsTextArea.setText(""); // Effacer les détails après la suppression
+            }
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Veuillez sélectionner un professeur avant de supprimer.",
+                    "Avertissement", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    private void updateProfesseurList(List<Enseignant> professeurs) {
+        DefaultListModel<String> updatedModel = new DefaultListModel<>();
+        for (Enseignant professeur : professeurs) {
+            updatedModel.addElement(professeur.getNom() + " " + professeur.getPrenom());
+        }
+        professeurList.setModel(updatedModel);
     }
 
     private void modifierProfesseur(List<Enseignant> professeurs, List<Matiere> matieres) {
@@ -133,7 +172,6 @@ public class ShowProfesseurPage extends JFrame {
                 selectedProfesseur.setPassword(new String(((JPasswordField) panel.getComponent(11)).getPassword()));
 
                 // Appeler la méthode pour mettre à jour le professeur dans la base de données
-
                 DatabaseManager.updateEnseignant(selectedProfesseur);
 
                 // Afficher un message d'information pour indiquer que la modification a été effectuée
@@ -141,9 +179,9 @@ public class ShowProfesseurPage extends JFrame {
                         "Professeur modifié avec succès.",
                         "Modification réussie", JOptionPane.INFORMATION_MESSAGE);
                 dispose();
-                    List<Enseignant> upprofesseurs = DatabaseManager.getEnseignants();
-                    List<Matiere> upmatieres = DatabaseManager.getMatiere();
-                    SwingUtilities.invokeLater(() -> new ShowProfesseurPage(upprofesseurs, upmatieres).setVisible(true));
+                List<Enseignant> upprofesseurs = DatabaseManager.getEnseignants();
+                List<Matiere> upmatieres = DatabaseManager.getMatiere();
+                SwingUtilities.invokeLater(() -> new ShowProfesseurPage(upprofesseurs, upmatieres).setVisible(true));
 
                 // Mettre à jour les détails après la modification
                 updateDetails(professeurs, matieres);

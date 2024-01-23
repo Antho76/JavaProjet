@@ -1358,6 +1358,19 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
+    
+    public static void deleteEnseignantById(int idEnseignant) {
+        try (Connection connection = connect()) {
+            String query = "DELETE FROM enseignant WHERE id = ?";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, idEnseignant);
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void disconnect(Connection connection) {
         if (connection != null) {
