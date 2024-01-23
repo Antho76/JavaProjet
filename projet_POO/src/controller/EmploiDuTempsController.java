@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import database.DatabaseManager;
 import java.time.*;
+import classes.Enseignant;
 
 public class EmploiDuTempsController {
 	
@@ -58,7 +59,10 @@ public class EmploiDuTempsController {
 
 	    return nomMatiere;
 	}
-
+	public Enseignant getEnseignantById(int id) {
+        // Appel à la méthode du modèle
+        return DatabaseManager.getEnseignantById(id);
+    }
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -82,12 +86,15 @@ public class EmploiDuTempsController {
             int jour = cours.getDate().getDayOfWeek().getValue() - 1; // Lundi = 1, Dimanche = 7
             int creneau = cours.getHeure(); // Supposer que l'heure correspond à un créneau
             int id = cours.getMatiere();
+            int idEnseignant = cours.getEnseignant();
+            Enseignant enseignant = getEnseignantById(idEnseignant);
+            String nomEnseignant=enseignant.getNom();
             String nomMatiere = getNomMatiere(id);
             if(creneau<8) {
             	int temp=8-creneau;
             	creneau+=temp;
             }
-            semaine[creneau-8][jour] = nomMatiere; // Supposer que vous avez une méthode getNomMatiere() dans Cours
+            semaine[creneau-8][jour] = nomMatiere+" enseignant : "+nomEnseignant; // Supposer que vous avez une méthode getNomMatiere() dans Cours
         }
 
         return semaine;
