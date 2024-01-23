@@ -1317,12 +1317,41 @@ public class DatabaseManager {
 
     
     public static void deleteEtudiantById(int etudiantId) {
+    	deleteAvertissementByIdEtudiant(etudiantId);
+    	deleteEvaluationByIdEtudiant(etudiantId);
         try (Connection connection = connect()) {
             String query = "DELETE FROM etudiant WHERE id = ?";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, etudiantId);
 
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+       
+    }
+    public static void deleteAvertissementByIdEtudiant(int idEtudiant) {
+        try (Connection connection = connect()) {
+            String query = "DELETE FROM avertissement WHERE idEtudiant = ?";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, idEtudiant);
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static void deleteEvaluationByIdEtudiant(int idEtudiant) {
+        try (Connection connection = connect()) {
+            String query = "DELETE FROM evaluation WHERE idEtudiant = ?";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, idEtudiant);
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
