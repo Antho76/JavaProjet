@@ -1,6 +1,7 @@
 package interfaces;
 import javax.swing.*;
 
+import classes.Etudiant;
 import classes.Evaluation;
 
 import java.awt.*;
@@ -11,13 +12,17 @@ import java.util.List;
 public class ShowNotesEtudiant extends JFrame {
 
     private List<Evaluation> evaluations;
+    private Etudiant connectedEtudiant;
+    private int idEtudiant; 
 
-    public ShowNotesEtudiant(List<Evaluation> evaluations) {
+    
+    public ShowNotesEtudiant(List<Evaluation> evaluations, int idEtudiant) {
         this.evaluations = evaluations;
-        initUI();
+        this.idEtudiant = idEtudiant; // Assigner l'ID de l'étudiant
+        initUI(idEtudiant);
     }
 
-    private void initUI() {
+    private void initUI(int idEtudiant) {
         setTitle("Notes");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -27,9 +32,11 @@ public class ShowNotesEtudiant extends JFrame {
 
         DefaultListModel<String> listModel = new DefaultListModel<>();
         for (Evaluation evaluation : evaluations) {
-        	String evaluationInfo = String.format("Évaluation: %s, Matière ID: %d, Note: %d", 
+            if (evaluation.getEtudiant() == idEtudiant) { // Filtrer selon l'ID de l'étudiant
+                String evaluationInfo = String.format("Évaluation: %s, Matière ID: %d, Note: %d", 
                     evaluation.getNom(), evaluation.getMatiere(), evaluation.getNote());
-listModel.addElement(evaluationInfo);
+                listModel.addElement(evaluationInfo);
+            }
         }
 
         JList<String> notesList = new JList<>(listModel);

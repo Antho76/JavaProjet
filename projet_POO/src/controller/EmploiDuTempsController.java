@@ -4,8 +4,11 @@ import java.sql.DriverManager;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import classes.Cours;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -77,12 +80,12 @@ public class EmploiDuTempsController {
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
-    public String[][] getCoursPourSemaineInterface(LocalDate dateDebutSemaine, LocalDate dateFinSemaine) {
+    public String[][] getCoursPourSemaineInterface(LocalDate dateDebutSemaine, LocalDate dateFinSemaine, int idEtudiant ) {
+    	List<Cours> coursList = filtrerCoursParEtudiant(DatabaseManager.getCoursPourSemaine(dateDebutSemaine, dateFinSemaine),idEtudiant);
         LocalDate dateDebut = dateDebutSemaine;
         LocalDate dateFin = dateFinSemaine;
 
         // Appel à DatabaseManager pour récupérer les cours
-        List<Cours> coursList = DatabaseManager.getCoursPourSemaine(dateDebut, dateFin);
 
         // Traitement des données pour les mettre dans le format requis par le frontend
         String[][] semaine = new String[10][6]; // Exemple de tableau avec 10 créneaux horaires et 5 jours de la semaine
@@ -115,5 +118,12 @@ public class EmploiDuTempsController {
 
         return semaine;
     }
+    
+    private List<Cours> filtrerCoursParEtudiant(List<Cours> coursList, int idEtudiant) {
+        return coursList.stream()
+                .filter(cours -> Arrays.asList(cours.getTabEtudiants().split(",")).contains(String.valueOf(idEtudiant)))
+                .collect(Collectors.toList());
+    }
+
 }
 

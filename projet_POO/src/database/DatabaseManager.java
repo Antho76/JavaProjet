@@ -592,6 +592,33 @@ public class DatabaseManager {
         return enseignant;
     }
     
+    public static Matiere getMatiereById(int id) {
+        Matiere matiere = null;
+
+        try (Connection connection = connect()) {
+            String query = "SELECT * FROM matiere WHERE numeroMatiere = ?";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, id);
+
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        matiere = new Matiere(
+                            resultSet.getInt("numeroMatiere"),
+                            resultSet.getString("nomMatiere"),
+                            resultSet.getInt("coefficient")
+                        );
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return matiere;
+    }
+    
+    
     public static Salle getSalleById(int id) {
         Salle salle = null;
 
