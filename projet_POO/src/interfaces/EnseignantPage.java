@@ -77,7 +77,6 @@ public class EnseignantPage {
                      // Ici, vous devez ajouter le code pour afficher l'emploi du temps
                      // Par exemple : ouvrir une nouvelle fenêtre ou un panneau
                      // qui affiche l'emploi du temps de l'enseignant
-                     JOptionPane.showMessageDialog(frame, "Fonctionnalité en construction");
                  }
              });
      

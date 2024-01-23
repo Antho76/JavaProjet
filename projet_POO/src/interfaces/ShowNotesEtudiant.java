@@ -1,8 +1,10 @@
 package interfaces;
 import javax.swing.*;
+import database.DatabaseManager;
 
 import classes.Etudiant;
 import classes.Evaluation;
+import classes.Matiere;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -32,10 +34,14 @@ public class ShowNotesEtudiant extends JFrame {
         mainPanel.setLayout(new BorderLayout());
 
         DefaultListModel<String> listModel = new DefaultListModel<>();
+        
         for (Evaluation evaluation : evaluations) {
             if (evaluation.getEtudiant() == idEtudiant) { // Filtrer selon l'ID de l'étudiant
-                String evaluationInfo = String.format("Évaluation: %s, Matière ID: %d, Note: %d", 
-                    evaluation.getNom(), evaluation.getMatiere(), evaluation.getNote());
+            	int idMatiere=evaluation.getMatiere();
+            	Matiere matiere=DatabaseManager.getMatiereById(idMatiere);
+            	String nomMatiere = matiere.getNomMatiere();
+                String evaluationInfo = String.format("Évaluation: %s, Matière : %s, Note: %d", 
+                    evaluation.getNom(), nomMatiere, evaluation.getNote());
                 listModel.addElement(evaluationInfo);
             }
         }
