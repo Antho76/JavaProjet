@@ -70,6 +70,7 @@ public class DatabaseManager {
                 insertElevePrincipal(connection);
                 insertMatierePrincipale(connection);
                 insertEnseignantPrincipal(connection);
+                insertBatimentPrincipale(connection);
                 insertSallePrincipale(connection);
                 insertCoursPrincipal(connection);
                 
@@ -199,9 +200,27 @@ public class DatabaseManager {
          }
     }
     
+    private static void insertBatimentPrincipale(Connection connection) {
+    	
+        Batiment batiment = new Batiment(0,"Valenciennes","AB1");
+    	
+       	String query = "INSERT INTO batiment (numeroBatiment, ville, nomBatiment) VALUES ( ?, ?, ?)";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, batiment.getNumeroBatiment());
+            preparedStatement.setString(2, batiment.getVille());
+            preparedStatement.setString(3, batiment.getNomBatiment());
+
+            preparedStatement.executeUpdate();
+        }
+         catch (SQLException e) {
+            e.printStackTrace();
+         }
+    }
+    
     private static void insertSallePrincipale(Connection connection) {
     	
-        Salle salle = new Salle(0,10,false,1);
+        Salle salle = new Salle(0,10,false,0);
     	
        	String query = "INSERT INTO salle (numeroSalle, nbPlaces, equipInfo, idBatiment) VALUES ( ?, ?, ?, ?)";
 

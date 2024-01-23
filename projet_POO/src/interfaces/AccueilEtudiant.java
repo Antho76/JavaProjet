@@ -11,6 +11,7 @@ import classes.Etudiant;
 import classes.Evaluation;
 import classes.Matiere;
 import classes.Salle;
+import classes.Avertissement;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -94,10 +95,21 @@ public class AccueilEtudiant {
             	shownotes.setVisible(true);
             }
         });
+        
+        JButton voirAvertissementButton = new JButton("Voir mes avertissements");
+        List<Avertissement> avertissement = DatabaseManager.getAvertissement();
+        voirAvertissementButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	ShowAvertissementEtudiant showAvertissement= new ShowAvertissementEtudiant(connectedEtudiant,avertissement);
+            	showAvertissement.setVisible(true);
+            }
+        });
 
         // Ajouter le bouton à votre interface graphique
         // Supposons que vous ayez un panneau `panel` auquel vous voulez ajouter ce bouton
         panelBouton.add(voirNotesButton);
+        panelBouton.add(voirAvertissementButton);
         frame.add(panelBouton, BorderLayout.SOUTH);
 
         // Afficher la fenêtre
