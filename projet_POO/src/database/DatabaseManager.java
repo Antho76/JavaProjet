@@ -1177,6 +1177,23 @@ public class DatabaseManager {
         }
     }
     
+    public static void deleteEvaluation(Evaluation evaluation) {
+        try (Connection connection = connect()) {
+            String query = "DELETE FROM evaluation WHERE nom = ? AND idMatiere = ? AND idEnseignant = ? AND idEtudiant = ?";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, evaluation.getNom());
+                preparedStatement.setInt(2, evaluation.getMatiere());
+                preparedStatement.setInt(3, evaluation.getEnseignant());
+                preparedStatement.setInt(4, evaluation.getEtudiant());
+                
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
     public static void updateCours(Cours cours) {
         try (Connection connection = connect()) {
             String query = "UPDATE cours SET nbEtudiant=?, tabEtudiants=?, date=?, heure=? WHERE idCours=?";

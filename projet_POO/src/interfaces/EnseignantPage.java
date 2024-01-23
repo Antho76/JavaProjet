@@ -58,6 +58,15 @@ public class EnseignantPage {
                  }
              });
      
+     addButton("Afficher les évaluations", panel, gbc, frame,
+             new ActionListener() {
+                 @Override
+                 public void actionPerformed(ActionEvent e) {
+                	 List<Evaluation> listEvaluations = DatabaseManager.getEvaluations();
+                	 ShowEvaluationsPage showEvaluationsPage = new ShowEvaluationsPage(enseignant,listEvaluations);
+                	 showEvaluationsPage.setVisible(true);
+                 }
+             });
 
      JButton retourButton = new JButton("Déconnexion");
      retourButton.addActionListener(new ActionListener() {
