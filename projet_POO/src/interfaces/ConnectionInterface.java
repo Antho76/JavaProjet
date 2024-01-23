@@ -17,6 +17,7 @@ public class ConnectionInterface {
     private JRadioButton radioButtonPersonnel;
 
     public void afficherInterface() {
+    	
         frame = new JFrame("Connexion");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 400);
@@ -56,11 +57,15 @@ public class ConnectionInterface {
         JLabel passLabel = new JLabel("Password:");
         passField = new JPasswordField(20);
         JButton loginButton = new JButton("Connexion");
+
+
+
         loginPanel.add(userLabel, gbcLogin);
         loginPanel.add(userField, gbcLogin);
         loginPanel.add(passLabel, gbcLogin);
         loginPanel.add(passField, gbcLogin);
         loginPanel.add(loginButton, gbcLogin);
+
         JTextArea ta = new JTextArea();
 
         JPanel centerPanel = new JPanel(new GridBagLayout());
