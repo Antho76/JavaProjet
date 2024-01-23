@@ -68,6 +68,19 @@ public class EnseignantPage {
                  }
              });
 
+     addButton("Voir l'emploi du temps", panel, gbc, frame,
+             new ActionListener() {
+                 @Override
+                 public void actionPerformed(ActionEvent e) {
+                	 EmploiDuTempsEnseignant edtenseignant = new EmploiDuTempsEnseignant();
+ 	                 edtenseignant.afficherInterface(enseignant);
+                     // Ici, vous devez ajouter le code pour afficher l'emploi du temps
+                     // Par exemple : ouvrir une nouvelle fenêtre ou un panneau
+                     // qui affiche l'emploi du temps de l'enseignant
+                     JOptionPane.showMessageDialog(frame, "Fonctionnalité en construction");
+                 }
+             });
+     
      JButton retourButton = new JButton("Déconnexion");
      retourButton.addActionListener(new ActionListener() {
          @Override

@@ -124,6 +124,51 @@ public class EmploiDuTempsController {
                 .filter(cours -> Arrays.asList(cours.getTabEtudiants().split(",")).contains(String.valueOf(idEtudiant)))
                 .collect(Collectors.toList());
     }
+    
+    public String[][] getCoursPourSemaineInterfaceEnseignant(LocalDate dateDebutSemaine, LocalDate dateFinSemaine, int idEnseignant ) {
+    	List<Cours> coursList = filtrerCoursParEnseignant(DatabaseManager.getCoursPourSemaine(dateDebutSemaine, dateFinSemaine),idEnseignant);
+        LocalDate dateDebut = dateDebutSemaine;
+        LocalDate dateFin = dateFinSemaine;
+
+        // Appel à DatabaseManager pour récupérer les cours
+
+        // Traitement des données pour les mettre dans le format requis par le frontend
+        String[][] semaine = new String[10][6]; // Exemple de tableau avec 10 créneaux horaires et 5 jours de la semaine
+        // Initialisation du tableau
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 6; j++) {
+                semaine[i][j] = ""; // Initialise avec des chaînes vides
+            }
+        }
+        // Remplissage du tableau avec les cours
+        for (Cours cours : coursList) {
+            int jour = cours.getDate().getDayOfWeek().getValue() - 1; // Lundi = 1, Dimanche = 7
+            int creneau = cours.getHeure(); // Supposer que l'heure correspond à un créneau
+            int id = cours.getMatiere();
+            int idSalle= cours.getSalle();
+            Salle salle = getSalleByIdInterface(idSalle);
+            int idBatiment = salle.getIdBatiment();
+            Batiment batiment = getBatimentByIdInterface(idBatiment);
+            String nomBatiment = batiment.getNomBatiment();
+            Enseignant enseignant = getEnseignantById(idEnseignant);
+            String nomEnseignant=enseignant.getNom();
+            String nomMatiere = getNomMatiere(id);
+            if(creneau<8) {
+            	int temp=8-creneau;
+            	creneau+=temp;
+            }
+            semaine[creneau-8][jour] = nomMatiere+"\n enseignant : "+nomEnseignant+ "\n Batiment : "+nomBatiment+"\n salle : "+idSalle; // Supposer que vous avez une méthode getNomMatiere() dans Cours
+        }
+
+        return semaine;
+    }
+    
+    private List<Cours> filtrerCoursParEnseignant(List<Cours> coursList, int idEnseignant) {
+        return coursList.stream()
+                .filter(cours -> cours.getEnseignant() == idEnseignant)
+                .collect(Collectors.toList());
+    }
+
 
 }
 
