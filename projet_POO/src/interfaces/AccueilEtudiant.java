@@ -52,7 +52,7 @@ public class AccueilEtudiant {
         JButton btnSemainePrecedente = new JButton("<");
         JButton btnSemaineSuivante = new JButton(">");
         labelSemaine = new JLabel();
-        updateLabelSemaine();
+        updateLabelSemaine(connectedEtudiant);
 
         panelSemaine.add(btnSemainePrecedente);
         panelSemaine.add(labelSemaine);
@@ -60,8 +60,8 @@ public class AccueilEtudiant {
         frame.add(panelSemaine, BorderLayout.NORTH);
 
         // Configuration des boutons
-        btnSemaineSuivante.addActionListener(e -> changeSemaine(1));
-        btnSemainePrecedente.addActionListener(e -> changeSemaine(-1));
+        btnSemaineSuivante.addActionListener(e -> changeSemaine(1, connectedEtudiant));
+        btnSemainePrecedente.addActionListener(e -> changeSemaine(-1, connectedEtudiant));
 
         // Colonnes (jours de la semaine)
         String[] columns = new String[]{"Heure", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"};
@@ -129,13 +129,13 @@ public class AccueilEtudiant {
         // Mettre à jour en fonction des données réelles
     }
 
-    private void changeSemaine(int amount) {
+    private void changeSemaine(int amount,Etudiant connectedEtudiant) {
         calendar.add(Calendar.WEEK_OF_YEAR, amount);
-        updateLabelSemaine();
+        updateLabelSemaine(connectedEtudiant);
         /*updateTable();*/
     }
 
-    private void updateLabelSemaine() {
+    private void updateLabelSemaine(Etudiant connectedEtudiant) {
         // Convertir Calendar en LocalDate
         LocalDate current = LocalDate.ofInstant(calendar.toInstant(), calendar.getTimeZone().toZoneId());
 
@@ -148,7 +148,7 @@ public class AccueilEtudiant {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         labelSemaine.setText("Semaine du " + startOfWeek.format(formatter) + " au " + endOfWeek.format(formatter));
-        updateTable();
+        updateTable(connectedEtudiant);
     }
 
 
@@ -161,7 +161,7 @@ public class AccueilEtudiant {
     	return dateFinSemaine;
     }
 
-    private void updateTable() {
+    private void updateTable(Etudiant connectedEtudiant) {
     	if (model == null) {
             return;  // Ou initialiser le model ici si nécessaire
         }

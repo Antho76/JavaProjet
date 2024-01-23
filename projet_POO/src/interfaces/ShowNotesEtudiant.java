@@ -28,6 +28,7 @@ public class ShowNotesEtudiant extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         JPanel mainPanel = new JPanel();
+        
         mainPanel.setLayout(new BorderLayout());
 
         DefaultListModel<String> listModel = new DefaultListModel<>();
@@ -68,9 +69,11 @@ public class ShowNotesEtudiant extends JFrame {
         });
         bottomPanel.add(retourButton);
         mainPanel.add(bottomPanel, BorderLayout.SOUTH);
+        
 
         // Ajouter le mainPanel à la JFrame
         this.add(mainPanel);
+        setLocationRelativeTo(null);
 
         // Rendre la fenêtre visible
         setVisible(true);
