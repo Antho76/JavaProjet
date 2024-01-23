@@ -56,14 +56,11 @@ public class ConnectionInterface {
         JLabel passLabel = new JLabel("Password:");
         passField = new JPasswordField(20);
         JButton loginButton = new JButton("Connexion");
-        JButton inscriptionButton = new JButton("Inscription");
         loginPanel.add(userLabel, gbcLogin);
         loginPanel.add(userField, gbcLogin);
         loginPanel.add(passLabel, gbcLogin);
         loginPanel.add(passField, gbcLogin);
         loginPanel.add(loginButton, gbcLogin);
-        loginPanel.add(inscriptionButton, gbcLogin);
-
         JTextArea ta = new JTextArea();
 
         JPanel centerPanel = new JPanel(new GridBagLayout());
@@ -86,12 +83,7 @@ public class ConnectionInterface {
             }
         });
 
-        inscriptionButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onInscriptionButtonClick();
-            }
-        });
+
         
 
         frame.getContentPane().add(BorderLayout.NORTH, mb);
@@ -151,11 +143,7 @@ public class ConnectionInterface {
         }
     }
 
-    private void onInscriptionButtonClick() {
-        frame.dispose(); // Ferme la fenêtre de connexion
-        InscriptionInterface inscriptionInterface = new InscriptionInterface();
-        inscriptionInterface.afficherInterface(); // Passe la référence de la fenêtre de connexion
-    }
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {

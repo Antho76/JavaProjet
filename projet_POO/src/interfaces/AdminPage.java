@@ -198,6 +198,21 @@ public class AdminPage {
              });
          }
      });
+     
+     // Ajout de deux boutons vides pour séparer les deux colonnes
+     panel.add(Box.createHorizontalStrut(20), gbc);
+
+     // Saut de ligne
+     gbc.gridy++;
+     
+     addButton("Ajouter un Admin", panel, gbc, frame, new ActionListener() {
+         public void actionPerformed(ActionEvent e) {
+             InscriptionInterface inscriptionInterface = new InscriptionInterface();
+             inscriptionInterface.afficherInterface(); // Passe la référence de la fenêtre de connexion
+             
+         }
+     });
+    
 
      // Saut de ligne
      gbc.gridy++;

@@ -39,14 +39,7 @@ public class InscriptionInterface {
         });
         panel.add(retourButton);
 
-        // Ajout d'un WindowListener pour détecter la fermeture de la fenêtre d'inscription
-        frame.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosed(WindowEvent e) {
-                // Réafficher la fenêtre de connexion lorsque la fenêtre d'inscription est fermée
-                new ConnectionInterface().afficherInterface();
-            }
-        });
+
         frame.setLocationRelativeTo(null);
 
         frame.setVisible(true);
