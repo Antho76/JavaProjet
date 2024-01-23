@@ -201,16 +201,16 @@ public class DatabaseManager {
     
     private static void insertSallePrincipale(Connection connection) {
     	
-        Salle salle = new Salle(0,10,10,false);
+        Salle salle = new Salle(0,10,false,0);
     	
-    	String query = "INSERT INTO salle (numeroSalle,nbPlaces, nbEtudiants, equipInfo) VALUES (?, ?, ?, ?)";
+       	String query = "INSERT INTO salle (numeroSalle, nbPlaces, equipInfo, idBatiment) VALUES ( ?, ?, ?, ?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, salle.getNumeroSalle());
             preparedStatement.setInt(2, salle.getNbPlaces());
-            preparedStatement.setInt(3, salle.getNbEtudiants());
-            preparedStatement.setBoolean(4, salle.getEquipInfo());
-            
+            preparedStatement.setBoolean(3, salle.getEquipInfo());
+            preparedStatement.setInt(4, salle.getIdBatiment());
+
             preparedStatement.executeUpdate();
         }
          catch (SQLException e) {
@@ -455,13 +455,14 @@ public class DatabaseManager {
 
     public static void insertSalle(Salle salle) {
         try (Connection connection = connect()) {
-            String query = "INSERT INTO salle (numeroSalle, nbPlaces, nbEtudiants, equipInfo) VALUES (?, ?, ?, ?)";
+            int val = getMaxSalleId();
+            String query = "INSERT INTO salle (numeroSalle, nbPlaces, equipInfo, idBatiment) VALUES ( ?, ?, ?, ?)";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setInt(1, salle.getNumeroSalle());
+                preparedStatement.setInt(1, val + 1);
                 preparedStatement.setInt(2, salle.getNbPlaces());
-                preparedStatement.setInt(3, salle.getNbEtudiants());
-                preparedStatement.setBoolean(4, salle.getEquipInfo());
+                preparedStatement.setBoolean(3, salle.getEquipInfo());
+                preparedStatement.setInt(4, salle.getIdBatiment());
 
                 preparedStatement.executeUpdate();
             }
@@ -469,6 +470,7 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
+
 
     
 
@@ -644,21 +646,19 @@ public class DatabaseManager {
     
     public static List<Salle> getSalle() {
         List<Salle> listSalle = new ArrayList<>();
-
         try (Connection connection = connect()) {
-            String query = "SELECT numeroSalle, nbPlaces, nbEtudiants, equipInfo FROM salle";
+            String query = "SELECT numeroSalle, nbPlaces, equipInfo, idBatiment FROM salle";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     while (resultSet.next()) {
-                    	
-                    	Salle salle = new Salle(
+                        Salle salle = new Salle(
                                 resultSet.getInt("numeroSalle"),
                                 resultSet.getInt("nbPlaces"),
-                                resultSet.getInt("nbEtudiants"),
-                                resultSet.getBoolean("equipInfo")    
+                                resultSet.getBoolean("equipInfo"),
+                                resultSet.getInt("idBatiment")
                         );
-                    	listSalle.add(salle);
+                        listSalle.add(salle);
                     }
                 }
             }
@@ -668,6 +668,7 @@ public class DatabaseManager {
 
         return listSalle;
     }
+
     
     public static List<Cours> getCours() {
         List<Cours> listCours = new ArrayList<>();
@@ -847,6 +848,33 @@ public class DatabaseManager {
 
         return batiments;
     }
+    
+    public static Batiment getBatimentById(int idBatiment) {
+        Batiment batiment = null;
+
+        try (Connection connection = connect()) {
+            String query = "SELECT numeroBatiment, ville, nomBatiment FROM batiment WHERE numeroBatiment = ?";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, idBatiment);
+
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        batiment = new Batiment(
+                                resultSet.getInt("numeroBatiment"),
+                                resultSet.getString("ville"),
+                                resultSet.getString("nomBatiment")
+                        );
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return batiment;
+    }
+
     
     public static List<Avertissement> getAvertissementsByIdEtudiant(int idEtudiant) {
         List<Avertissement> avertissements = new ArrayList<>();
@@ -1051,6 +1079,26 @@ public class DatabaseManager {
 
         return maxId;
     }
+    public static int getMaxSalleId() {
+        int maxId = -1;
+
+        try (Connection connection = connect()) {
+            // Requête SQL pour obtenir le maximum de l'ID dans la table des étudiants
+            String query = "SELECT MAX(numeroSalle) FROM salle";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        maxId = resultSet.getInt(1);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return maxId;
+    }
     
     public static void deleteCours(int idCours) {
         try (Connection connection = connect()) {
@@ -1170,6 +1218,26 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
+    
+    public static void updateSalle(Salle salle) {
+        try (Connection connection = connect()) {
+            String query = "UPDATE salle SET nbPlaces = ?, equipInfo = ?, idBatiment = ? WHERE numeroSalle = ?";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, salle.getNbPlaces());
+                preparedStatement.setBoolean(2, salle.getEquipInfo());
+                preparedStatement.setInt(3, salle.getIdBatiment());
+                preparedStatement.setInt(4, salle.getNumeroSalle());
+
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
 
 
 

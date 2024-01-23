@@ -140,15 +140,19 @@ public class AdminPage {
      addButtonPair("Créer une Salle", "Afficher les salles", panel, gbc, frame, new ActionListener() {
          @Override
          public void actionPerformed(ActionEvent e) {
-             JOptionPane.showMessageDialog(frame, "Ouvrir la page de création de salle");
+        	 SwingUtilities.invokeLater(() -> {
+                 InterfaceAddSalle interfaceAddSalle = new InterfaceAddSalle();
+                 interfaceAddSalle.setVisible(true);
+             });
          }
      },
          new ActionListener() {
-         List<Salle> salles = DatabaseManager.getSalle();
          public void actionPerformed(ActionEvent e) {
-             SwingUtilities.invokeLater(() -> {
-                 ShowSallePage showSallePage = new ShowSallePage(salles);
-                 showSallePage.setVisible(true);
+        	 List<Salle> salles = DatabaseManager.getSalle();
+
+        	 SwingUtilities.invokeLater(() -> {
+             	ShowSallePage showAndModifySallePage = new ShowSallePage(salles);
+                 showAndModifySallePage.setVisible(true);
              });
          }
      });

@@ -6,12 +6,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+import classes.Batiment;
 import classes.Salle;
 import database.DatabaseManager;
 
 public class ShowSallePage extends JFrame {
 
     private List<Salle> salles;
+    private JList<String> salleList;
 
     public ShowSallePage(List<Salle> salles) {
         this.salles = salles;
@@ -31,7 +33,7 @@ public class ShowSallePage extends JFrame {
             listModel.addElement("Salle " + salle.getNumeroSalle());
         }
 
-        JList<String> salleList = new JList<>(listModel);
+        salleList = new JList<>(listModel);
         salleList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         JScrollPane scrollPane = new JScrollPane(salleList);
@@ -46,7 +48,7 @@ public class ShowSallePage extends JFrame {
         retourButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose(); // Ferme la fenêtre actuelle
+                dispose();
             }
         });
 
@@ -54,17 +56,7 @@ public class ShowSallePage extends JFrame {
         modifierButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int selectedIndex = salleList.getSelectedIndex();
-                if (selectedIndex != -1) {
-                    Salle selectedSalle = salles.get(selectedIndex);
-                    JOptionPane.showMessageDialog(ShowSallePage.this,
-                            "Modifier la salle : " + selectedSalle.getNumeroSalle(),
-                            "Modifier la salle", JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(ShowSallePage.this,
-                            "Veuillez sélectionner une salle avant de modifier.",
-                            "Avertissement", JOptionPane.WARNING_MESSAGE);
-                }
+                modifierSalle();
             }
         });
 
@@ -81,12 +73,16 @@ public class ShowSallePage extends JFrame {
                 Salle selectedSalle = salles.get(selectedIndex);
                 String details = "Numéro de la Salle : " + selectedSalle.getNumeroSalle() + "\n" +
                         "Nombre de Places : " + selectedSalle.getNbPlaces() + "\n" +
-                        "Nombre d'Étudiants : " + selectedSalle.getNbEtudiants() + "\n" +
                         "Équipement Informatique : " + (selectedSalle.getEquipInfo() ? "Oui" : "Non");
+
+                Batiment batiment = DatabaseManager.getBatimentById(selectedSalle.getIdBatiment());
+                String nomBatiment = (batiment != null) ? batiment.getNomBatiment() : "N/A";
+
+                details += "\nBâtiment : " + nomBatiment;
 
                 detailsTextArea.setText(details);
             } else {
-                detailsTextArea.setText(""); // Effacer les détails si rien n'est sélectionné
+                detailsTextArea.setText("");
             }
         });
 
@@ -94,6 +90,143 @@ public class ShowSallePage extends JFrame {
 
         add(mainPanel);
         setLocationRelativeTo(null);
+    }
+
+    private void modifierSalle() {
+        int selectedIndex = salleList.getSelectedIndex();
+        if (selectedIndex != -1) {
+            Salle selectedSalle = salles.get(selectedIndex);
+
+            // Afficher la boîte de dialogue de modification
+            ModifierSalleDialog modifierDialog = new ModifierSalleDialog(this, selectedSalle);
+            modifierDialog.setVisible(true);
+
+            // Rafraîchir la liste des salles après modification
+            refreshSalleList();
+        } else {
+            JOptionPane.showMessageDialog(ShowSallePage.this,
+                    "Veuillez sélectionner une salle avant de modifier.",
+                    "Avertissement", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    private void refreshSalleList() {
+        DefaultListModel<String> listModel = new DefaultListModel<>();
+        for (Salle salle : salles) {
+            listModel.addElement("Salle " + salle.getNumeroSalle());
+        }
+        salleList.setModel(listModel);
+    }
+
+    // Classe interne pour la boîte de dialogue de modification
+    private class ModifierSalleDialog extends JDialog {
+
+        private Salle salle;
+        private JTextField nbPlacesField;
+        private JCheckBox equipInfoCheckBox;
+        private JComboBox<String> batimentComboBox;
+
+        public ModifierSalleDialog(JFrame parent, Salle salle) {
+            super(parent, "Modifier la salle " + salle.getNumeroSalle(), true);
+            this.salle = salle;
+            initUI();
+        }
+
+        private void initUI() {
+            setSize(400, 200);
+            setLocationRelativeTo(null);
+
+            JPanel mainPanel = new JPanel();
+            mainPanel.setLayout(new GridLayout(4, 2, 10, 10));
+
+            JLabel nbPlacesLabel = new JLabel("Nombre de places:");
+            nbPlacesField = new JTextField(String.valueOf(salle.getNbPlaces()));
+
+            JLabel equipInfoLabel = new JLabel("Equipée d'informations:");
+            equipInfoCheckBox = new JCheckBox("", salle.getEquipInfo());
+
+            JLabel batimentLabel = new JLabel("Bâtiment:");
+            batimentComboBox = new JComboBox<>(getBatimentNames());
+            Batiment currentBatiment = DatabaseManager.getBatimentById(salle.getIdBatiment());
+            if (currentBatiment != null) {
+                batimentComboBox.setSelectedItem(currentBatiment.getNomBatiment());
+            }
+
+            JButton modifierButton = new JButton("Modifier");
+            modifierButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    modifierSalle();
+                    // Fermer la boîte de dialogue après modification
+                    ModifierSalleDialog.this.dispose();
+                }
+            });
+
+            mainPanel.add(nbPlacesLabel);
+            mainPanel.add(nbPlacesField);
+            mainPanel.add(equipInfoLabel);
+            mainPanel.add(equipInfoCheckBox);
+            mainPanel.add(batimentLabel);
+            mainPanel.add(batimentComboBox);
+            mainPanel.add(new JLabel());
+            mainPanel.add(modifierButton);
+
+            add(mainPanel);
+        }
+
+        private String[] getBatimentNames() {
+            List<Batiment> batiments = DatabaseManager.getBatiments();
+            String[] batimentNames = new String[batiments.size()];
+            for (int i = 0; i < batiments.size(); i++) {
+                batimentNames[i] = batiments.get(i).getNomBatiment();
+            }
+            return batimentNames;
+        }
+
+        private void modifierSalle() {
+            // Mettre à jour les informations de la salle
+            try {
+                int nbPlaces = Integer.parseInt(nbPlacesField.getText());
+                boolean equipInfo = equipInfoCheckBox.isSelected();
+                String selectedBatimentName = (String) batimentComboBox.getSelectedItem();
+
+                // Récupérer l'ID du bâtiment sélectionné
+                int selectedBatimentId = getBatimentIdByName(selectedBatimentName);
+                if (selectedBatimentId != -1) {
+                    salle.setNbPlaces(nbPlaces);
+                    salle.setEquipInfo(equipInfo);
+                    salle.setIdBatiment(selectedBatimentId);
+
+                    // Mettre à jour les informations de la salle dans la base de données
+                    DatabaseManager.updateSalle(salle);
+
+                    // Rafraîchir la liste des salles après modification
+                    refreshSalleList();
+
+                    JOptionPane.showMessageDialog(ShowSallePage.this,
+                            "La salle a été modifiée avec succès.",
+                            "Succès", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(ModifierSalleDialog.this,
+                            "Erreur lors de la récupération du bâtiment.",
+                            "Erreur", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(ModifierSalleDialog.this,
+                        "Veuillez entrer des valeurs valides.",
+                        "Erreur", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+        private int getBatimentIdByName(String batimentName) {
+            List<Batiment> batiments = DatabaseManager.getBatiments();
+            for (Batiment batiment : batiments) {
+                if (batiment.getNomBatiment().equals(batimentName)) {
+                    return batiment.getNumeroBatiment();
+                }
+            }
+            return -1; // Retourne -1 si le bâtiment n'est pas trouvé
+        }
     }
 
     public static void main(String[] args) {

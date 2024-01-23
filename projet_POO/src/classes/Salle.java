@@ -3,25 +3,22 @@ package classes;
 
 public class Salle
 {
-	private static int dernierNumeroSalle = 0;
 	private int numeroSalle;
 	private int nbPlaces;
-	private int nbEtudiants;
 	private boolean equipInfo;
+	private int idBatiment;
 
 	public Salle(){
-		dernierNumeroSalle++;
-		this.numeroSalle = dernierNumeroSalle;
+		this.numeroSalle = 0;
 		this.nbPlaces = 0;
-		this.nbEtudiants = 0;
 		this.equipInfo = false;
 	}
 
-	public Salle(int numeroSalle, int nbPlaces, int nbEtudiants,boolean equipInfo){
+	public Salle(int numeroSalle, int nbPlaces,boolean equipInfo, int idbatiment){
 		this.numeroSalle = numeroSalle;
 		this.nbPlaces = nbPlaces;
-		this.nbEtudiants = nbEtudiants;
 		this.equipInfo = equipInfo;
+		this.idBatiment = idbatiment;
 	}
 	
 	public int getNumeroSalle() {
@@ -32,9 +29,7 @@ public class Salle
 		return this.nbPlaces;
 	}
 
-	public int getNbEtudiants(){
-		return this.nbEtudiants;
-	}
+
   
 	public boolean getEquipInfo() {
 		return this.equipInfo;
@@ -43,10 +38,15 @@ public class Salle
 	public void setNbPlaces(int nbPlaces){
 		this.nbPlaces = nbPlaces;
 	}
+	public int getIdBatiment() {
+		return this.idBatiment;
+	}	
 
-	public void setNbEtudiants(int nbEtudiants){
-		this.nbEtudiants = nbEtudiants;
+	public void setIdBatiment(int idBatiment){
+		this.idBatiment = idBatiment;
 	}
+
+
   
 	public void setEquipInfo(boolean equipInfo) {
 		this.equipInfo = equipInfo;
