@@ -1308,6 +1308,20 @@ public class DatabaseManager {
         }
     }
 
+    
+    public static void deleteEtudiantById(int etudiantId) {
+        try (Connection connection = connect()) {
+            String query = "DELETE FROM etudiant WHERE id = ?";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, etudiantId);
+
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 
