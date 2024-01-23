@@ -13,6 +13,8 @@ import java.sql.SQLException;
 import database.DatabaseManager;
 import java.time.*;
 import classes.Enseignant;
+import classes.Salle;
+import classes.Batiment;
 
 public class EmploiDuTempsController {
 	
@@ -63,6 +65,15 @@ public class EmploiDuTempsController {
         // Appel à la méthode du modèle
         return DatabaseManager.getEnseignantById(id);
     }
+	
+	public Salle getSalleByIdInterface(int id) {
+        // Appel à la méthode du modèle
+        return DatabaseManager.getSalleById(id);
+    }
+	
+	public Batiment getBatimentByIdInterface(int id) {
+		return DatabaseManager.getBatimentById(id);
+	}
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -87,6 +98,11 @@ public class EmploiDuTempsController {
             int creneau = cours.getHeure(); // Supposer que l'heure correspond à un créneau
             int id = cours.getMatiere();
             int idEnseignant = cours.getEnseignant();
+            int idSalle= cours.getSalle();
+            Salle salle = getSalleByIdInterface(idSalle);
+            int idBatiment = salle.getIdBatiment();
+            Batiment batiment = getBatimentByIdInterface(idBatiment);
+            String nomBatiment = batiment.getNomBatiment();
             Enseignant enseignant = getEnseignantById(idEnseignant);
             String nomEnseignant=enseignant.getNom();
             String nomMatiere = getNomMatiere(id);
@@ -94,7 +110,7 @@ public class EmploiDuTempsController {
             	int temp=8-creneau;
             	creneau+=temp;
             }
-            semaine[creneau-8][jour] = nomMatiere+" enseignant : "+nomEnseignant; // Supposer que vous avez une méthode getNomMatiere() dans Cours
+            semaine[creneau-8][jour] = nomMatiere+"\n enseignant : "+nomEnseignant+ "\n Batiment : "+nomBatiment+"\n salle : "+idSalle; // Supposer que vous avez une méthode getNomMatiere() dans Cours
         }
 
         return semaine;
