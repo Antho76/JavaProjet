@@ -114,7 +114,7 @@ public class ConnectionInterface {
 	                JOptionPane.showMessageDialog(frame, "Connexion réussie");
 	                frame.dispose();
 	                AccueilEtudiant accueiletu = new AccueilEtudiant();
-	                accueiletu.afficherInterface(); // Ajouter plus tard le parametre de l'étudiant
+	                accueiletu.afficherInterface(etu); // Ajouter plus tard le parametre de l'étudiant
 	                // Ajoutez ici le code pour l'interface de l'étudiant si nécessaire
 	                
             	}else {

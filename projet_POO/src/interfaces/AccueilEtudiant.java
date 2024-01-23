@@ -7,6 +7,7 @@ import database.DatabaseManager;
 import javax.swing.table.DefaultTableModel;
 
 import classes.Enseignant;
+import classes.Etudiant;
 import classes.Evaluation;
 import classes.Matiere;
 import classes.Salle;
@@ -33,8 +34,9 @@ public class AccueilEtudiant {
     private String[][] semaine;
     private LocalDate dateDebutSemaine;
     private LocalDate dateFinSemaine;
+    private Etudiant connectedEtudiant;
 
-    public void afficherInterface() {
+    public void afficherInterface(Etudiant connectedEtudiant) {
         JFrame frame = new JFrame("Emploi du Temps");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
@@ -61,7 +63,7 @@ public class AccueilEtudiant {
 
         // Colonnes (jours de la semaine)
         String[] columns = new String[]{"Heure", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"};
-        model = new DefaultTableModel(generateData(), columns);
+        model = new DefaultTableModel(generateData(connectedEtudiant.getId()), columns);
         JTable table = new JTable(model);
         table.setRowHeight(70); // Définir la hauteur de la ligne (ajustez selon vos besoins)
 
@@ -89,7 +91,7 @@ public class AccueilEtudiant {
         voirNotesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	ShowNotesEtudiant shownotes= new ShowNotesEtudiant(evaluations);
+            	ShowNotesEtudiant shownotes= new ShowNotesEtudiant(evaluations,connectedEtudiant.getId());
             	shownotes.setVisible(true);
             }
         });
@@ -150,7 +152,8 @@ public class AccueilEtudiant {
     	if (model == null) {
             return;  // Ou initialiser le model ici si nécessaire
         }
-    	String[][] dataFromController = emploiDuTempsController.getCoursPourSemaineInterface(dateDebutSemaine, dateFinSemaine);
+    	int idEtudiant = connectedEtudiant.getId();
+    	String[][] dataFromController = emploiDuTempsController.getCoursPourSemaineInterface(dateDebutSemaine, dateFinSemaine,idEtudiant);
         String[][] updatedData = mergeDataWithHours(dataFromController);
 
     	String[] columns = new String[]{"Heure", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"};
@@ -172,10 +175,9 @@ public class AccueilEtudiant {
         return mergedData;
     }
 
-    private String[][] generateData() {
-        String[][] newData = emploiDuTempsController.getCoursPourSemaineInterface(dateDebutSemaine, dateFinSemaine);
+    private String[][] generateData(int idEtudiant) {
+        String[][] newData = emploiDuTempsController.getCoursPourSemaineInterface(dateDebutSemaine, dateFinSemaine, idEtudiant);
         String[] heures = new String[]{"08:00-09:00", "09:00-10:00", "10:00-11:00", "11:00-12:00", "12:00-13:00", "13:00-14:00", "14:00-15:00", "15:00-16:00", "16:00-17:00", "17:00-18:00"};
-        
         String[][] data = new String[10][6];
         for (int i = 0; i < heures.length; i++) {
             data[i][0] = heures[i];
