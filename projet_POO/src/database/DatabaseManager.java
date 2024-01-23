@@ -474,15 +474,6 @@ public class DatabaseManager {
     }
 
 
-    
-
-    
-
-    
-    
-
-
-    
     public static List<Etudiant> getStudents() {
     	List<Etudiant> etudiants = new ArrayList<>();
 
@@ -1170,6 +1161,22 @@ public class DatabaseManager {
         }
     }
     
+    public static void deleteAvertissement(Avertissement avertissement) {
+        try (Connection connection = connect()) {
+            String query = "DELETE FROM avertissement WHERE nom = ? AND idEtudiant = ? AND idEnseignant = ?";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, avertissement.getNom());
+                preparedStatement.setInt(2, avertissement.getEtudiant());
+                preparedStatement.setInt(3, avertissement.getEnseignant());
+                
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
     public static void updateCours(Cours cours) {
         try (Connection connection = connect()) {
             String query = "UPDATE cours SET nbEtudiant=?, tabEtudiants=?, date=?, heure=? WHERE idCours=?";
@@ -1322,10 +1329,6 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
-
-
-
-
 
     public static void disconnect(Connection connection) {
         if (connection != null) {

@@ -39,6 +39,16 @@ public class EnseignantPage {
                  }
              });
      
+     addButton("Afficher les avertissements", panel, gbc, frame,
+             new ActionListener() {
+                 @Override
+                 public void actionPerformed(ActionEvent e) {
+                	 List<Avertissement> listAvertissement = DatabaseManager.getAvertissement();
+                	 ShowAvertissementPage showAvertissementPage = new ShowAvertissementPage(enseignant,listAvertissement);
+                	 showAvertissementPage.setVisible(true);
+                 }
+             });
+     
      addButton("Ajouter des notes", panel, gbc, frame,
              new ActionListener() {
                  @Override
