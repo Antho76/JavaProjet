@@ -568,6 +568,10 @@ public class DatabaseManager {
     }
     
     public static List<Cours> getCoursPourSemaine(LocalDate dateDebut, LocalDate dateFin) {
+    	if(dateDebut==null || dateFin==null) {
+    		dateDebut=LocalDate.parse("2024-01-22");
+    		dateFin=LocalDate.parse("2024-01-27");
+    	}
         List<Cours> coursList = new ArrayList<>();
 
         Connection connection = null;
@@ -576,13 +580,11 @@ public class DatabaseManager {
 
         try {
             connection = connect();
-            String query = "SELECT * FROM cours WHERE date BETWEEN ? AND ?";
+            String query = "SELECT * FROM cours WHERE date BETWEEN ? AND ? ";
             preparedStatement = connection.prepareStatement(query);
-
-            java.sql.Date sqlDateDebut = java.sql.Date.valueOf(dateDebut);
-            java.sql.Date sqlDateFin = java.sql.Date.valueOf(dateFin);
-            preparedStatement.setDate(1, sqlDateDebut);
-            preparedStatement.setDate(2, sqlDateFin);
+       
+            preparedStatement.setObject(1, dateDebut);
+            preparedStatement.setObject(2, dateFin);
 
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -590,8 +592,8 @@ public class DatabaseManager {
                 Cours cours = new Cours(
                     resultSet.getInt("idCours"),
                     resultSet.getInt("nbEtudiant"),
-                    resultSet.getString("tabEtudiant"),
-                    resultSet.getInt("enseignant"),
+                    resultSet.getString("tabEtudiants"),
+                    resultSet.getInt("idEnseignant"),
                     ld,
                     resultSet.getInt("heure"),
                     resultSet.getInt("idMatiere"),

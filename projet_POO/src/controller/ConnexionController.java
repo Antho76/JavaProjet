@@ -9,18 +9,19 @@ import database.DatabaseManager;
 import java.util.List;
 
 public class ConnexionController {
-    public boolean checkConnexionEtudiant(String login, String password) {
+	
+    public Object [] checkConnexionEtudiant(String login, String password) {
         List<Etudiant> listeEtudiant = DatabaseManager.getStudents();
         boolean isLogged = false;
 
         for (Etudiant etudiant : listeEtudiant) {
             if (etudiant.getLogin().equals(login) && etudiant.getPassword().equals(password)) {
                 isLogged = true;
-                return isLogged;
+                return new Object[] {isLogged, etudiant};
             }
         }
 
-        return isLogged;
+        return new Object[] {isLogged, 0};
     }
 
     public boolean checkConnexionEnseignant(String login, String password) {
@@ -52,4 +53,5 @@ public class ConnexionController {
         return new Object[] {isLogged, 0};
     }
 
+    
 }
