@@ -16,7 +16,7 @@ public class Cours{
 	    this.tabEtudiants = "";
 	    this.idEnseignant = 0;
 	    this.date = LocalDate.of(2024, 1, 23);;
-	    this.heure = 0;
+	    this.heure = 8;
 	    this.idMatiere = 0;
 	    this.idSalle = 0;
 	}

@@ -571,7 +571,42 @@ public class DatabaseManager {
         return enseignants;
     }
     
+    public static Enseignant getEnseignantById(int id) {
+        Enseignant enseignant = null;
+
+        try (Connection connection = connect()) {
+            String query = "SELECT * FROM enseignant WHERE id = ?";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, id);
+
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        enseignant = new Enseignant(
+                            resultSet.getInt("id"),
+                            resultSet.getString("nom"),
+                            resultSet.getString("prenom"),
+                            resultSet.getString("dateNaissance"),
+                            resultSet.getInt("idMatiere"),
+                            resultSet.getString("login"),
+                            resultSet.getString("password")
+                        );
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return enseignant;
+    }
+
+    
     public static List<Cours> getCoursPourSemaine(LocalDate dateDebut, LocalDate dateFin) {
+    	if(dateDebut==null || dateFin==null) {
+    		dateDebut=LocalDate.parse("2024-01-22");
+    		dateFin=LocalDate.parse("2024-01-27");
+    	}
         List<Cours> coursList = new ArrayList<>();
 
         Connection connection = null;
@@ -580,13 +615,11 @@ public class DatabaseManager {
 
         try {
             connection = connect();
-            String query = "SELECT * FROM cours WHERE date BETWEEN ? AND ?";
+            String query = "SELECT * FROM cours WHERE date BETWEEN ? AND ? ";
             preparedStatement = connection.prepareStatement(query);
-
-            java.sql.Date sqlDateDebut = java.sql.Date.valueOf(dateDebut);
-            java.sql.Date sqlDateFin = java.sql.Date.valueOf(dateFin);
-            preparedStatement.setDate(1, sqlDateDebut);
-            preparedStatement.setDate(2, sqlDateFin);
+       
+            preparedStatement.setObject(1, dateDebut);
+            preparedStatement.setObject(2, dateFin);
 
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -594,8 +627,8 @@ public class DatabaseManager {
                 Cours cours = new Cours(
                     resultSet.getInt("idCours"),
                     resultSet.getInt("nbEtudiant"),
-                    resultSet.getString("tabEtudiant"),
-                    resultSet.getInt("enseignant"),
+                    resultSet.getString("tabEtudiants"),
+                    resultSet.getInt("idEnseignant"),
                     ld,
                     resultSet.getInt("heure"),
                     resultSet.getInt("idMatiere"),

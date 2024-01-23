@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import database.DatabaseManager;
 import java.time.*;
+import classes.Enseignant;
 
 public class EmploiDuTempsController {
 	
@@ -35,13 +36,13 @@ public class EmploiDuTempsController {
 
 	    try {
 	        connection = connect(); // Assurez-vous que cette méthode établit une connexion à votre base de données
-	        String query = "SELECT nom FROM matiere WHERE id = ?";
+	        String query = "SELECT nomMatiere FROM matiere WHERE numeroMatiere = ?";
 	        preparedStatement = connection.prepareStatement(query);
 	        preparedStatement.setInt(1, idMatiere);
 
 	        resultSet = preparedStatement.executeQuery();
 	        if (resultSet.next()) {
-	            nomMatiere = resultSet.getString("nom");
+	            nomMatiere = resultSet.getString("nomMatiere");
 	        }
 	    } catch (SQLException e) {
 	        e.printStackTrace();
@@ -58,7 +59,10 @@ public class EmploiDuTempsController {
 
 	    return nomMatiere;
 	}
-
+	public Enseignant getEnseignantById(int id) {
+        // Appel à la méthode du modèle
+        return DatabaseManager.getEnseignantById(id);
+    }
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -82,8 +86,15 @@ public class EmploiDuTempsController {
             int jour = cours.getDate().getDayOfWeek().getValue() - 1; // Lundi = 1, Dimanche = 7
             int creneau = cours.getHeure(); // Supposer que l'heure correspond à un créneau
             int id = cours.getMatiere();
+            int idEnseignant = cours.getEnseignant();
+            Enseignant enseignant = getEnseignantById(idEnseignant);
+            String nomEnseignant=enseignant.getNom();
             String nomMatiere = getNomMatiere(id);
-            semaine[creneau][jour] = nomMatiere; // Supposer que vous avez une méthode getNomMatiere() dans Cours
+            if(creneau<8) {
+            	int temp=8-creneau;
+            	creneau+=temp;
+            }
+            semaine[creneau-8][jour] = nomMatiere+" enseignant : "+nomEnseignant; // Supposer que vous avez une méthode getNomMatiere() dans Cours
         }
 
         return semaine;

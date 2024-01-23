@@ -110,11 +110,17 @@ public class ConnectionInterface {
         ConnexionController connexionController = new ConnexionController();
 
         if (radioButtonEtudiant.isSelected()) {
-            if (connexionController.checkConnexionEtudiant(username, password)) {
-                JOptionPane.showMessageDialog(frame, "Connexion réussie");
-                // Ajoutez ici le code pour l'interface de l'étudiant si nécessaire
-                frame.dispose();
-            } else {
+            	Object[] result = connexionController.checkConnexionEtudiant(username, password);
+            	boolean exist = (boolean) result[0];
+            	if (exist) {
+            		Etudiant etu = (Etudiant) result[1];
+	                JOptionPane.showMessageDialog(frame, "Connexion réussie");
+	                frame.dispose();
+	                AccueilEtudiant accueiletu = new AccueilEtudiant();
+	                accueiletu.afficherInterface(); // Ajouter plus tard le parametre de l'étudiant
+	                // Ajoutez ici le code pour l'interface de l'étudiant si nécessaire
+	                
+            	}else {
                 JOptionPane.showMessageDialog(frame, "Login ou mot de passe incorrect");
             }
         } else if (radioButtonEnseignant.isSelected()) {
