@@ -398,10 +398,11 @@ public class DatabaseManager {
     
     public static void insertMatiere(Matiere matiere) {
         try (Connection connection = connect()) {
+        	int val = getMaxMatiereId();
             String query = "INSERT INTO matiere (numeroMatiere, nomMatiere, coefficient) VALUES (?, ?, ?)";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setInt(1, matiere.getNumeroMatiere());
+                preparedStatement.setInt(1, val +1 );
                 preparedStatement.setString(2, matiere.getNomMatiere());
                 preparedStatement.setInt(3, matiere.getCoefficient());
 
@@ -1100,6 +1101,27 @@ public class DatabaseManager {
         return maxId;
     }
     
+    public static int getMaxMatiereId() {
+        int maxId = -1;
+
+        try (Connection connection = connect()) {
+            // Requête SQL pour obtenir le maximum de l'ID dans la table des étudiants
+            String query = "SELECT MAX(numeroMatiere) FROM matiere";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        maxId = resultSet.getInt(1);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return maxId;
+    }
+    
     public static void deleteCours(int idCours) {
         try (Connection connection = connect()) {
             String query = "DELETE FROM cours WHERE idCours = ?";
@@ -1211,6 +1233,22 @@ public class DatabaseManager {
                 preparedStatement.setString(1, batiment.getVille());
                 preparedStatement.setString(2, batiment.getNomBatiment());
                 preparedStatement.setInt(3, batiment.getNumeroBatiment());
+
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static void updateMatiere(Matiere matiere) {
+        try (Connection connection = connect()) {
+            String query = "UPDATE matiere SET nomMatiere = ?, coefficient = ? WHERE numeroMatiere = ?";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, matiere.getNomMatiere());
+                preparedStatement.setInt(2, matiere.getCoefficient());
+                preparedStatement.setInt(3, matiere.getNumeroMatiere());
 
                 preparedStatement.executeUpdate();
             }

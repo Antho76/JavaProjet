@@ -121,8 +121,10 @@ public class AdminPage {
              new ActionListener() {
                  @Override
                  public void actionPerformed(ActionEvent e) {
-                     JOptionPane.showMessageDialog(frame, "Ouvrir la page de création de bâtiment");
-                 }
+                	 SwingUtilities.invokeLater(() -> {
+                         InterfaceAddBatiment interfaceAddBatiment = new InterfaceAddBatiment();
+                         interfaceAddBatiment.setVisible(true);
+                     });                 }
              },
              new ActionListener() {
                  @Override
@@ -153,6 +155,26 @@ public class AdminPage {
         	 SwingUtilities.invokeLater(() -> {
              	ShowSallePage showAndModifySallePage = new ShowSallePage(salles);
                  showAndModifySallePage.setVisible(true);
+             });
+         }
+     });
+     
+     addButtonPair("Créer une matiére", "Afficher les matiéres", panel, gbc, frame, new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent e) {
+        	 SwingUtilities.invokeLater(() -> {
+                 InterfaceAddMatiere interfaceAddMatiere = new InterfaceAddMatiere();
+                 interfaceAddMatiere.setVisible(true);
+             });
+         }
+     },
+         new ActionListener() {
+         public void actionPerformed(ActionEvent e) {
+        	 List<Matiere> matieres = DatabaseManager.getMatiere();
+
+             SwingUtilities.invokeLater(() -> {
+             	ShowMatierePage showMatierePage = new ShowMatierePage(matieres);
+                 showMatierePage.setVisible(true);
              });
          }
      });
