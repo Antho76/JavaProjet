@@ -57,6 +57,20 @@ public class EmploiDuTempsEnseignant {
         model = new DefaultTableModel(generateData(connectedEnseignant.getId()), columns);
         JTable table = new JTable(model);
         table.setRowHeight(70);
+        
+        JPanel panelBouton = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JButton retourButton = new JButton("Retour");
+        
+        retourButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+                // Ajoutez ici la logique pour retourner à la page précédente
+            }
+        });
+        
+        panelBouton.add(retourButton);
+        frame.add(panelBouton, BorderLayout.SOUTH);
 
         table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
