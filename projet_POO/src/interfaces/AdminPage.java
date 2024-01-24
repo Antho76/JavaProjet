@@ -159,7 +159,7 @@ public class AdminPage {
          }
      });
      
-     addButtonPair("Créer une matiére", "Afficher les matiéres", panel, gbc, frame, new ActionListener() {
+     addButtonPair("Créer une matiére", "Afficher les matières", panel, gbc, frame, new ActionListener() {
          @Override
          public void actionPerformed(ActionEvent e) {
         	 SwingUtilities.invokeLater(() -> {

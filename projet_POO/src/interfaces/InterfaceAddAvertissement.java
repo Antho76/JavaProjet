@@ -22,7 +22,7 @@ public class InterfaceAddAvertissement extends JFrame {
     }
 
     private void initUI() {
-        setTitle("Ajouter une formation");
+        setTitle("Ajouter un avertissement");
         setSize(600, 400); // Ajustez les dimensions selon vos besoins
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 

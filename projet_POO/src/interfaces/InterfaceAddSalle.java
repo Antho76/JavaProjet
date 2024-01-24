@@ -33,7 +33,7 @@ public class InterfaceAddSalle extends JFrame {
         nbPlacesField = new JTextField();
 
 
-        JLabel equipInfoLabel = new JLabel("Equipée d'informations:");
+        JLabel equipInfoLabel = new JLabel("Equipement informatique:");
         equipInfoCheckBox = new JCheckBox();
 
         JLabel batimentLabel = new JLabel("Sélectionnez le bâtiment:");
