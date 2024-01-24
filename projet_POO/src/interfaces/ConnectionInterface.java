@@ -22,16 +22,6 @@ public class ConnectionInterface {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 400);
 
-        JMenuBar mb = new JMenuBar();
-        JMenu m1 = new JMenu("FILE");
-        JMenu m2 = new JMenu("Help");
-        mb.add(m1);
-        mb.add(m2);
-        JMenuItem m11 = new JMenuItem("Open");
-        JMenuItem m22 = new JMenuItem("Save as");
-        m1.add(m11);
-        m1.add(m22);
-
         JPanel loginPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbcLogin = new GridBagConstraints();
         gbcLogin.gridwidth = GridBagConstraints.REMAINDER;
@@ -91,7 +81,6 @@ public class ConnectionInterface {
 
         
 
-        frame.getContentPane().add(BorderLayout.NORTH, mb);
         frame.getContentPane().add(BorderLayout.CENTER, centerPanel);
         // Center the frame on the screen
         frame.setLocationRelativeTo(null);

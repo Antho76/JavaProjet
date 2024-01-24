@@ -97,6 +97,15 @@ public class AccueilEtudiant {
             	shownotes.setVisible(true);
             }
         });
+        JButton retourButton = new JButton("Déconnexion");
+        retourButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	frame.dispose();
+                new ConnectionInterface().afficherInterface();
+                
+            }
+        });
         
         JButton voirAvertissementButton = new JButton("Voir mes avertissements");
         List<Avertissement> avertissement = DatabaseManager.getAvertissement();
@@ -110,6 +119,7 @@ public class AccueilEtudiant {
 
         // Ajouter le bouton à votre interface graphique
         // Supposons que vous ayez un panneau `panel` auquel vous voulez ajouter ce bouton
+        panelBouton.add(retourButton);
         panelBouton.add(voirNotesButton);
         panelBouton.add(voirAvertissementButton);
         frame.add(panelBouton, BorderLayout.SOUTH);
