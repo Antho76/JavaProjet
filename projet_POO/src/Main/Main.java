@@ -24,7 +24,6 @@ public class Main {
         connectionInterface.afficherInterface();
     	
     	/*AccueilEtudiant accueilEtu = new AccueilEtudiant();
-    	accueilEtu.afficherInterface(); */
     	
     	/*Inscription inscription = new Inscription();
     	inscription.afficherInterface();*/
