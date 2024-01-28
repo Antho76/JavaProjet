@@ -490,24 +490,49 @@ public class DatabaseManager {
     }
 
     
-    public static void insertPersonnel(Personnel personnel) {
+    public static boolean insertPersonnel(Personnel personnel) {
         try (Connection connection = connect()) {
-            String query = "INSERT INTO personnel (id, nom, prenom, dateNaissance, metier, login, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            if (!personnelExists(connection, personnel)) {
+                String query = "INSERT INTO personnel (id, nom, prenom, dateNaissance, metier, login, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setInt(1, personnel.getId());
-                preparedStatement.setString(2, personnel.getNom());
-                preparedStatement.setString(3, personnel.getPrenom());
-                preparedStatement.setString(4, personnel.getDateNaissance());
-                preparedStatement.setString(5, personnel.getMetier());;
-                preparedStatement.setString(6, personnel.getLogin());
-                preparedStatement.setString(7, personnel.getPassword());
+                try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                    preparedStatement.setInt(1, personnel.getId());
+                    preparedStatement.setString(2, personnel.getNom());
+                    preparedStatement.setString(3, personnel.getPrenom());
+                    preparedStatement.setString(4, personnel.getDateNaissance());
+                    preparedStatement.setString(5, personnel.getMetier());
+                    preparedStatement.setString(6, personnel.getLogin());
+                    preparedStatement.setString(7, personnel.getPassword());
 
-                preparedStatement.executeUpdate();
+                    preparedStatement.executeUpdate();
+                    return true; // Ajout réussi
+                }
+            } else {
+                // Personnel déjà existant
+                System.out.println("Personnel déjà existant. L'ajout n'a pas été effectué.");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return false; // Ajout échoué
+    }
+
+    private static boolean personnelExists(Connection connection, Personnel personnel) throws SQLException {
+        String query = "SELECT COUNT(*) FROM personnel WHERE nom = ? AND prenom = ? AND dateNaissance = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, personnel.getNom());
+            preparedStatement.setString(2, personnel.getPrenom());
+            preparedStatement.setString(3, personnel.getDateNaissance());
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    int count = resultSet.getInt(1);
+                    return count > 0;
+                }
+            }
+        }
+        return false;
     }
     
     public static void insertPromotion(int annee, int idFormation) {

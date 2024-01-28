@@ -43,17 +43,16 @@ public class InscriptionController {
 	    }
 	}
 	public void inscriptionPersonnel(String nom, String prenom, String dateNaissance, String metier, String login, String password) {
-		for (Personnel personnel : listePersonnel) {
-			if (personnel.getLogin().equals(login) && personnel.getPassword().equals(password)) {
-				already_exist = true;
-			}
-		}
-		if (!already_exist) {
-			int maxPersonnelId = DatabaseManager.getMaxPersonnelId();
+	    int maxPersonnelId = DatabaseManager.getMaxPersonnelId();
+	    Personnel newPersonnel = new Personnel(maxPersonnelId + 1, nom, prenom, dateNaissance, metier, login, password);
 
-			Personnel newPersonnel = new Personnel(maxPersonnelId+1, nom,prenom,dateNaissance,metier,login,password);
-			listePersonnel.add(newPersonnel);
-			DatabaseManager.insertPersonnel(newPersonnel);
-		}	 
+	    // Exemple d'utilisation
+	    if (DatabaseManager.insertPersonnel(newPersonnel)) {
+	        // Ajout réussi
+	        JOptionPane.showMessageDialog(null, "Personnel ajouté avec succès.");
+	    } else {
+	        // Ajout échoué
+	        JOptionPane.showMessageDialog(null, "Personnel déjà existant. L'ajout n'a pas été effectué.");
+	    }
 	}
 }

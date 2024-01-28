@@ -133,7 +133,6 @@ public class InscriptionInterface {
                 } else {
                     try {
                         inscriptionController.inscriptionPersonnel(nom, prenom, dateNaissance, metier, username, password);
-                        afficherMessageUtilisateurInscrit(mainFrame); // Passer la référence de la fenêtre principale
                     } catch (Exception e1) {
                         e1.printStackTrace();
                     }
@@ -143,22 +142,5 @@ public class InscriptionInterface {
         panel.add(registerButton);
     }
 
-    private static void afficherMessageUtilisateurInscrit(JFrame mainFrame) { // Ajouter le paramètre JFrame
-        JFrame messageFrame = new JFrame("Utilisateur inscrit");
-        messageFrame.setSize(200, 100);
-        messageFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        JPanel messagePanel = new JPanel();
-        JLabel messageLabel = new JLabel("Utilisateur inscrit");
-        messagePanel.add(messageLabel);
-        messageFrame.add(messagePanel);
-
-        messageFrame.addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosed(java.awt.event.WindowEvent windowEvent) {
-                mainFrame.dispose(); // Fermer la fenêtre principale lors de la fermeture de la popup
-            }
-        });
-        messageFrame.setVisible(true);
-    }
 }
