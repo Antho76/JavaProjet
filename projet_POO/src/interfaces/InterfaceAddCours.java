@@ -37,7 +37,7 @@ public class InterfaceAddCours {
             @Override
             public void actionPerformed(ActionEvent e) {
                 mainFrame.dispose();
-                // Replace 'AdminPage' with the appropriate class for navigating back
+               
             }
         });
         panel.add(retourButton);
@@ -47,115 +47,133 @@ public class InterfaceAddCours {
     }
 
     private void placeComponents(JPanel panel) {
-        JLabel nbEtudiantLabel = new JLabel("Nombre d'étudiants:");
-        panel.add(nbEtudiantLabel);
+    	JLabel nbEtudiantLabel = new JLabel("Nombre d'étudiants:");
+    	panel.add(nbEtudiantLabel);
 
-        JTextField nbEtudiantText = new JTextField(20);
-        panel.add(nbEtudiantText);
+    	JTextField nbEtudiantText = new JTextField(20);
+    	panel.add(nbEtudiantText);
 
-        JLabel etudiantsLabel = new JLabel("Étudiants:");
-        panel.add(etudiantsLabel);
+    	JLabel etudiantsLabel = new JLabel("Étudiants:");
+    	panel.add(etudiantsLabel);
 
-        DefaultListModel<String> etudiantsListModel = new DefaultListModel<>();
-        List<Etudiant> listeEtudiants = DatabaseManager.getStudents();
-        for (Etudiant etudiant : listeEtudiants) {
-            etudiantsListModel.addElement(etudiant.getNom()+" " + etudiant.getPrenom());
-        }
+    	DefaultListModel<String> etudiantsListModel = new DefaultListModel<>();
+    	List<Etudiant> listeEtudiants = DatabaseManager.getStudents();
+    	for (Etudiant etudiant : listeEtudiants) {
+    	    etudiantsListModel.addElement(etudiant.getNom()+" " + etudiant.getPrenom());
+    	}
 
-        JList<String> etudiantsSelectedList = new JList<>(etudiantsListModel);
-        etudiantsSelectedList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+    	JList<String> etudiantsSelectedList = new JList<>(etudiantsListModel);
+    	etudiantsSelectedList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
-        JScrollPane etudiantsScrollPane = new JScrollPane(etudiantsSelectedList);
-        panel.add(etudiantsScrollPane);
+    	JScrollPane etudiantsScrollPane = new JScrollPane(etudiantsSelectedList);
+    	panel.add(etudiantsScrollPane);
 
-        JLabel enseignantLabel = new JLabel("Sélectionnez l'enseignant:");
-        panel.add(enseignantLabel);
+    	JLabel enseignantLabel = new JLabel("Sélectionnez l'enseignant:");
+    	panel.add(enseignantLabel);
 
-        JComboBox<String> enseignantComboBox = new JComboBox<>();
-        loadEnseignantIntoComboBox(enseignantComboBox);
-        panel.add(enseignantComboBox);
+    	JComboBox<String> enseignantComboBox = new JComboBox<>();
+    	loadEnseignantIntoComboBox(enseignantComboBox);
+    	panel.add(enseignantComboBox);
 
-        JLabel dateCoursLabel = new JLabel("Date du cours:");
-        panel.add(dateCoursLabel);
+    	JLabel dateCoursLabel = new JLabel("Date du cours:");
+    	panel.add(dateCoursLabel);
 
-        MaskFormatter dateFormatter = null;
-        try {
-            dateFormatter = new MaskFormatter("####-##-##");
-            dateFormatter.setPlaceholderCharacter('_');
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+    	MaskFormatter dateFormatter = null;
+    	try {
+    	    dateFormatter = new MaskFormatter("####-##-##");
+    	    dateFormatter.setPlaceholderCharacter('_');
+    	} catch (ParseException e) {
+    	    e.printStackTrace();
+    	}
 
-        JFormattedTextField dateCoursText = new JFormattedTextField(dateFormatter);
-        panel.add(dateCoursText);
+    	JFormattedTextField dateCoursText = new JFormattedTextField(dateFormatter);
+    	panel.add(dateCoursText);
 
-        JLabel heureLabel = new JLabel("Heure du cours:");
-        panel.add(heureLabel);
+    	JLabel heureLabel = new JLabel("Heure du cours:");
+    	panel.add(heureLabel);
 
-        JTextField heureText = new JTextField(20);
-        panel.add(heureText);
+    	JTextField heureText = new JTextField(20);
+    	panel.add(heureText);
 
-        JLabel matiereLabel = new JLabel("Sélectionnez la matière:");
-        panel.add(matiereLabel);
+    	JLabel matiereLabel = new JLabel("Sélectionnez la matière:");
+    	panel.add(matiereLabel);
 
-        JComboBox<String> matiereComboBox = new JComboBox<>();
-        loadMatieresIntoComboBox(matiereComboBox);
-        panel.add(matiereComboBox);
+    	JComboBox<String> matiereComboBox = new JComboBox<>();
+    	loadMatieresIntoComboBox(matiereComboBox);
+    	panel.add(matiereComboBox);
 
-        JLabel salleLabel = new JLabel("Sélectionnez la salle:");
-        panel.add(salleLabel);
+    	JLabel salleLabel = new JLabel("Sélectionnez la salle:");
+    	panel.add(salleLabel);
 
-        JComboBox<String> salleComboBox = new JComboBox<>();
-        loadSalleIntoComboBox(salleComboBox);
-        panel.add(salleComboBox);
+    	JComboBox<String> salleComboBox = new JComboBox<>();
+    	loadSalleIntoComboBox(salleComboBox);
+    	panel.add(salleComboBox);
 
-        JButton addCoursButton = new JButton("Ajouter le cours");
-        addCoursButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Retrieve course information from the input fields
-                String dateString = dateCoursText.getText();
-                LocalDate date = parseDate(dateString);
-                
-                int heure = Integer.parseInt(heureText.getText());
-                
-                int nbEtudiant = Integer.parseInt(nbEtudiantText.getText());
-                
-                List<Etudiant> listEtudiant = DatabaseManager.getStudents();
-                List<String> selectedEtudiants = etudiantsSelectedList.getSelectedValuesList();
-                List<String> selectedEtudiantsID = new ArrayList<>();;
-                for (String selectedEtu : selectedEtudiants) {
-                	String[] etudiantNomPrenom = selectedEtu.split(" ");
-                	for (Etudiant etudiant : listEtudiant) {
-                        if ( etudiant.getNom().equals(etudiantNomPrenom[0]) && etudiant.getPrenom().equals(etudiantNomPrenom[1]) ) {
-                        	selectedEtudiantsID.add(Integer.toString(etudiant.getId()));
-                        }
-                    }
-                }
-                
-                String tabEtudiants = String.join(",", selectedEtudiantsID);
+    	JButton addCoursButton = new JButton("Ajouter le cours");
+    	addCoursButton.addActionListener(new ActionListener() {
+    	    @Override
+    	    public void actionPerformed(ActionEvent e) {
+    	       
+    	        String dateString = dateCoursText.getText();
+    	        LocalDate date = parseDate(dateString);
 
-                if (tabEtudiants.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Veuillez remplir tous les champs.", "Champs vides", JOptionPane.ERROR_MESSAGE);
-                } else {
-                    try {
-                        int maxCoursId = DatabaseManager.getMaxCoursId();
+    	       
+    	        int nbEtudiants;
+    	        try {
+    	            nbEtudiants = Integer.parseInt(nbEtudiantText.getText());
+    	        } catch (NumberFormatException ex) {
+    	            JOptionPane.showMessageDialog(null, "Veuillez entrer un nombre valide pour le nombre d'étudiants.", "Erreur", JOptionPane.ERROR_MESSAGE);
+    	            return;
+    	        }
 
-                        int idMatiere = getMatiereIdFromComboBox(matiereComboBox);
-                        int idSalle = getSalleIdFromComboBox(salleComboBox);
-                        int idEnseignant = getEnseignantIdFromComboBox(enseignantComboBox);
+    	      
+    	        int heure;
+    	        try {
+    	            heure = Integer.parseInt(heureText.getText());
+    	        } catch (NumberFormatException ex) {
+    	            JOptionPane.showMessageDialog(null, "Veuillez entrer un nombre valide pour l'heure.", "Erreur", JOptionPane.ERROR_MESSAGE);
+    	            return;
+    	        }
+    	        List<String> selectedEtudiants = etudiantsSelectedList.getSelectedValuesList();
+    	        if (selectedEtudiants.size() != nbEtudiants) {
+    	            JOptionPane.showMessageDialog(null, "Le nombre d'étudiants sélectionnés ne correspond pas au nombre d'étudiants entré.", "Erreur", JOptionPane.ERROR_MESSAGE);
+    	            return;
+    	        }
 
-                        coursController.ajoutCours(maxCoursId+1, nbEtudiant, tabEtudiants, idEnseignant, date, heure, idMatiere, idSalle);
 
-                        // Show a success message or navigate to another page if needed
-                        afficherMessageCoursAjoute();
-                    } catch (Exception e1) {
-                        e1.printStackTrace();
-                    }
-                }
-            }
-        });
-        panel.add(addCoursButton);
+    	        List<Etudiant> listEtudiant = DatabaseManager.getStudents();
+    	        List<String> selectedEtudiantsID = new ArrayList<>();;
+    	        for (String selectedEtu : selectedEtudiants) {
+    	            String[] etudiantNomPrenom = selectedEtu.split(" ");
+    	            for (Etudiant etudiant : listEtudiant) {
+    	                if ( etudiant.getNom().equals(etudiantNomPrenom[0]) && etudiant.getPrenom().equals(etudiantNomPrenom[1]) ) {
+    	                    selectedEtudiantsID.add(Integer.toString(etudiant.getId()));
+    	                }
+    	            }
+    	        }
+
+    	        String tabEtudiants = String.join(",", selectedEtudiantsID);
+
+    	        if (tabEtudiants.isEmpty()) {
+    	            JOptionPane.showMessageDialog(null, "Veuillez remplir tous les champs.", "Champs vides", JOptionPane.ERROR_MESSAGE);
+    	        } else {
+    	            try {
+    	                int maxCoursId = DatabaseManager.getMaxCoursId();
+
+    	                int idMatiere = getMatiereIdFromComboBox(matiereComboBox);
+    	                int idSalle = getSalleIdFromComboBox(salleComboBox);
+    	                int idEnseignant = getEnseignantIdFromComboBox(enseignantComboBox);
+
+    	                coursController.ajoutCours(maxCoursId + 1, nbEtudiants, tabEtudiants, idEnseignant, date, heure, idMatiere, idSalle);
+
+    	                afficherMessageCoursAjoute();
+    	            } catch (Exception e1) {
+    	                e1.printStackTrace();
+    	            }
+    	        }
+    	    }
+    	});
+    	panel.add(addCoursButton);
     }
 
     private void afficherMessageCoursAjoute() {
@@ -173,8 +191,7 @@ public class InterfaceAddCours {
         messageFrame.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent windowEvent) {
-                // Replace 'AdminPage' with the appropriate class for navigating back
-                //new AdminPage().afficherInterface();
+
             }
         });
 
@@ -210,7 +227,7 @@ public class InterfaceAddCours {
                 return matiere.getNumeroMatiere();
             }
         }
-        return 0; // Ou une valeur par défaut, selon votre logique
+        return 0;
     }
 
     private int getSalleIdFromComboBox(JComboBox<String> salleComboBox) {
@@ -221,7 +238,7 @@ public class InterfaceAddCours {
                 return salle.getNumeroSalle();
             }
         }
-        return 0; // Ou une valeur par défaut, selon votre logique
+        return 0;
     }
 
     private int getEnseignantIdFromComboBox(JComboBox<String> enseignantComboBox) {
@@ -233,7 +250,7 @@ public class InterfaceAddCours {
                 return enseignant.getId();
             }
         }
-        return 0; // Ou une valeur par défaut, selon votre logique
+        return 0; 
     }
 
     private LocalDate parseDate(String dateString) {
