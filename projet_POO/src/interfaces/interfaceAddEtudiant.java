@@ -147,7 +147,6 @@ public class interfaceAddEtudiant {
                         int formationInt = selectedFormation.getId_Formation();
 
                         inscriptionController.inscriptionEtudiant(nom, prenom, promotionInt, dateNaissance, formationInt, login, password);
-                        afficherMessageUtilisateurInscrit();
                     } catch (Exception e1) {
                         e1.printStackTrace();
                     }
@@ -157,25 +156,5 @@ public class interfaceAddEtudiant {
         panel.add(registerButton);
     }
 
-    private void afficherMessageUtilisateurInscrit() {
-        mainFrame.setVisible(false);
-        JFrame messageFrame = new JFrame("Utilisateur inscrit");
-        messageFrame.setSize(200, 100);
-        messageFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        JPanel messagePanel = new JPanel();
-        JLabel messageLabel = new JLabel("Utilisateur inscrit");
-        messagePanel.add(messageLabel);
-        messageFrame.add(messagePanel);
-        messageFrame.setLocationRelativeTo(null);
-
-        messageFrame.addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosed(java.awt.event.WindowEvent windowEvent) {
-                new AdminPage().afficherInterface(person);
-            }
-        });
-
-        messageFrame.setVisible(true);
-    }
 }
