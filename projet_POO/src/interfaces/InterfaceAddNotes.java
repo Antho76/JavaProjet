@@ -88,7 +88,6 @@ public class InterfaceAddNotes extends JFrame {
         gbc.gridy = 3;
         panel.add(noteText,gbc);
 
-        // Bouton Ajouter Formation
         JButton ajouterAvertissementButton = new JButton("Ajouter Note");
         gbc.gridx = 0;
         gbc.gridy = 4;
@@ -102,22 +101,36 @@ public class InterfaceAddNotes extends JFrame {
                 int idEtudiant = getEtudiantIdFromComboBox(etudiantComboBox);
                 int idEnseignant = enseignant.getId();
                 int idMatiere = getMatiereIdFromComboBox(matiereComboBox);
-                int note = Integer.parseInt(noteText.getText());
+
+                // Vérifier si la note est un entier positif
+                int note;
+                try {
+                    note = Integer.parseInt(noteText.getText().trim());
+                    if (note < 0) {
+                        throw new NumberFormatException();
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(InterfaceAddNotes.this,
+                            "Veuillez entrer un entier positif pour la note.",
+                            "Erreur", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
                 if (nomEvaluation.isEmpty()) {
                     JOptionPane.showMessageDialog(InterfaceAddNotes.this,
                             "Veuillez remplir le champ 'Nom de l'évaluation'.",
                             "Erreur", JOptionPane.ERROR_MESSAGE);
                 } else {
-                	Evaluation evaluation = new Evaluation(nomEvaluation,idMatiere,idEnseignant,note,idEtudiant);
+                    Evaluation evaluation = new Evaluation(nomEvaluation, idMatiere, idEnseignant, note, idEtudiant);
                     DatabaseManager.insertEvaluation(evaluation);
 
                     JOptionPane.showMessageDialog(InterfaceAddNotes.this,
-                            "Note ajouté avec succès!",
+                            "Note ajoutée avec succès!",
                             "Confirmation", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
         });
-
+        
         // Bouton Retour en bas
         gbc.gridy = 3;
         panel.add(Box.createVerticalStrut(30), gbc); // Espace vertical
