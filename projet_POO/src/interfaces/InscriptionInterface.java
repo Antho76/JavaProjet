@@ -27,13 +27,13 @@ public class InscriptionInterface {
         placeComponents(panel, frame);
 
         // Ajout d'un bouton "Retour"
+        
         JButton retourButton = new JButton("Retour");
         retourButton.setBounds(10, 340, 120, 25);
         retourButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame.dispose();
-                new ConnectionInterface().afficherInterface();
+                frame.dispose(); 
             }
         });
         panel.add(retourButton);

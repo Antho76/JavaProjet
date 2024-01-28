@@ -115,6 +115,10 @@ public class InterfaceAddCours {
     	    public void actionPerformed(ActionEvent e) {
     	       
     	        String dateString = dateCoursText.getText();
+    	        if (dateString.isEmpty() || dateString.equals("____-__-__")) {
+    	            JOptionPane.showMessageDialog(null, "Veuillez entrer une date valide.", "Erreur", JOptionPane.ERROR_MESSAGE);
+    	            return;
+    	        }
     	        LocalDate date = parseDate(dateString);
 
     	       
@@ -139,6 +143,7 @@ public class InterfaceAddCours {
     	            JOptionPane.showMessageDialog(null, "Le nombre d'étudiants sélectionnés ne correspond pas au nombre d'étudiants entré.", "Erreur", JOptionPane.ERROR_MESSAGE);
     	            return;
     	        }
+    	        
 
 
     	        List<Etudiant> listEtudiant = DatabaseManager.getStudents();
@@ -152,6 +157,7 @@ public class InterfaceAddCours {
     	            }
     	        }
 
+    	        
     	        String tabEtudiants = String.join(",", selectedEtudiantsID);
 
     	        if (tabEtudiants.isEmpty()) {
