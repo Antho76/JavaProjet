@@ -39,7 +39,6 @@ public class InterfaceAddSalle extends JFrame {
         JLabel batimentLabel = new JLabel("Sélectionnez le bâtiment:");
         batimentComboBox = new JComboBox<>();
 
-        // Charger les bâtiments depuis la base de données
         List<Batiment> batiments = DatabaseManager.getBatiments();
         DefaultComboBoxModel<Batiment> batimentComboBoxModel = new DefaultComboBoxModel<>();
         batiments.forEach(batimentComboBoxModel::addElement);
@@ -80,35 +79,36 @@ public class InterfaceAddSalle extends JFrame {
     private void ajouterSalle() {
         String nbPlacesText = nbPlacesField.getText();
 
-        // Vérifier si tous les champs sont remplis
-        if (nbPlacesText.isEmpty() ) {
+        if (nbPlacesText.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Veuillez remplir tous les champs.", "Erreur", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        int nbPlaces = Integer.parseInt(nbPlacesText);
-        boolean equipInfo = equipInfoCheckBox.isSelected();
+        try {
+            int nbPlaces = Integer.parseInt(nbPlacesText);
+            if (nbPlaces <= 0) {
+                throw new NumberFormatException();
+            }
 
-        // Récupérer le bâtiment sélectionné
-        Batiment selectedBatiment = (Batiment) batimentComboBox.getSelectedItem();
+            boolean equipInfo = equipInfoCheckBox.isSelected();
 
-        // Vérifier si un bâtiment est sélectionné
-        if (selectedBatiment == null) {
-            JOptionPane.showMessageDialog(this, "Veuillez sélectionner un bâtiment.", "Erreur", JOptionPane.ERROR_MESSAGE);
-            return;
+            Batiment selectedBatiment = (Batiment) batimentComboBox.getSelectedItem();
+
+            if (selectedBatiment == null) {
+                JOptionPane.showMessageDialog(this, "Veuillez sélectionner un bâtiment.", "Erreur", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            Salle salle = new Salle(0, nbPlaces, equipInfo, selectedBatiment.getNumeroBatiment());
+
+            DatabaseManager.insertSalle(salle);
+
+            JOptionPane.showMessageDialog(this, "La salle a été ajoutée avec succès.", "Succès", JOptionPane.INFORMATION_MESSAGE);
+
+            dispose();
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Veuillez saisir un nombre entier positif pour le nombre de places.", "Erreur", JOptionPane.ERROR_MESSAGE);
         }
-
-        // Créer une nouvelle salle avec le bâtiment sélectionné
-        Salle salle = new Salle(0, nbPlaces, equipInfo, selectedBatiment.getNumeroBatiment());
-
-        // Ajouter la nouvelle salle à la base de données
-        DatabaseManager.insertSalle(salle);
-
-        // Afficher un message de succès
-        JOptionPane.showMessageDialog(this, "La salle a été ajoutée avec succès.", "Succès", JOptionPane.INFORMATION_MESSAGE);
-
-        // Fermer la fenêtre d'ajout de salle
-        dispose();
     }
 
     public static void main(String[] args) {
