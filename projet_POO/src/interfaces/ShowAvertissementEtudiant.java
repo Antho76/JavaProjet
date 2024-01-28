@@ -110,16 +110,13 @@ public class ShowAvertissementEtudiant extends JFrame {
     public static void main(String[] args) {
     	List<Avertissement> listAvertissements = DatabaseManager.getAvertissement();
 
-        // Récupérer l'enseignant à partir de l'AppContext (où il a été stocké)
         Etudiant etudiant = AppContext.getEtudiant();
 
-        // Vérifier si l'enseignant est null
         if (etudiant == null) {
             System.out.println("Etudiant non trouvé. Veuillez vérifier la connexion.");
             return;
         }
 
-        // Créer une instance de ShowAvertissementPage avec l'enseignant et la liste d'avertissements
         SwingUtilities.invokeLater(() -> {
             ShowAvertissementEtudiant showAvertissementPage = new ShowAvertissementEtudiant(etudiant, listAvertissements);
             showAvertissementPage.setVisible(true);

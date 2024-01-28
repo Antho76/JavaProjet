@@ -58,7 +58,6 @@ public class InterfaceAddBatiment extends JFrame {
         String nomBatiment = nomBatimentField.getText();
 
 
-        // Vérifier si tous les champs sont remplis
         if (ville.isEmpty() || nomBatiment.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Veuillez remplir tous les champs.", "Erreur", JOptionPane.ERROR_MESSAGE);
             return;
@@ -66,16 +65,12 @@ public class InterfaceAddBatiment extends JFrame {
 
         try {
 
-            // Créer un nouvel objet Batiment
             Batiment batiment = new Batiment(0, ville, nomBatiment );
 
-            // Ajouter le nouveau bâtiment à la base de données
             DatabaseManager.insertBatiment(batiment);
 
-            // Afficher un message de succès
             JOptionPane.showMessageDialog(this, "Le bâtiment a été ajouté avec succès.", "Succès", JOptionPane.INFORMATION_MESSAGE);
 
-            // Fermer la fenêtre d'ajout de bâtiment
             dispose();
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Le nombre de salles doit être un nombre entier valide.", "Erreur", JOptionPane.ERROR_MESSAGE);

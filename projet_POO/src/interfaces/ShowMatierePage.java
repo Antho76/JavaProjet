@@ -98,11 +98,9 @@ public class ShowMatierePage extends JFrame {
         if (selectedIndex != -1) {
             Matiere selectedMatiere = matieres.get(selectedIndex);
 
-            // Créer une boîte de dialogue pour la modification de la matière
             ModifierMatiereDialog modifierDialog = new ModifierMatiereDialog(this, selectedMatiere);
             modifierDialog.setVisible(true);
 
-            // Rafraîchir la liste des matières après modification
             refreshMatiereList();
         } else {
             JOptionPane.showMessageDialog(ShowMatierePage.this,
@@ -112,11 +110,9 @@ public class ShowMatierePage extends JFrame {
     }
 
     private void ajouterMatiere() {
-        // Créer une boîte de dialogue pour l'ajout d'une nouvelle matière
         AjouterMatiereDialog ajouterDialog = new AjouterMatiereDialog(this);
         ajouterDialog.setVisible(true);
 
-        // Rafraîchir la liste des matières après ajout
         refreshMatiereList();
     }
 
@@ -128,7 +124,6 @@ public class ShowMatierePage extends JFrame {
         matiereList.setModel(listModel);
     }
 
-    // Classe interne pour la boîte de dialogue de modification
     private class ModifierMatiereDialog extends JDialog {
 
         private Matiere matiere;
@@ -159,7 +154,6 @@ public class ShowMatierePage extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     modifierMatiere();
-                    // Fermer la boîte de dialogue après modification
                     ModifierMatiereDialog.this.dispose();
                 }
             });
@@ -175,7 +169,6 @@ public class ShowMatierePage extends JFrame {
         }
 
         private void modifierMatiere() {
-            // Mettre à jour les informations de la matière
             try {
                 String nomMatiere = nomMatiereField.getText();
                 int coefficient = Integer.parseInt(coefficientField.getText());
@@ -183,10 +176,8 @@ public class ShowMatierePage extends JFrame {
                 matiere.setNomMatiere(nomMatiere);
                 matiere.setCoefficient(coefficient);
 
-                // Mettre à jour les informations de la matière dans la base de données
                 DatabaseManager.updateMatiere(matiere);
 
-                // Rafraîchir la liste des matières après modification
                 refreshMatiereList();
 
                 JOptionPane.showMessageDialog(ShowMatierePage.this,
@@ -200,7 +191,6 @@ public class ShowMatierePage extends JFrame {
         }
     }
 
-    // Classe interne pour la boîte de dialogue d'ajout
     private class AjouterMatiereDialog extends JDialog {
 
         private JTextField nomMatiereField;
@@ -229,7 +219,6 @@ public class ShowMatierePage extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     ajouterMatiere();
-                    // Fermer la boîte de dialogue après ajout
                     AjouterMatiereDialog.this.dispose();
                 }
             });
@@ -245,7 +234,6 @@ public class ShowMatierePage extends JFrame {
         }
 
         private void ajouterMatiere() {
-            // Ajouter une nouvelle matière
             try {
                 String nomMatiere = nomMatiereField.getText();
                 int coefficient = Integer.parseInt(coefficientField.getText());
@@ -254,10 +242,8 @@ public class ShowMatierePage extends JFrame {
                 newMatiere.setNomMatiere(nomMatiere);
                 newMatiere.setCoefficient(coefficient);
 
-                // Insérer la nouvelle matière dans la base de données
                 DatabaseManager.insertMatiere(newMatiere);
 
-                // Rafraîchir la liste des matières après ajout
                 refreshMatiereList();
 
                 JOptionPane.showMessageDialog(ShowMatierePage.this,
@@ -272,7 +258,6 @@ public class ShowMatierePage extends JFrame {
     }
 
     public static void main(String[] args) {
-        // Vous pouvez placer ici le code pour tester votre page
         List<Matiere> matieres = DatabaseManager.getMatiere();
 
         SwingUtilities.invokeLater(() -> {

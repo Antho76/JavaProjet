@@ -202,16 +202,13 @@ public class ShowEvaluationsPage extends JFrame {
     public static void main(String[] args) {
     	List<Evaluation> listEvaluations = DatabaseManager.getEvaluations();
 
-        // Récupérer l'enseignant à partir de l'AppContext (où il a été stocké)
         Enseignant enseignant = AppContext.getEnseignant();
 
-        // Vérifier si l'enseignant est null
         if (enseignant == null) {
             System.out.println("Enseignant non trouvé. Veuillez vérifier la connexion.");
             return;
         }
 
-        // Créer une instance de ShowAvertissementPage avec l'enseignant et la liste d'avertissements
         SwingUtilities.invokeLater(() -> {
             ShowEvaluationsPage showEvaluationsPage = new ShowEvaluationsPage(enseignant, listEvaluations);
             showEvaluationsPage.setVisible(true);

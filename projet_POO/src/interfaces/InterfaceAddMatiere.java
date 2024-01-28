@@ -61,15 +61,12 @@ public class InterfaceAddMatiere extends JFrame {
 
             Matiere newMatiere = new Matiere(0, nomMatiere, coefficient);
 
-            // Appel à la méthode DatabaseManager pour insérer la matière
             DatabaseManager.insertMatiere(newMatiere);
 
-            // Affichage d'un message de succès
             JOptionPane.showMessageDialog(InterfaceAddMatiere.this,
                     "La matière a été ajoutée avec succès.",
                     "Succès", JOptionPane.INFORMATION_MESSAGE);
 
-            // Fermeture de la fenêtre après ajout
             dispose();
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(InterfaceAddMatiere.this,

@@ -23,20 +23,20 @@ public class InterfaceAddAvertissement extends JFrame {
 
     private void initUI() {
         setTitle("Ajouter un avertissement");
-        setSize(600, 400); // Ajustez les dimensions selon vos besoins
+        setSize(600, 400); 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(15, 15, 15, 15); // Ajustez ces marges selon vos besoins
+        gbc.insets = new Insets(15, 15, 15, 15); 
 
         add(panel);
         placeComponents(panel);
 
         setLocationRelativeTo(null);
-        setVisible(true); // Ne pas rendre visible ici, cela est fait à la fin pour éviter le problème de dimension
+        setVisible(true); 
     }
 
     private void placeComponents(JPanel panel) {
@@ -67,7 +67,6 @@ public class InterfaceAddAvertissement extends JFrame {
         panel.add(etudiantComboBox,gbc);
 
 
-        // Bouton Ajouter Formation
         JButton ajouterAvertissementButton = new JButton("Ajouter Avertissement");
         gbc.gridx = 0;
         gbc.gridy = 2;
@@ -95,9 +94,8 @@ public class InterfaceAddAvertissement extends JFrame {
             }
         });
 
-        // Bouton Retour en bas
         gbc.gridy = 3;
-        panel.add(Box.createVerticalStrut(30), gbc); // Espace vertical
+        panel.add(Box.createVerticalStrut(30), gbc);
         JButton retourButton = new JButton("Retour");
         gbc.gridy = 4;
         panel.add(retourButton, gbc);
@@ -105,7 +103,7 @@ public class InterfaceAddAvertissement extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                // Ajoutez ici la logique pour retourner à la page précédente
+               
             }
         });
     }
@@ -126,7 +124,7 @@ public class InterfaceAddAvertissement extends JFrame {
                 return etudiant.getId();
             }
         }
-        return 0; // Ou une valeur par défaut, selon votre logique
+        return 0; 
     }
 
 }

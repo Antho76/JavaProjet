@@ -65,7 +65,6 @@ public class EmploiDuTempsEnseignant {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-                // Ajoutez ici la logique pour retourner à la page précédente
             }
         });
         
@@ -90,7 +89,6 @@ public class EmploiDuTempsEnseignant {
         JScrollPane scrollPane = new JScrollPane(table);
         frame.add(scrollPane, BorderLayout.CENTER);
 
-        // Ajouter ici d'autres boutons si nécessaire
         frame.setLocationRelativeTo(null);
 
         frame.setVisible(true);

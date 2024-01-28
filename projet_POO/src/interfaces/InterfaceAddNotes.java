@@ -24,20 +24,20 @@ public class InterfaceAddNotes extends JFrame {
 
     private void initUI() {
         setTitle("Ajouter des notes");
-        setSize(600, 400); // Ajustez les dimensions selon vos besoins
+        setSize(600, 400); 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(15, 15, 15, 15); // Ajustez ces marges selon vos besoins
+        gbc.insets = new Insets(15, 15, 15, 15);
 
         add(panel);
         placeComponents(panel);
 
         setLocationRelativeTo(null);
-        setVisible(true); // Ne pas rendre visible ici, cela est fait à la fin pour éviter le problème de dimension
+        setVisible(true); 
     }
 
     private void placeComponents(JPanel panel) {
@@ -102,7 +102,6 @@ public class InterfaceAddNotes extends JFrame {
                 int idEnseignant = enseignant.getId();
                 int idMatiere = getMatiereIdFromComboBox(matiereComboBox);
 
-                // Vérifier si la note est un entier positif
                 int note;
                 try {
                     note = Integer.parseInt(noteText.getText().trim());
@@ -131,9 +130,8 @@ public class InterfaceAddNotes extends JFrame {
             }
         });
         
-        // Bouton Retour en bas
         gbc.gridy = 3;
-        panel.add(Box.createVerticalStrut(30), gbc); // Espace vertical
+        panel.add(Box.createVerticalStrut(30), gbc);
         JButton retourButton = new JButton("Retour");
         gbc.gridy = 4;
         panel.add(retourButton, gbc);
@@ -141,7 +139,6 @@ public class InterfaceAddNotes extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                // Ajoutez ici la logique pour retourner à la page précédente
             }
         });
     }
@@ -169,7 +166,7 @@ public class InterfaceAddNotes extends JFrame {
                 return etudiant.getId();
             }
         }
-        return 0; // Ou une valeur par défaut, selon votre logique
+        return 0; 
     }
     
     private int getMatiereIdFromComboBox(JComboBox<String> matiereComboBox) {
@@ -180,7 +177,7 @@ public class InterfaceAddNotes extends JFrame {
                 return matiere.getNumeroMatiere();
             }
         }
-        return 0; // Ou une valeur par défaut, selon votre logique
+        return 0; 
     }
 
 }

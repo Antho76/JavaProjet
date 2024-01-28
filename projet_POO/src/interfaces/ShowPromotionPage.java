@@ -83,7 +83,6 @@ public class ShowPromotionPage extends JFrame {
         if (selectedIndex != -1) {
             Promotion selectedPromotion = promotions.get(selectedIndex);
 
-            // Afficher une boîte de dialogue pour choisir de nouvelles informations
             JTextField anneeField = new JTextField();
             JComboBox<Formation> formationComboBox = new JComboBox<>(formations.toArray(new Formation[0]));
 
@@ -102,15 +101,11 @@ public class ShowPromotionPage extends JFrame {
                 String nouvelleAnnee = anneeField.getText();
                 Formation nouvelleFormation = (Formation) formationComboBox.getSelectedItem();
 
-                // Vérifier si de nouvelles informations ont été saisies
                 if (!nouvelleAnnee.isEmpty() && nouvelleFormation != null) {
-                    // Mettre à jour les informations de la promotion dans la liste des promotions
                     selectedPromotion.setAnnee(Integer.parseInt(nouvelleAnnee));
                     selectedPromotion.setidFormation(nouvelleFormation.getId_Formation());
-                    // Mettre à jour les informations de la promotion dans la base de données
                     DatabaseManager.updatePromotion(selectedPromotion.getId(), selectedPromotion.getAnnee(), selectedPromotion.getidFormation());
 
-                    // Mettre à jour le modèle de liste pour refléter les nouvelles informations
                     listModel.setElementAt(DatabaseManager.getNomFormationById(selectedPromotion.getidFormation()) + " - Promotion " + selectedPromotion.getAnnee(), selectedIndex);
                 }
                 dispose();

@@ -40,7 +40,7 @@ public class EmploiDuTempsController {
 	    ResultSet resultSet = null;
 
 	    try {
-	        connection = connect(); // Assurez-vous que cette méthode établit une connexion à votre base de données
+	        connection = connect(); 
 	        String query = "SELECT nomMatiere FROM matiere WHERE numeroMatiere = ?";
 	        preparedStatement = connection.prepareStatement(query);
 	        preparedStatement.setInt(1, idMatiere);
@@ -52,7 +52,7 @@ public class EmploiDuTempsController {
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    } finally {
-	        // Fermeture des ressources
+	       
 	        try {
 	            if (resultSet != null) resultSet.close();
 	            if (preparedStatement != null) preparedStatement.close();
@@ -65,12 +65,12 @@ public class EmploiDuTempsController {
 	    return nomMatiere;
 	}
 	public Enseignant getEnseignantById(int id) {
-        // Appel à la méthode du modèle
+       
         return DatabaseManager.getEnseignantById(id);
     }
 	
 	public Salle getSalleByIdInterface(int id) {
-        // Appel à la méthode du modèle
+       
         return DatabaseManager.getSalleById(id);
     }
 	
@@ -85,20 +85,16 @@ public class EmploiDuTempsController {
         LocalDate dateDebut = dateDebutSemaine;
         LocalDate dateFin = dateFinSemaine;
 
-        // Appel à DatabaseManager pour récupérer les cours
-
-        // Traitement des données pour les mettre dans le format requis par le frontend
-        String[][] semaine = new String[10][6]; // Exemple de tableau avec 10 créneaux horaires et 5 jours de la semaine
-        // Initialisation du tableau
+     
+        String[][] semaine = new String[10][6]; 
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 6; j++) {
-                semaine[i][j] = ""; // Initialise avec des chaînes vides
+                semaine[i][j] = "";
             }
         }
-        // Remplissage du tableau avec les cours
         for (Cours cours : coursList) {
-            int jour = cours.getDate().getDayOfWeek().getValue() - 1; // Lundi = 1, Dimanche = 7
-            int creneau = cours.getHeure(); // Supposer que l'heure correspond à un créneau
+            int jour = cours.getDate().getDayOfWeek().getValue() - 1;
+            int creneau = cours.getHeure(); 
             int id = cours.getMatiere();
             int idEnseignant = cours.getEnseignant();
             int idSalle= cours.getSalle();
@@ -113,7 +109,7 @@ public class EmploiDuTempsController {
             	int temp=8-creneau;
             	creneau+=temp;
             }
-            semaine[creneau-8][jour] = nomMatiere+"\n enseignant : "+nomEnseignant+ "\n Batiment : "+nomBatiment+"\n salle : "+idSalle; // Supposer que vous avez une méthode getNomMatiere() dans Cours
+            semaine[creneau-8][jour] = nomMatiere+"\n enseignant : "+nomEnseignant+ "\n Batiment : "+nomBatiment+"\n salle : "+idSalle; 
         }
 
         return semaine;
@@ -130,20 +126,17 @@ public class EmploiDuTempsController {
         LocalDate dateDebut = dateDebutSemaine;
         LocalDate dateFin = dateFinSemaine;
 
-        // Appel à DatabaseManager pour récupérer les cours
+       
+        String[][] semaine = new String[10][6];
 
-        // Traitement des données pour les mettre dans le format requis par le frontend
-        String[][] semaine = new String[10][6]; // Exemple de tableau avec 10 créneaux horaires et 5 jours de la semaine
-        // Initialisation du tableau
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 6; j++) {
-                semaine[i][j] = ""; // Initialise avec des chaînes vides
+                semaine[i][j] = "";
             }
         }
-        // Remplissage du tableau avec les cours
         for (Cours cours : coursList) {
-            int jour = cours.getDate().getDayOfWeek().getValue() - 1; // Lundi = 1, Dimanche = 7
-            int creneau = cours.getHeure(); // Supposer que l'heure correspond à un créneau
+            int jour = cours.getDate().getDayOfWeek().getValue() - 1;
+            int creneau = cours.getHeure();
             int id = cours.getMatiere();
             int idSalle= cours.getSalle();
             Salle salle = getSalleByIdInterface(idSalle);
@@ -157,7 +150,7 @@ public class EmploiDuTempsController {
             	int temp=8-creneau;
             	creneau+=temp;
             }
-            semaine[creneau-8][jour] = nomMatiere+"\n enseignant : "+nomEnseignant+ "\n Batiment : "+nomBatiment+"\n salle : "+idSalle; // Supposer que vous avez une méthode getNomMatiere() dans Cours
+            semaine[creneau-8][jour] = nomMatiere+"\n enseignant : "+nomEnseignant+ "\n Batiment : "+nomBatiment+"\n salle : "+idSalle; 
         }
 
         return semaine;

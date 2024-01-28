@@ -1,4 +1,3 @@
-// ConnexionController.java
 package controller;
 
 import javax.swing.JOptionPane;

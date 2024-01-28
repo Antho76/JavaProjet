@@ -11,26 +11,22 @@ import database.DatabaseManager;
 
 public class AdminPage {
     public void afficherInterface(Personnel person) {
-        // Création de la fenêtre principale
         JFrame frame = new JFrame("Page d'Administration");
         frame.setSize(700, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Création du panel pour ajouter les composants
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(10, 10, 10, 10);
 
-        // Ajout du message d'accueil au milieu de la fenêtre
         JLabel welcomeLabel = new JLabel("Bonjour MR. " + person.getNom());
         panel.add(welcomeLabel, gbc);
 
         frame.add(panel);
 
-     // Ajout des boutons "Créer" et "Afficher"
-     // Enseignants
+
      addButtonPair("Ajouter un Enseignant", "Afficher les Enseignants", panel, gbc, frame,
              new ActionListener() {
                  @Override
@@ -115,7 +111,6 @@ public class AdminPage {
                  }
              });
 
-     // Autres boutons
      // Créer un bâtiment
      addButtonPair("Créer un Bâtiment", "afficher les Batiments", panel, gbc, frame, 
              new ActionListener() {
@@ -179,16 +174,12 @@ public class AdminPage {
          }
      });
 
-     // Saut de ligne
      gbc.gridy++;
 
-     // Ajout de deux boutons vides pour séparer les deux colonnes
      panel.add(Box.createHorizontalStrut(20), gbc);
 
-     // Saut de ligne
      gbc.gridy++;
 
-     // Bouton "Gérer les cours"
      addButton("Gérer les cours", panel, gbc, frame, new ActionListener() {
          public void actionPerformed(ActionEvent e) {
              List<Cours> cours = DatabaseManager.getCours();
@@ -199,31 +190,25 @@ public class AdminPage {
          }
      });
      
-     // Ajout de deux boutons vides pour séparer les deux colonnes
      panel.add(Box.createHorizontalStrut(20), gbc);
 
-     // Saut de ligne
      gbc.gridy++;
      
      addButton("Ajouter un Admin", panel, gbc, frame, new ActionListener() {
          public void actionPerformed(ActionEvent e) {
              InscriptionInterface inscriptionInterface = new InscriptionInterface();
-             inscriptionInterface.afficherInterface(); // Passe la référence de la fenêtre de connexion
+             inscriptionInterface.afficherInterface(); 
              
          }
      });
     
 
-     // Saut de ligne
      gbc.gridy++;
 
-     // Ajout de deux boutons vides pour séparer les deux colonnes
      panel.add(Box.createHorizontalStrut(20), gbc);
 
-     // Saut de ligne
      gbc.gridy++;
 
-     // Déconnexion
      JButton retourButton = new JButton("Déconnexion");
      retourButton.addActionListener(new ActionListener() {
          @Override
@@ -232,41 +217,31 @@ public class AdminPage {
              new ConnectionInterface().afficherInterface();
          }
      });
-     // Centrer le bouton "Déconnexion" en changeant l'ancrage uniquement pour ce composant
      gbc.anchor = GridBagConstraints.CENTER;
      panel.add(retourButton, gbc);
 
-     // Réinitialiser l'ancrage pour les futurs composants
      gbc.anchor = GridBagConstraints.WEST;
 
-     // Saut de ligne
      gbc.gridy++;
 
-     // Affichage de la fenêtre principale
      frame.setLocationRelativeTo(null);
      frame.setVisible(true);
     }
 
     private void addButtonPair(String createLabel, String showLabel, JPanel panel, GridBagConstraints gbc,
             JFrame frame, ActionListener createAction, ActionListener showAction) {
-	// Ajout du message d'accueil au milieu de la fenêtre
     	gbc.gridy++;
-	// Ajouter une ligne vide
 	gbc.gridy++;
 	
-	// Bouton "Créer"
 	JButton createButton = new JButton(createLabel);
 	createButton.addActionListener(createAction);
 	
-	// Bouton "Afficher"
 	JButton showButton = new JButton(showLabel);
 	showButton.addActionListener(showAction);
 	
-	// Ajouter les boutons dans la même colonne
 	panel.add(createButton, gbc);
 	panel.add(showButton, gbc);
 	
-	// Passer à une nouvelle ligne
 	gbc.gridy++;
 	}
 

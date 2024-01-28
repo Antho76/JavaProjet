@@ -18,12 +18,9 @@ public class InscriptionController {
 	public void inscriptionEtudiant(String nom, String prenom, int promotion, String dateNaissance, int formation, String login, String password) {
 		int maxEtudiantId = DatabaseManager.getMaxEtudiantId();
 		Etudiant newEtudiant = new Etudiant(maxEtudiantId +1,nom,prenom,promotion,dateNaissance,formation,login,password);
-		// Exemple d'utilisation
 		if (DatabaseManager.insertEtudiant(newEtudiant)) {
-		    // Ajout réussi
 		    JOptionPane.showMessageDialog(null, "Étudiant ajouté avec succès.");
 		} else {
-		    // Ajout échoué
 		    JOptionPane.showMessageDialog(null, "Étudiant déjà existant. L'ajout n'a pas été effectué.");
 		}
 	}
@@ -33,12 +30,9 @@ public class InscriptionController {
 	    int maxEnseignantId = DatabaseManager.getMaxEnseignantId();
 	    Enseignant newEnseignant = new Enseignant(maxEnseignantId + 1, nom, prenom, dateNaissance, matiere, login, password);
 
-	    // Exemple d'utilisation
 	    if (DatabaseManager.insertEnseignant(newEnseignant)) {
-	        // Ajout réussi
 	        JOptionPane.showMessageDialog(null, "Enseignant ajouté avec succès.");
 	    } else {
-	        // Ajout échoué
 	        JOptionPane.showMessageDialog(null, "Enseignant déjà existant. L'ajout n'a pas été effectué.");
 	    }
 	}
@@ -46,12 +40,9 @@ public class InscriptionController {
 	    int maxPersonnelId = DatabaseManager.getMaxPersonnelId();
 	    Personnel newPersonnel = new Personnel(maxPersonnelId + 1, nom, prenom, dateNaissance, metier, login, password);
 
-	    // Exemple d'utilisation
 	    if (DatabaseManager.insertPersonnel(newPersonnel)) {
-	        // Ajout réussi
 	        JOptionPane.showMessageDialog(null, "Personnel ajouté avec succès.");
 	    } else {
-	        // Ajout échoué
 	        JOptionPane.showMessageDialog(null, "Personnel déjà existant. L'ajout n'a pas été effectué.");
 	    }
 	}

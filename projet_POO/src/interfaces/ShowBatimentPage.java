@@ -49,7 +49,7 @@ public class ShowBatimentPage extends JFrame {
         retourButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose(); // Ferme la fenêtre actuelle
+                dispose(); 
             }
         });
 
@@ -78,7 +78,7 @@ public class ShowBatimentPage extends JFrame {
 
                 detailsTextArea.setText(details);
             } else {
-                detailsTextArea.setText(""); // Effacer les détails si rien n'est sélectionné
+                detailsTextArea.setText(""); 
             }
         });
 
@@ -93,7 +93,6 @@ public class ShowBatimentPage extends JFrame {
         if (selectedIndex != -1) {
             Batiment selectedBatiment = batiments.get(selectedIndex);
 
-            // Demander les nouvelles informations via des boîtes de dialogue
             String nouvelleVille = JOptionPane.showInputDialog(
                     ShowBatimentPage.this,
                     "Veuillez entrer la nouvelle ville du bâtiment :",
@@ -106,18 +105,15 @@ public class ShowBatimentPage extends JFrame {
                     "Modifier le bâtiment",
                     JOptionPane.PLAIN_MESSAGE);
 
-            // Mettre à jour les informations du bâtiment dans la liste des bâtiments
             if (nouvelleVille != null && !nouvelleVille.isEmpty()) {
                 selectedBatiment.setVille(nouvelleVille);
             }
 
             if (nouveauNomBatiment != null && !nouveauNomBatiment.isEmpty()) {
                 selectedBatiment.setNomBatiment(nouveauNomBatiment);
-                // Mettre à jour les informations du bâtiment dans la base de données
                 DatabaseManager.updateBatiment(selectedBatiment);
             }
 
-            // Mettre à jour le modèle de liste pour refléter les nouvelles informations
             listModel.setElementAt(selectedBatiment.getNomBatiment(), selectedIndex);
         } else {
             JOptionPane.showMessageDialog(ShowBatimentPage.this,
@@ -134,7 +130,6 @@ public class ShowBatimentPage extends JFrame {
     }
 
     public static void main(String[] args) {
-        // Vous pouvez placer ici le code pour tester votre page
         List<Batiment> batiments = DatabaseManager.getBatiments();
 
         SwingUtilities.invokeLater(() -> {

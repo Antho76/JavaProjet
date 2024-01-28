@@ -5,7 +5,6 @@ import java.sql.*;
 public class AfficherTablesSQLite {
 
     public void afficherTablesSQLite() {
-        // Remplacez "jdbc:sqlite:chemin_vers_votre_base_de_donnees.db" par le chemin de votre base de données SQLite
         String url = "jdbc:sqlite:chemin_vers_votre_base_de_donnees.db";
 
         try (Connection connection = DriverManager.getConnection(url)) {

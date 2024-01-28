@@ -16,14 +16,12 @@ public class EnseignantPage {
         frame.setSize(700, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Création du panel pour ajouter les composants
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(10, 10, 10, 10);
 
-        // Ajout du message d'accueil au milieu de la fenêtre
         JLabel welcomeLabel = new JLabel("Bonjour MR. " + enseignant.getNom());
         panel.add(welcomeLabel, gbc);
 
@@ -74,9 +72,7 @@ public class EnseignantPage {
                  public void actionPerformed(ActionEvent e) {
                 	 EmploiDuTempsEnseignant edtenseignant = new EmploiDuTempsEnseignant();
  	                 edtenseignant.afficherInterface(enseignant);
-                     // Ici, vous devez ajouter le code pour afficher l'emploi du temps
-                     // Par exemple : ouvrir une nouvelle fenêtre ou un panneau
-                     // qui affiche l'emploi du temps de l'enseignant
+
                  }
              });
      
@@ -88,17 +84,13 @@ public class EnseignantPage {
              new ConnectionInterface().afficherInterface();
          }
      });
-     // Centrer le bouton "Déconnexion" en changeant l'ancrage uniquement pour ce composant
      gbc.anchor = GridBagConstraints.CENTER;
      panel.add(retourButton, gbc);
 
-     // Réinitialiser l'ancrage pour les futurs composants
      gbc.anchor = GridBagConstraints.WEST;
 
-     // Saut de ligne
      gbc.gridy++;
 
-     // Affichage de la fenêtre principale
      frame.setLocationRelativeTo(null);
      frame.setVisible(true);
     }

@@ -37,7 +37,6 @@ public class DatabaseManager {
 
         if (!dbFile.exists()) {
             try (Connection connection = connect()) {
-                // Ajouter des classes à cette liste pour lesquelles vous voulez créer des tables
                 Class<?>[] classesToCreateTablesFor = {
                         Avertissement.class, Batiment.class, Cours.class, Enseignant.class,
                         Etudiant.class, Evaluation.class, Formation.class, Matiere.class,
@@ -55,7 +54,7 @@ public class DatabaseManager {
                         createTableQuery.append(field.getName()).append(" ")
                                 .append(getSqlType(field.getType())).append(", ");
                     }
-                    createTableQuery.setLength(createTableQuery.length() - 2); // Supprimer la virgule finale
+                    createTableQuery.setLength(createTableQuery.length() - 2); 
                     createTableQuery.append(")");
 
                     try (PreparedStatement preparedStatement = connection.prepareStatement(createTableQuery.toString())) {
@@ -63,7 +62,6 @@ public class DatabaseManager {
                     }
                 }
 
-                // Ajouter l'administrateur principal à la table Personnel
                 insertAdminPrincipal(connection);
                 insertPromoPrincipal(connection);
                 insertFormationPrincipal(connection);
@@ -268,18 +266,18 @@ public class DatabaseManager {
         } else if (type == int.class || type == Integer.class) {
             return "INTEGER";
         } else if (type == long.class || type == Long.class) {
-            return "INTEGER"; // Utilisez INTEGER pour les types long
+            return "INTEGER"; 
         } else if (type == double.class || type == Double.class || type == float.class || type == Float.class) {
-            return "REAL"; // Utilisez REAL pour les types à virgule flottante
+            return "REAL";
         } else if (type == boolean.class || type == Boolean.class) {
-            return "BOOLEAN"; // Utilisez BOOLEAN pour les types booléens
+            return "BOOLEAN"; 
         } else if (List.class.isAssignableFrom(type)) {
-            // Si le champ est de type List, déterminez le type d'élément de la liste
+           
             ParameterizedType parameterizedType = (ParameterizedType) type.getGenericSuperclass();
             Class<?> elementType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
             return getSqlType(elementType) + "[]";
         } else {
-            // Ajoutez d'autres types de données selon vos besoins
+           
             return "TEXT";
         }
     }
@@ -359,7 +357,7 @@ public class DatabaseManager {
 
     public static boolean insertEtudiant(Etudiant etudiant) {
         try (Connection connection = connect()) {
-            // Vérifier si l'étudiant existe déjà
+            
             if (!etudiantExists(connection, etudiant)) {
                 String query = "INSERT INTO etudiant (id, nom, prenom, idPromotion, dateNaissance, idFormation, login, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -376,23 +374,23 @@ public class DatabaseManager {
                     int rowsAffected = preparedStatement.executeUpdate();
                     
                     if (rowsAffected > 0) {
-                        // Ajout réussi
+                        
                         return true;
                     }
                 }
             } else {
-                // Étudiant déjà existant
+               
                 System.out.println("Étudiant déjà existant. L'ajout n'a pas été effectué.");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         
-        // Ajout échoué
+        
         return false;
     }
 
-    // Méthode pour vérifier si l'étudiant existe déjà
+   
     private static boolean etudiantExists(Connection connection, Etudiant etudiant) throws SQLException {
         String query = "SELECT COUNT(*) FROM etudiant WHERE nom = ? AND prenom = ? AND dateNaissance = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -425,17 +423,17 @@ public class DatabaseManager {
                     preparedStatement.setString(7, enseignant.getPassword());
 
                     preparedStatement.executeUpdate();
-                    return true; // Ajout réussi
+                    return true; 
                 }
             } else {
-                // Enseignant déjà existant
+                
                 System.out.println("Enseignant déjà existant. L'ajout n'a pas été effectué.");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return false; // Ajout échoué
+        return false;
     }
 
     private static boolean enseignantExists(Connection connection, Enseignant enseignant) throws SQLException {
@@ -467,7 +465,7 @@ public class DatabaseManager {
                     preparedStatement.setInt(1, value+1);
                     preparedStatement.setString(2, nomFormation);
                     preparedStatement.executeUpdate();
-                    return true; // Ajout réussi
+                    return true; 
                 }
             } else {
                 System.out.println("La formation existe déjà. L'ajout n'a pas été effectué.");
@@ -476,7 +474,7 @@ public class DatabaseManager {
             e.printStackTrace();
         }
 
-        return false; // Ajout échoué
+        return false; 
     }
 
     private static boolean formationExists(Connection connection, String nomFormation) throws SQLException {
@@ -528,17 +526,17 @@ public class DatabaseManager {
                     preparedStatement.setString(7, personnel.getPassword());
 
                     preparedStatement.executeUpdate();
-                    return true; // Ajout réussi
+                    return true; 
                 }
             } else {
-                // Personnel déjà existant
+               
                 System.out.println("Personnel déjà existant. L'ajout n'a pas été effectué.");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return false; // Ajout échoué
+        return false; 
     }
 
     private static boolean personnelExists(Connection connection, Personnel personnel) throws SQLException {
@@ -1144,7 +1142,6 @@ public class DatabaseManager {
         int maxId = -1;
 
         try (Connection connection = connect()) {
-            // Requête SQL pour obtenir le maximum de l'ID dans la table des étudiants
             String query = "SELECT MAX(id) FROM etudiant";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -1164,7 +1161,6 @@ public class DatabaseManager {
         int maxId = -1;
 
         try (Connection connection = connect()) {
-            // Requête SQL pour obtenir le maximum de l'ID dans la table des étudiants
             String query = "SELECT MAX(id) FROM personnel";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -1184,7 +1180,6 @@ public class DatabaseManager {
         int maxId = -1;
 
         try (Connection connection = connect()) {
-            // Requête SQL pour obtenir le maximum de l'ID dans la table des étudiants
             String query = "SELECT MAX(id) FROM enseignant";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -1206,7 +1201,6 @@ public class DatabaseManager {
         int maxId = -1;
 
         try (Connection connection = connect()) {
-            // Requête SQL pour obtenir le maximum de l'ID dans la table des étudiants
             String query = "SELECT MAX(id_formation) FROM formation";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -1227,7 +1221,6 @@ public class DatabaseManager {
         int maxId = -1;
 
         try (Connection connection = connect()) {
-            // Requête SQL pour obtenir le maximum de l'ID dans la table des étudiants
             String query = "SELECT MAX(numeroPromotion) FROM promotion";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -1248,7 +1241,6 @@ public class DatabaseManager {
         int maxId = -1;
 
         try (Connection connection = connect()) {
-            // Requête SQL pour obtenir le maximum de l'ID dans la table des étudiants
             String query = "SELECT MAX(idCours) FROM cours";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -1269,7 +1261,6 @@ public class DatabaseManager {
         int maxId = -1;
 
         try (Connection connection = connect()) {
-            // Requête SQL pour obtenir le maximum de l'ID dans la table des étudiants
             String query = "SELECT MAX(numeroBatiment) FROM batiment";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -1289,7 +1280,6 @@ public class DatabaseManager {
         int maxId = -1;
 
         try (Connection connection = connect()) {
-            // Requête SQL pour obtenir le maximum de l'ID dans la table des étudiants
             String query = "SELECT MAX(numeroSalle) FROM salle";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -1310,7 +1300,6 @@ public class DatabaseManager {
         int maxId = -1;
 
         try (Connection connection = connect()) {
-            // Requête SQL pour obtenir le maximum de l'ID dans la table des étudiants
             String query = "SELECT MAX(numeroMatiere) FROM matiere";
 
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {

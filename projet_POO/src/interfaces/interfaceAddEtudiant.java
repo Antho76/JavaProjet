@@ -15,10 +15,10 @@ import database.DatabaseManager;
 public class interfaceAddEtudiant {
     private JFrame mainFrame;
     private InscriptionController inscriptionController = new InscriptionController();
-    private Personnel person; // Ajout de la variable pour stocker la référence à la personne connectée
+    private Personnel person; 
 
     public void afficherInterface(Personnel person) {
-        this.person = person; // Stocker la référence à la personne connectée
+        this.person = person; 
         mainFrame = new JFrame("Page d'Inscription");
         mainFrame.setSize(400, 400);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -90,7 +90,6 @@ public class interfaceAddEtudiant {
         userText.setBounds(150, 140, 165, 25);
         panel.add(userText);
 
-        // Ajout de la liste des formations
         JLabel formationLabel = new JLabel("Formation :");
         formationLabel.setBounds(10, 180, 120, 25);
         panel.add(formationLabel);
@@ -103,7 +102,6 @@ public class interfaceAddEtudiant {
         formationComboBox.setBounds(150, 180, 165, 25);
         panel.add(formationComboBox);
 
-        // Ajout de la liste des promotions
         JLabel promotionLabel = new JLabel("Promotion :");
         promotionLabel.setBounds(10, 220, 120, 25);
         panel.add(promotionLabel);

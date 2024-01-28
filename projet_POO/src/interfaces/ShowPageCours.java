@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShowPageCours extends JFrame {
-    //private JList<String> coursList;
     
     private List<Cours> listCours;
 
@@ -27,17 +26,15 @@ public class ShowPageCours extends JFrame {
     }
     
     private void editCours(Cours selectedCours, JList<String> jListCours) {
-        // Create a JPanel to hold the input fields for editing
     	JPanel editPanel = new JPanel(new GridBagLayout());
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.insets = new Insets(5, 5, 5, 5); // Add spacing between components
+        gbc.insets = new Insets(5, 5, 5, 5);
 
         JTextField nbEtudiantField = new JTextField(String.valueOf(selectedCours.getNbEtudiant()));
-        nbEtudiantField.setPreferredSize(new Dimension(150, 25)); // Adjust the preferred size
-        editPanel.add(new JLabel("Nombre d'étudiants:"), gbc);
+        nbEtudiantField.setPreferredSize(new Dimension(150, 25)); 
         gbc.gridx++;
         editPanel.add(nbEtudiantField, gbc);
         
@@ -45,7 +42,6 @@ public class ShowPageCours extends JFrame {
         JTextField dateField = new JTextField(selectedCours.getDate().toString());
         JTextField heureField = new JTextField(String.valueOf(selectedCours.getHeure()));
         
-        // Add more fields as needed based on your Cours class
         
         DefaultListModel<String> etudiantsListModel = new DefaultListModel<>();
         List<Etudiant> listeEtudiants = DatabaseManager.getStudents();
@@ -67,7 +63,6 @@ public class ShowPageCours extends JFrame {
         editPanel.add(new JLabel("Heure:"));
         editPanel.add(heureField);
 
-        // Add more labels and fields based on your Cours class
 
         JScrollPane editScrollPane = new JScrollPane(editPanel);
         
@@ -93,16 +88,13 @@ public class ShowPageCours extends JFrame {
             
             int editedHeure = Integer.parseInt(heureField.getText());
 
-            // Update the selectedCours object with the edited values
             selectedCours.setNbEtudiant(editedNbEtudiant);
             selectedCours.setTabEtudiants(editedtabEtudiants);
             selectedCours.setDate(editedDate);
             selectedCours.setHeure(editedHeure);
 
-            // Update the course in the database
             DatabaseManager.updateCours(selectedCours);
 
-            // Refresh the course list
             refreshCoursList(jListCours);
         }
     }
@@ -168,9 +160,8 @@ public class ShowPageCours extends JFrame {
 
         JScrollPane scrollPane = new JScrollPane(jListCours);
         mainPanel.add(scrollPane, BorderLayout.WEST);
-        scrollPane.setPreferredSize(new Dimension(500, getHeight()));  // Ajustez la largeur ici
+        scrollPane.setPreferredSize(new Dimension(500, getHeight())); 
 
-        // Panel pour afficher les détails des étudiants
         JPanel detailsPanel = new JPanel();
         detailsPanel.setLayout(new BorderLayout());
         
@@ -181,7 +172,7 @@ public class ShowPageCours extends JFrame {
         retourButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose(); // Ferme la fenêtre actuelle
+                dispose(); 
             }
         });
 
@@ -242,7 +233,6 @@ public class ShowPageCours extends JFrame {
                                 " en salle " + salleCours.getNumeroSalle();
                     }
 
-                    // Affichez le message de modification ou suppression ici
                     int option = JOptionPane.showOptionDialog(ShowPageCours.this,
                             "Que voulez-vous faire pour le cours :\n" + details,
                             "Modifier/Supprimer le cours", JOptionPane.DEFAULT_OPTION,
@@ -276,12 +266,10 @@ public class ShowPageCours extends JFrame {
         ajouterCoursPanel.add(ajouterCoursButton);
         
 
-        // Zone de texte pour afficher les détails des étudiants
         JTextArea detailsTextArea = new JTextArea();
         detailsTextArea.setEditable(false);
         detailsPanel.add(new JScrollPane(detailsTextArea), BorderLayout.CENTER);
 
-        // Écouteur pour mettre à jour les détails lorsque la sélection change
         jListCours.addListSelectionListener(e -> {
             int selectedIndex = jListCours.getSelectedIndex();
             if (selectedIndex != -1) {
@@ -329,7 +317,7 @@ public class ShowPageCours extends JFrame {
                 }
                 detailsTextArea.setText(details);
             } else {
-                detailsTextArea.setText(""); // Effacer les détails si rien n'est sélectionné
+                detailsTextArea.setText("");
             }
         });
 
@@ -340,7 +328,6 @@ public class ShowPageCours extends JFrame {
         setLocationRelativeTo(null);
     }
     
- // Ajoutez cette méthode à votre classe ShowPageCours
     private void refreshCoursList(JList<String> jListCours) {
         listCours = DatabaseManager.getCours();
         
@@ -397,7 +384,6 @@ public class ShowPageCours extends JFrame {
 
 
     public static void main(String[] args) {
-        // Vous pouvez placer ici le code pour tester votre page
     	List<Cours> listCours = DatabaseManager.getCours();
         
         SwingUtilities.invokeLater(() -> {

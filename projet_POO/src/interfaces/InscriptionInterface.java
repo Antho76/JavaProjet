@@ -32,7 +32,6 @@ public class InscriptionInterface {
         retourButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Fermer la fenêtre d'inscription et réafficher la fenêtre de connexion
                 frame.dispose();
                 new ConnectionInterface().afficherInterface();
             }
@@ -45,7 +44,7 @@ public class InscriptionInterface {
         frame.setVisible(true);
     }
 
-    private static void placeComponents(JPanel panel, JFrame mainFrame) { // Ajouter le paramètre JFrame
+    private static void placeComponents(JPanel panel, JFrame mainFrame) {
         panel.setLayout(null);
 
         JLabel nomLabel = new JLabel("Nom : ");
@@ -96,7 +95,6 @@ public class InscriptionInterface {
         userText.setBounds(150, 180, 165, 25);
         panel.add(userText);
 
-        // Création du label et du champ pour l'e-mail
         JLabel emailLabel = new JLabel("E-mail:");
         emailLabel.setBounds(10, 220, 120, 25);
         panel.add(emailLabel);
@@ -105,7 +103,6 @@ public class InscriptionInterface {
         emailText.setBounds(150, 220, 165, 25);
         panel.add(emailText);
 
-        // Création du label et du champ pour le mot de passe
         JLabel passwordLabel = new JLabel("Mot de passe:");
         passwordLabel.setBounds(10, 260, 120, 25);
         panel.add(passwordLabel);
@@ -127,7 +124,6 @@ public class InscriptionInterface {
                 String username = userText.getText();
                 String password = new String(passwordText.getPassword());
 
-                // Vérifier si tous les champs sont remplis
                 if (nom.isEmpty() || prenom.isEmpty() || dateNaissance.isEmpty() || metier.isEmpty() || username.isEmpty() || password.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Veuillez remplir tous les champs.", "Champs vides", JOptionPane.ERROR_MESSAGE);
                 } else {

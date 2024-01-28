@@ -55,14 +55,12 @@ public class InterfaceAddPromotion extends JFrame {
         gbc.gridy = 1;
         panel.add(idFormationLabel, gbc);
 
-        // Populate the list of formations
         List<Formation> formations = DatabaseManager.getFormations();
         formationComboBox = new JComboBox<>(formations.toArray(new Formation[0]));
         gbc.gridx = 1;
         gbc.gridy = 1;
         panel.add(formationComboBox, gbc);
 
-        // Bouton Ajouter Promotion
         JButton ajouterPromotionButton = new JButton("Ajouter Promotion");
         gbc.gridx = 0;
         gbc.gridy = 2;
@@ -84,14 +82,12 @@ public class InterfaceAddPromotion extends JFrame {
                         int anneePromo = Integer.parseInt(anneePromoTextValue);
                         Formation selectedFormation = (Formation) formationComboBox.getSelectedItem();
 
-                        // Ajoutez ici la logique pour ajouter la promotion à la base de données
                         DatabaseManager.insertPromotion(anneePromo, selectedFormation.getId_Formation());
 
                         JOptionPane.showMessageDialog(InterfaceAddPromotion.this,
                                 "Promotion ajoutée avec succès!",
                                 "Confirmation", JOptionPane.INFORMATION_MESSAGE);
 
-                        // Clear the text fields after successful insertion
                         anneePromoText.setText("");
                     } catch (NumberFormatException ex) {
                         JOptionPane.showMessageDialog(InterfaceAddPromotion.this,
@@ -102,7 +98,6 @@ public class InterfaceAddPromotion extends JFrame {
             }
         });
 
-        // Bouton Retour en bas
         gbc.gridy = 3;
         panel.add(Box.createVerticalStrut(30), gbc);
         JButton retourButton = new JButton("Retour");

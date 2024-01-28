@@ -82,7 +82,6 @@ public class ConnectionInterface {
         
 
         frame.getContentPane().add(BorderLayout.CENTER, centerPanel);
-        // Center the frame on the screen
         frame.setLocationRelativeTo(null);
 
         frame.setVisible(true);
@@ -103,8 +102,7 @@ public class ConnectionInterface {
 	                JOptionPane.showMessageDialog(frame, "Connexion réussie");
 	                frame.dispose();
 	                AccueilEtudiant accueiletu = new AccueilEtudiant();
-	                accueiletu.afficherInterface(etu); // Ajouter plus tard le parametre de l'étudiant
-	                // Ajoutez ici le code pour l'interface de l'étudiant si nécessaire
+	                accueiletu.afficherInterface(etu); 
 	                
             	}else {
                 JOptionPane.showMessageDialog(frame, "Login ou mot de passe incorrect");
@@ -127,9 +125,9 @@ public class ConnectionInterface {
             if (exist) {
             	Personnel person = (Personnel) result[1];
                 JOptionPane.showMessageDialog(frame, "Connexion réussie");
-                frame.dispose(); // Fermer la fenêtre de connexion
+                frame.dispose(); 
                 AdminPage adminpage = new AdminPage();
-                adminpage.afficherInterface(person); // Passe la référence de la fenêtre de connexion                frame.dispose();
+                adminpage.afficherInterface(person); 
             } else {
 
                 JOptionPane.showMessageDialog(frame, "Login ou mot de passe incorrect");

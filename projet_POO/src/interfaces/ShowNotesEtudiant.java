@@ -20,7 +20,7 @@ public class ShowNotesEtudiant extends JFrame {
     
     public ShowNotesEtudiant(List<Evaluation> evaluations, int idEtudiant) {
         this.evaluations = evaluations;
-        this.idEtudiant = idEtudiant; // Assigner l'ID de l'étudiant
+        this.idEtudiant = idEtudiant; 
         initUI(idEtudiant);
     }
 
@@ -36,7 +36,7 @@ public class ShowNotesEtudiant extends JFrame {
         DefaultListModel<String> listModel = new DefaultListModel<>();
         
         for (Evaluation evaluation : evaluations) {
-            if (evaluation.getEtudiant() == idEtudiant) { // Filtrer selon l'ID de l'étudiant
+            if (evaluation.getEtudiant() == idEtudiant) { 
             	int idMatiere=evaluation.getMatiere();
             	Matiere matiere=DatabaseManager.getMatiereById(idMatiere);
             	String nomMatiere = matiere.getNomMatiere();
@@ -54,34 +54,27 @@ public class ShowNotesEtudiant extends JFrame {
 
         mainPanel.add(scrollPane, BorderLayout.WEST);
 
-        // Panel pour afficher les détails des évaluations
         JPanel detailsPanel = new JPanel();
         detailsPanel.setLayout(new BorderLayout());
-        // Ici vous pouvez ajouter des composants pour afficher les détails des évaluations
-        // Par exemple, un JLabel pour afficher les informations d'une évaluation sélectionnée
-        // JLabel detailsLabel = new JLabel();
-        // detailsPanel.add(detailsLabel, BorderLayout.CENTER);
+
 
         mainPanel.add(detailsPanel, BorderLayout.CENTER);
 
-        // Ajout du bouton "Retour"
         JPanel bottomPanel = new JPanel();
         JButton retourButton = new JButton("Retour");
         retourButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose(); // Ferme la fenêtre actuelle
+                dispose();
             }
         });
         bottomPanel.add(retourButton);
         mainPanel.add(bottomPanel, BorderLayout.SOUTH);
         
 
-        // Ajouter le mainPanel à la JFrame
         this.add(mainPanel);
         setLocationRelativeTo(null);
 
-        // Rendre la fenêtre visible
         setVisible(true);
     }
 }

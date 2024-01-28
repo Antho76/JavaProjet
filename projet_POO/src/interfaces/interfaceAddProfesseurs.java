@@ -15,10 +15,10 @@ import database.DatabaseManager;
 public class interfaceAddProfesseurs {
     private JFrame mainFrame;
     private InscriptionController inscriptionController = new InscriptionController();
-    private Personnel person; // Ajout de la variable pour stocker la référence à la personne connectée
+    private Personnel person; 
 
     public void afficherInterface(Personnel person) {
-        this.person = person; // Stocker la référence à la personne connectée
+        this.person = person; 
         mainFrame = new JFrame("Page d'Inscription");
         mainFrame.setSize(400, 400);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -153,6 +153,6 @@ public class interfaceAddProfesseurs {
                 return matiere.getNumeroMatiere();
             }
         }
-        return 0; // Ou une valeur par défaut, selon votre logique
+        return 0; 
     }
 }

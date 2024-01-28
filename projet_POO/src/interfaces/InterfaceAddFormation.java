@@ -17,20 +17,19 @@ public class InterfaceAddFormation extends JFrame {
 
     private void initUI() {
         setTitle("Ajouter une formation");
-        setSize(600, 400); // Ajustez les dimensions selon vos besoins
+        setSize(600, 400); 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(15, 15, 15, 15); // Ajustez ces marges selon vos besoins
+        gbc.insets = new Insets(15, 15, 15, 15); 
 
         add(panel);
         placeComponents(panel);
 
         setLocationRelativeTo(null);
-        // setVisible(true); // Ne pas rendre visible ici, cela est fait à la fin pour éviter le problème de dimension
     }
 
     private void placeComponents(JPanel panel) {
@@ -50,7 +49,6 @@ public class InterfaceAddFormation extends JFrame {
         panel.add(nomFormationText, gbc);
 
 
-        // Bouton Ajouter Formation
         JButton ajouterFormationButton = new JButton("Ajouter Formation");
         gbc.gridx = 0;
         gbc.gridy = 2;
@@ -73,7 +71,6 @@ public class InterfaceAddFormation extends JFrame {
                                 "Formation ajoutée avec succès!",
                                 "Confirmation", JOptionPane.INFORMATION_MESSAGE);
 
-                        // Clear the text field after successful insertion
                         nomFormationText.setText("");
                     } else {
                         JOptionPane.showMessageDialog(InterfaceAddFormation.this,
@@ -84,9 +81,8 @@ public class InterfaceAddFormation extends JFrame {
             }
         });
 
-        // Bouton Retour en bas
         gbc.gridy = 3;
-        panel.add(Box.createVerticalStrut(30), gbc); // Espace vertical
+        panel.add(Box.createVerticalStrut(30), gbc);
         JButton retourButton = new JButton("Retour");
         gbc.gridy = 4;
         panel.add(retourButton, gbc);
@@ -94,7 +90,6 @@ public class InterfaceAddFormation extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                // Ajoutez ici la logique pour retourner à la page précédente
             }
         });
     }
@@ -102,7 +97,7 @@ public class InterfaceAddFormation extends JFrame {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             InterfaceAddFormation addFormationPage = new InterfaceAddFormation();
-            addFormationPage.setVisible(true); // Rendre la fenêtre visible après l'initialisation complète
+            addFormationPage.setVisible(true);
         });
     }
 }

@@ -44,10 +44,8 @@ public class AccueilEtudiant {
         frame.setSize(1400, 1000);
         frame.setLocationRelativeTo(null);
 
-        // Initialisation de la matrice semaine
         initSemaine();
 
-        // Panneau pour les boutons et le label de la semaine
         JPanel panelSemaine = new JPanel();
         JButton btnSemainePrecedente = new JButton("<");
         JButton btnSemaineSuivante = new JButton(">");
@@ -59,15 +57,13 @@ public class AccueilEtudiant {
         panelSemaine.add(btnSemaineSuivante);
         frame.add(panelSemaine, BorderLayout.NORTH);
 
-        // Configuration des boutons
         btnSemaineSuivante.addActionListener(e -> changeSemaine(1, connectedEtudiant));
         btnSemainePrecedente.addActionListener(e -> changeSemaine(-1, connectedEtudiant));
 
-        // Colonnes (jours de la semaine)
         String[] columns = new String[]{"Heure", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"};
         model = new DefaultTableModel(generateData(connectedEtudiant.getId()), columns);
         JTable table = new JTable(model);
-        table.setRowHeight(70); // Définir la hauteur de la ligne (ajustez selon vos besoins)
+        table.setRowHeight(70); 
 
         table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
@@ -87,7 +83,7 @@ public class AccueilEtudiant {
         JScrollPane scrollPane = new JScrollPane(table);
         frame.add(scrollPane, BorderLayout.CENTER);
         
-        JPanel panelBouton = new JPanel(new FlowLayout(FlowLayout.CENTER)); // Utiliser FlowLayout pour centrer le bouton
+        JPanel panelBouton = new JPanel(new FlowLayout(FlowLayout.CENTER)); 
         JButton voirNotesButton = new JButton("Voir mes notes");
         List<Evaluation> evaluations = DatabaseManager.getEvaluations();
         voirNotesButton.addActionListener(new ActionListener() {
@@ -117,8 +113,7 @@ public class AccueilEtudiant {
             }
         });
 
-        // Ajouter le bouton à votre interface graphique
-        // Supposons que vous ayez un panneau `panel` auquel vous voulez ajouter ce bouton
+       
         panelBouton.add(retourButton);
         panelBouton.add(voirNotesButton);
         panelBouton.add(voirAvertissementButton);
@@ -136,20 +131,17 @@ public class AccueilEtudiant {
                 {"", "", "", "", "Pedestre", "", "", "", "", ""},
                 {"", "", "", "", "", "", "", "", "", ""},
         };
-        // Mettre à jour en fonction des données réelles
+        
     }
 
     private void changeSemaine(int amount,Etudiant connectedEtudiant) {
         calendar.add(Calendar.WEEK_OF_YEAR, amount);
         updateLabelSemaine(connectedEtudiant);
-        /*updateTable();*/
     }
 
     private void updateLabelSemaine(Etudiant connectedEtudiant) {
-        // Convertir Calendar en LocalDate
         LocalDate current = LocalDate.ofInstant(calendar.toInstant(), calendar.getTimeZone().toZoneId());
 
-        // Définir le début et la fin de la semaine basés sur la date actuelle du calendrier
         LocalDate startOfWeek = current.with(WeekFields.of(Locale.getDefault()).dayOfWeek(), 1);
         LocalDate endOfWeek = startOfWeek.plusDays(6);
 
@@ -173,7 +165,7 @@ public class AccueilEtudiant {
 
     private void updateTable(Etudiant connectedEtudiant) {
     	if (model == null) {
-            return;  // Ou initialiser le model ici si nécessaire
+            return; 
         }
     	int idEtudiant = connectedEtudiant.getId();
     	String[][] dataFromController = emploiDuTempsController.getCoursPourSemaineInterface(dateDebutSemaine, dateFinSemaine,idEtudiant);
@@ -181,7 +173,6 @@ public class AccueilEtudiant {
 
     	String[] columns = new String[]{"Heure", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"};
 
-        // Mettez à jour le modèle de votre tableau avec les nouvelles données
         model.setDataVector(updatedData, columns);
     }
     

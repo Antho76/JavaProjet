@@ -1,5 +1,4 @@
 package classes;
-//import java.util.Date;
 
 public class Formation 
 {
@@ -34,7 +33,6 @@ public class Formation
     }
 
 
-  //toString
 	public String toString() {
 		return this.nomFormation;
 	 }

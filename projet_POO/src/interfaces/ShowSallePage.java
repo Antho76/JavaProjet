@@ -97,11 +97,9 @@ public class ShowSallePage extends JFrame {
         if (selectedIndex != -1) {
             Salle selectedSalle = salles.get(selectedIndex);
 
-            // Afficher la boîte de dialogue de modification
             ModifierSalleDialog modifierDialog = new ModifierSalleDialog(this, selectedSalle);
             modifierDialog.setVisible(true);
 
-            // Rafraîchir la liste des salles après modification
             refreshSalleList();
         } else {
             JOptionPane.showMessageDialog(ShowSallePage.this,
@@ -118,7 +116,6 @@ public class ShowSallePage extends JFrame {
         salleList.setModel(listModel);
     }
 
-    // Classe interne pour la boîte de dialogue de modification
     private class ModifierSalleDialog extends JDialog {
 
         private Salle salle;
@@ -157,7 +154,6 @@ public class ShowSallePage extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     modifierSalle();
-                    // Fermer la boîte de dialogue après modification
                     ModifierSalleDialog.this.dispose();
                 }
             });
@@ -184,23 +180,19 @@ public class ShowSallePage extends JFrame {
         }
 
         private void modifierSalle() {
-            // Mettre à jour les informations de la salle
             try {
                 int nbPlaces = Integer.parseInt(nbPlacesField.getText());
                 boolean equipInfo = equipInfoCheckBox.isSelected();
                 String selectedBatimentName = (String) batimentComboBox.getSelectedItem();
 
-                // Récupérer l'ID du bâtiment sélectionné
                 int selectedBatimentId = getBatimentIdByName(selectedBatimentName);
                 if (selectedBatimentId != -1) {
                     salle.setNbPlaces(nbPlaces);
                     salle.setEquipInfo(equipInfo);
                     salle.setIdBatiment(selectedBatimentId);
 
-                    // Mettre à jour les informations de la salle dans la base de données
                     DatabaseManager.updateSalle(salle);
 
-                    // Rafraîchir la liste des salles après modification
                     refreshSalleList();
 
                     JOptionPane.showMessageDialog(ShowSallePage.this,
@@ -225,12 +217,11 @@ public class ShowSallePage extends JFrame {
                     return batiment.getNumeroBatiment();
                 }
             }
-            return -1; // Retourne -1 si le bâtiment n'est pas trouvé
+            return -1; 
         }
     }
 
     public static void main(String[] args) {
-        // Vous pouvez placer ici le code pour tester votre page
         List<Salle> salles = DatabaseManager.getSalle();
 
         SwingUtilities.invokeLater(() -> {

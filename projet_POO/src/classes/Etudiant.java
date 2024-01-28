@@ -1,5 +1,4 @@
 package classes; 
-//import java.util.Date;
 
 public class Etudiant
   {
@@ -15,7 +14,7 @@ public class Etudiant
     private int  idPromotion;
   
     public Etudiant(int id, String nom, String prenom, int idPromotion, String dateNaissance, int idFormation, String login, String password) {
-        this.id = id; // Incrémente l'ID à chaque nouvelle instance
+        this.id = id; 
     	this.nom = nom;
     	this.prenom = prenom;
     	this.dateNaissance = dateNaissance;

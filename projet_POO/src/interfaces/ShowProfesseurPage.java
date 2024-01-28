@@ -22,11 +22,9 @@ public class ShowProfesseurPage extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // Panel principal pour contenir la liste et les détails
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
 
-        // Créer un tableau de chaînes avec les informations à afficher
         String[] professeurInfoArray = new String[professeurs.size()];
         for (int i = 0; i < professeurs.size(); i++) {
             Enseignant professeur = professeurs.get(i);
@@ -34,29 +32,24 @@ public class ShowProfesseurPage extends JFrame {
             professeurInfoArray[i] = professeur.getNom() + " " + professeur.getPrenom() + " - matière " + matiereNom;
         }
 
-        // Créer une liste déroulante pour afficher les professeurs
         professeurList = new JList<>(professeurInfoArray);
         professeurList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         JScrollPane scrollPane = new JScrollPane(professeurList);
         mainPanel.add(scrollPane, BorderLayout.WEST);
-        scrollPane.setPreferredSize(new Dimension(300, getHeight()));  // Ajustez la largeur ici
+        scrollPane.setPreferredSize(new Dimension(300, getHeight())); 
 
-        // Panel pour afficher les détails des professeurs
         JPanel detailsPanel = new JPanel();
         detailsPanel.setLayout(new BorderLayout());
 
-        // Zone de texte pour afficher les détails des professeurs
         detailsTextArea = new JTextArea();
         detailsTextArea.setEditable(false);
         detailsPanel.add(new JScrollPane(detailsTextArea), BorderLayout.CENTER);
 
-        // Écouteur pour mettre à jour les détails lorsque la sélection change
         professeurList.addListSelectionListener(e -> updateDetails(professeurs, matieres));
 
         mainPanel.add(detailsPanel, BorderLayout.CENTER);
 
-        // Boutons en bas de la colonne de gauche
         JButton retourButton = new JButton("Retour");
         JButton modifierButton = new JButton("Modifier");
         JButton supprimerButton = new JButton("Supprimer");
@@ -66,7 +59,6 @@ public class ShowProfesseurPage extends JFrame {
         buttonsPanel.add(modifierButton);
         buttonsPanel.add(supprimerButton);
 
-        // Écouteurs pour les boutons
         retourButton.addActionListener(e -> dispose());
         modifierButton.addActionListener(e -> modifierProfesseur(professeurs, matieres));
         supprimerButton.addActionListener(e -> supprimerProfesseur(professeurs));
@@ -88,7 +80,7 @@ public class ShowProfesseurPage extends JFrame {
 
             detailsTextArea.setText(details);
         } else {
-            detailsTextArea.setText(""); // Effacer les détails si rien n'est sélectionné
+            detailsTextArea.setText(""); 
         }
     }
 
@@ -104,9 +96,8 @@ public class ShowProfesseurPage extends JFrame {
             if (confirmation == JOptionPane.YES_OPTION) {
                 DatabaseManager.deleteEnseignantById(selectedProfesseur.getId());
                 professeurs.remove(selectedIndex);
-                // Mettre à jour la liste affichée
                 updateProfesseurList(professeurs);
-                detailsTextArea.setText(""); // Effacer les détails après la suppression
+                detailsTextArea.setText(""); 
             }
         } else {
             JOptionPane.showMessageDialog(this,
@@ -128,16 +119,12 @@ public class ShowProfesseurPage extends JFrame {
         if (selectedIndex != -1) {
             Enseignant selectedProfesseur = professeurs.get(selectedIndex);
 
-            // Récupérer les noms de matières depuis la liste de matières
             String[] matiereNames = matieres.stream().map(Matiere::getNomMatiere).toArray(String[]::new);
 
-            // Créer une JComboBox avec les noms de matières
             JComboBox<String> matiereComboBox = new JComboBox<>(matiereNames);
 
-            // Sélectionner la matière actuelle de l'enseignant dans la JComboBox
             matiereComboBox.setSelectedItem(findMatiereName(matieres, selectedProfesseur.getMatiere()));
 
-            // Créer une boîte de dialogue avec les composants nécessaires
             JPanel panel = new JPanel(new GridLayout(0, 2));
             panel.add(new JLabel("Nom:"));
             panel.add(new JTextField(selectedProfesseur.getNom()));
@@ -156,25 +143,20 @@ public class ShowProfesseurPage extends JFrame {
                     JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
             if (result == JOptionPane.OK_OPTION) {
-                // Mettre à jour les informations du professeur avec les nouvelles valeurs
                 selectedProfesseur.setNom(((JTextField) panel.getComponent(1)).getText());
                 selectedProfesseur.setPrenom(((JTextField) panel.getComponent(3)).getText());
                 selectedProfesseur.setDateNaissance(((JTextField) panel.getComponent(5)).getText());
 
-                // Mettre à jour l'ID de la matière
                 int selectedMatiereIndex = matiereComboBox.getSelectedIndex();
                 if (selectedMatiereIndex != -1) {
                     selectedProfesseur.setMatiere(matieres.get(selectedMatiereIndex).getNumeroMatiere());
                 }
 
-                // Mettre à jour le login et le mot de passe
                 selectedProfesseur.setLogin(((JTextField) panel.getComponent(9)).getText());
                 selectedProfesseur.setPassword(new String(((JPasswordField) panel.getComponent(11)).getPassword()));
 
-                // Appeler la méthode pour mettre à jour le professeur dans la base de données
                 DatabaseManager.updateEnseignant(selectedProfesseur);
 
-                // Afficher un message d'information pour indiquer que la modification a été effectuée
                 JOptionPane.showMessageDialog(this,
                         "Professeur modifié avec succès.",
                         "Modification réussie", JOptionPane.INFORMATION_MESSAGE);
@@ -183,7 +165,6 @@ public class ShowProfesseurPage extends JFrame {
                 List<Matiere> upmatieres = DatabaseManager.getMatiere();
                 SwingUtilities.invokeLater(() -> new ShowProfesseurPage(upprofesseurs, upmatieres).setVisible(true));
 
-                // Mettre à jour les détails après la modification
                 updateDetails(professeurs, matieres);
             }
         } else {
@@ -203,15 +184,11 @@ public class ShowProfesseurPage extends JFrame {
     }
 
     public static void main(String[] args) {
-        // Assurez-vous d'appeler createDatabaseIfNotExists pour créer la base de données si elle n'existe pas
         DatabaseManager.createDatabaseIfNotExists();
 
-        // Récupérer la liste de professeurs depuis le DatabaseManager
         List<Enseignant> professeurs = DatabaseManager.getEnseignants();
-        // Récupérer la liste des matières depuis le DatabaseManager
         List<Matiere> matieres = DatabaseManager.getMatiere();
 
-        // Créer une instance de la page d'affichage des professeurs
         SwingUtilities.invokeLater(() -> new ShowProfesseurPage(professeurs, matieres).setVisible(true));
     }
 }
