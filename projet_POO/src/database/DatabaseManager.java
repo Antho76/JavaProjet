@@ -410,24 +410,49 @@ public class DatabaseManager {
         return false;
     }
     
-    public static void insertEnseignant(Enseignant enseignant) {
+    public static boolean insertEnseignant(Enseignant enseignant) {
         try (Connection connection = connect()) {
-            String query = "INSERT INTO enseignant (id, nom, prenom, dateNaissance, idMatiere, login, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            if (!enseignantExists(connection, enseignant)) {
+                String query = "INSERT INTO enseignant (id, nom, prenom, dateNaissance, idMatiere, login, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setInt(1, enseignant.getId());
-                preparedStatement.setString(2, enseignant.getNom());
-                preparedStatement.setString(3, enseignant.getPrenom());
-                preparedStatement.setString(4, enseignant.getDateNaissance());
-                preparedStatement.setInt(5, enseignant.getMatiere());
-                preparedStatement.setString(6, enseignant.getLogin());
-                preparedStatement.setString(7, enseignant.getPassword());
+                try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                    preparedStatement.setInt(1, enseignant.getId());
+                    preparedStatement.setString(2, enseignant.getNom());
+                    preparedStatement.setString(3, enseignant.getPrenom());
+                    preparedStatement.setString(4, enseignant.getDateNaissance());
+                    preparedStatement.setInt(5, enseignant.getMatiere());
+                    preparedStatement.setString(6, enseignant.getLogin());
+                    preparedStatement.setString(7, enseignant.getPassword());
 
-                preparedStatement.executeUpdate();
+                    preparedStatement.executeUpdate();
+                    return true; // Ajout réussi
+                }
+            } else {
+                // Enseignant déjà existant
+                System.out.println("Enseignant déjà existant. L'ajout n'a pas été effectué.");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return false; // Ajout échoué
+    }
+
+    private static boolean enseignantExists(Connection connection, Enseignant enseignant) throws SQLException {
+        String query = "SELECT COUNT(*) FROM enseignant WHERE nom = ? AND prenom = ? AND dateNaissance = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, enseignant.getNom());
+            preparedStatement.setString(2, enseignant.getPrenom());
+            preparedStatement.setString(3, enseignant.getDateNaissance());
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    int count = resultSet.getInt(1);
+                    return count > 0;
+                }
+            }
+        }
+        return false;
     }
     
     

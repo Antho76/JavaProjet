@@ -30,18 +30,17 @@ public class InscriptionController {
 
 	
 	public void inscriptionEnseignant(String nom, String prenom, String dateNaissance, int matiere, String login, String password) {
-		for (Enseignant enseignant : listeEnseignant) {
-			if (enseignant.getLogin().equals(login) && enseignant.getPassword().equals(password)) {
-				already_exist = true;
-			}
-		}
-		if (!already_exist) {
-			int maxEnseignantId = DatabaseManager.getMaxEnseignantId();
+	    int maxEnseignantId = DatabaseManager.getMaxEnseignantId();
+	    Enseignant newEnseignant = new Enseignant(maxEnseignantId + 1, nom, prenom, dateNaissance, matiere, login, password);
 
-			Enseignant newEnseignant = new Enseignant(maxEnseignantId+1, nom,prenom,dateNaissance,matiere,login,password);
-			listeEnseignant.add(newEnseignant);
-			DatabaseManager.insertEnseignant(newEnseignant);
-		}	
+	    // Exemple d'utilisation
+	    if (DatabaseManager.insertEnseignant(newEnseignant)) {
+	        // Ajout réussi
+	        JOptionPane.showMessageDialog(null, "Enseignant ajouté avec succès.");
+	    } else {
+	        // Ajout échoué
+	        JOptionPane.showMessageDialog(null, "Enseignant déjà existant. L'ajout n'a pas été effectué.");
+	    }
 	}
 	public void inscriptionPersonnel(String nom, String prenom, String dateNaissance, String metier, String login, String password) {
 		for (Personnel personnel : listePersonnel) {
