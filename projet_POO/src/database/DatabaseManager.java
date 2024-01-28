@@ -456,21 +456,44 @@ public class DatabaseManager {
     }
     
     
-    public static void insertFormation(String nomFormation) {
+    public static boolean insertFormation(String nomFormation) {
         try (Connection connection = connect()) {
-        	int value = getMaxFormationId();
-            String query = "INSERT INTO formation (id_formation, nomFormation) VALUES (?, ?)";
+            if (!formationExists(connection, nomFormation)) {
+            	int value = getMaxFormationId();
 
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setInt(1, value+1);
-                preparedStatement.setString(2, nomFormation);
+                String query = "INSERT INTO formation (id_formation, nomFormation) VALUES (?, ?)";
 
-                preparedStatement.executeUpdate();
+                try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                    preparedStatement.setInt(1, value+1);
+                    preparedStatement.setString(2, nomFormation);
+                    preparedStatement.executeUpdate();
+                    return true; // Ajout réussi
+                }
+            } else {
+                System.out.println("La formation existe déjà. L'ajout n'a pas été effectué.");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return false; // Ajout échoué
     }
+
+    private static boolean formationExists(Connection connection, String nomFormation) throws SQLException {
+        String query = "SELECT COUNT(*) FROM formation WHERE nomFormation = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, nomFormation);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    int count = resultSet.getInt(1);
+                    return count > 0;
+                }
+            }
+        }
+        return false;
+    }
+
     
     public static void insertMatiere(Matiere matiere) {
         try (Connection connection = connect()) {

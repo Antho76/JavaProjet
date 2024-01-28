@@ -67,15 +67,19 @@ public class InterfaceAddFormation extends JFrame {
                             "Veuillez remplir le champ 'Nom de la formation'.",
                             "Erreur", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    // Ajoutez ici la logique pour ajouter la formation à la base de données
-                    DatabaseManager.insertFormation(nomFormation);
+                    boolean ajoutReussi = DatabaseManager.insertFormation(nomFormation);
+                	if (ajoutReussi) {
+                        JOptionPane.showMessageDialog(InterfaceAddFormation.this,
+                                "Formation ajoutée avec succès!",
+                                "Confirmation", JOptionPane.INFORMATION_MESSAGE);
 
-                    JOptionPane.showMessageDialog(InterfaceAddFormation.this,
-                            "Formation ajoutée avec succès!",
-                            "Confirmation", JOptionPane.INFORMATION_MESSAGE);
-
-                    // Clear the text field after successful insertion
-                    nomFormationText.setText("");
+                        // Clear the text field after successful insertion
+                        nomFormationText.setText("");
+                    } else {
+                        JOptionPane.showMessageDialog(InterfaceAddFormation.this,
+                                "La formation existe déjà. L'ajout n'a pas été effectué.",
+                                "Erreur", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             }
         });
